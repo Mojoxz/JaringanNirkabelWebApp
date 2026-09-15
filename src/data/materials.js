@@ -16,7 +16,7 @@ export const materials = [
         event: "Penemuan Gelombang Radio",
         description: "Heinrich Hertz berhasil membuktikan keberadaan gelombang elektromagnetik secara eksperimental. Penemuannya menjadi fondasi ilmiah bagi seluruh teknologi komunikasi nirkabel. Satuan frekuensi 'Hertz (Hz)' dinamai untuk menghormati kontribusinya.",
         detail: "Hertz menggunakan peralatan sederhana — sebuah osilator dan detektor — untuk menghasilkan dan mendeteksi gelombang radio pertama di dunia. Frekuensi yang digunakan berkisar 100 MHz.",
-        image: images.historyWireless
+        image: images.historyMarconi
       },
       {
         year: "1895",
@@ -73,6 +73,32 @@ export const materials = [
         description: "Wi-Fi 7 menghadirkan kecepatan teoritis hingga 46 Gbps menggunakan saluran 320 MHz dan Multi-Link Operation (MLO) — kemampuan untuk menggunakan beberapa pita frekuensi secara bersamaan.",
         detail: "MLO memungkinkan perangkat mengirim dan menerima data di beberapa band sekaligus, mengurangi latensi drastis. Wi-Fi 7 sangat cocok untuk AR/VR, gaming cloud, dan streaming 8K.",
         image: images.wifi6
+      }
+    ],
+    exercise: [
+      {
+        type: 'fill',
+        question: "Ilmuwan yang pertama kali membuktikan keberadaan gelombang elektromagnetik secara eksperimental pada tahun 1888 adalah _______.",
+        answer: ["Heinrich Hertz", "Hertz", "hertz", "heinrich hertz"],
+        hint: "Namanya diabadikan sebagai satuan frekuensi."
+      },
+      {
+        type: 'choice',
+        question: "Pada tahun berapa istilah 'Wi-Fi' secara resmi diperkenalkan oleh Wi-Fi Alliance?",
+        options: ["1997", "1999", "2003", "2009"],
+        answer: 1
+      },
+      {
+        type: 'fill',
+        question: "Wi-Fi 6 menggunakan standar IEEE _______.",
+        answer: ["802.11ax", "802.11 ax"],
+        hint: "Format: 802.11xx"
+      },
+      {
+        type: 'choice',
+        question: "Teknologi apa yang pertama kali diperkenalkan oleh Wi-Fi 4 (802.11n) untuk meningkatkan throughput?",
+        options: ["OFDMA", "MIMO", "MU-MIMO", "Beamforming"],
+        answer: 1
       }
     ]
   },
@@ -149,7 +175,7 @@ export const materials = [
       },
       {
         name: "Antena Dipole",
-        image: images.antennaOmni,
+        image: images.antennaDipole,
         badge: "Basic",
         badgeColor: "slate",
         description: "Antena dipole adalah antena paling fundamental — dua konduktor lurus yang saling berseberangan. Ini adalah antena yang ada di dalam router WiFi rumahan.",
@@ -158,6 +184,32 @@ export const materials = [
         usage: "Antena bawaan router WiFi rumahan, perangkat Bluetooth, transceiver 2.4 GHz sederhana.",
         radiationPattern: "Omnidirectional dengan pola 'donat' toroidal. Sangat lemah di arah ujung antena (kutub) dan paling kuat di sisi (ekuator).",
         example: "Antena tongkat kecil yang menyerupai batang pena pada router WiFi rumahan Anda. Biasanya 2 atau 3 antena dipasang secara miring untuk mengurangi blind spot."
+      }
+    ],
+    exercise: [
+      {
+        type: 'choice',
+        question: "Antena jenis apa yang memancarkan sinyal ke segala arah horizontal (360°)?",
+        options: ["Antena Yagi", "Antena Parabolic", "Antena Omni Directional", "Antena Sectoral"],
+        answer: 2
+      },
+      {
+        type: 'fill',
+        question: "Antena parabolic memiliki gain tertinggi, yaitu antara _______ dBi.",
+        answer: ["24-34", "24–34", "24 - 34"],
+        hint: "Tuliskan dalam format: XX-XX"
+      },
+      {
+        type: 'choice',
+        question: "Antena sectoral biasanya digunakan untuk topologi jaringan apa?",
+        options: ["PTP (Point-to-Point)", "PTMP (Point-to-Multipoint)", "Mesh", "Ad-hoc"],
+        answer: 1
+      },
+      {
+        type: 'fill',
+        question: "Antena Yagi memiliki pola pancaran yang _______ (fokus ke satu arah).",
+        answer: ["directional", "terarah"],
+        hint: "Lawan kata dari omnidirectional"
       }
     ]
   },
@@ -186,7 +238,27 @@ export const materials = [
         usecases: ["Layanan internet perdesaan oleh WISP lokal", "Jaringan RT/RW-Net", "Distribusi koneksi internet di kawasan industri", "Sistem CCTV area luas yang terpusat"],
         image: images.ptmp
       }
-    }
+    },
+    exercise: [
+      {
+        type: 'fill',
+        question: "Koneksi nirkabel langsung antara dua titik disebut Point-to-_______.",
+        answer: ["Point", "point"],
+        hint: "Singkatannya adalah PTP"
+      },
+      {
+        type: 'choice',
+        question: "Dalam topologi PTMP, antena jenis apa yang biasanya digunakan di sisi base station?",
+        options: ["Antena Parabolic", "Antena Dipole", "Antena Sectoral", "Antena Omni kecil"],
+        answer: 2
+      },
+      {
+        type: 'choice',
+        question: "Apa keunggulan utama dari topologi PTP dibanding PTMP?",
+        options: ["Bisa melayani banyak klien sekaligus", "Bandwidth dedicated, tidak dibagi", "Biaya lebih murah per klien", "Lebih mudah diperluas"],
+        answer: 1
+      }
+    ]
   },
 
   // ─────────────────────────────────────────────────────────────
@@ -271,6 +343,32 @@ export const materials = [
         detail: "Pada frekuensi 2.4 GHz dan 5 GHz, efek hujan relatif kecil, namun angin kencang bisa menggeser posisi antena (antenna misalignment) terutama pada antena high-gain seperti grid parabola. Embun/frost pada reflektor juga bisa menyebabkan atenuasi.",
         tips: "Gunakan klem antena berkualitas tinggi (mis: stainless steel). Pertimbangkan fade margin (cadangan sinyal extra) minimal 15-20 dB dalam desain link untuk mengkompensasi kondisi cuaca buruk."
       }
+    ],
+    exercise: [
+      {
+        type: 'fill',
+        question: "Jalur pandang bebas hambatan antara dua antena disebut _______ (singkatan 3 huruf).",
+        answer: ["LoS", "los", "LOS", "Line of Sight", "line of sight"],
+        hint: "Line of ___"
+      },
+      {
+        type: 'choice',
+        question: "Frekuensi mana yang lebih baik untuk menembus penghalang seperti tembok dan pohon?",
+        options: ["5 GHz", "6 GHz", "2.4 GHz", "5.8 GHz"],
+        answer: 2
+      },
+      {
+        type: 'fill',
+        question: "Rumus EIRP adalah: Tx Power + Antena Gain - _______ Loss.",
+        answer: ["Kabel", "kabel", "Cable", "cable"],
+        hint: "Kerugian pada media transmisi dari radio ke antena"
+      },
+      {
+        type: 'choice',
+        question: "Minimal berapa persen dari Fresnel Zone pertama yang harus bebas dari halangan?",
+        options: ["40%", "50%", "60%", "80%"],
+        answer: 2
+      }
     ]
   },
 
@@ -308,7 +406,7 @@ export const materials = [
       },
       {
         name: "CPE (Customer Premises Equipment)",
-        image: images.antennaPanel,
+        image: images.cpe,
         category: "Outdoor",
         badge: "WISP/ISP",
         description: "Perangkat penerima yang dipasang di lokasi pelanggan (biasanya di atap atau tembok menghadap tower ISP). Menangkap sinyal dari base station WISP dan membagikannya ke dalam rumah.",
@@ -319,7 +417,7 @@ export const materials = [
       },
       {
         name: "Ubiquiti UniFi",
-        image: images.accessPoint,
+        image: images.ubiquiti,
         category: "Enterprise",
         badge: "Pilihan Pro",
         description: "Ekosistem jaringan enterprise dari Ubiquiti yang mencakup access point, switch, router, dan kamera — semua dikelola dari satu platform software UniFi Controller.",
@@ -330,7 +428,7 @@ export const materials = [
       },
       {
         name: "MikroTik RouterOS",
-        image: images.router,
+        image: images.mikrotik,
         category: "Networking",
         badge: "Fleksibel",
         description: "MikroTik memproduksi perangkat jaringan serbaguna dengan RouterOS yang sangat powerful. Populer di kalangan network engineer karena kemampuan konfigurasi yang sangat mendalam.",
@@ -341,7 +439,7 @@ export const materials = [
       },
       {
         name: "TP-Link Pharos (Outdoor)",
-        image: images.antennaPanel,
+        image: images.tplink,
         category: "Outdoor WISP",
         badge: "Entry Level",
         description: "Lini produk outdoor TP-Link Pharos dirancang untuk link nirkabel jarak jauh dengan antena terintegrasi. Menawarkan performa yang cukup baik dengan harga terjangkau.",
@@ -352,7 +450,7 @@ export const materials = [
       },
       {
         name: "PoE Injector & Switch PoE",
-        image: images.accessPoint,
+        image: images.poe,
         category: "Power",
         badge: "Infrastruktur",
         description: "Power over Ethernet (PoE) memungkinkan pengiriman listrik melalui kabel LAN bersamaan dengan data. Sangat penting untuk AP dan CPE yang dipasang di lokasi tanpa stopkontak.",
@@ -363,7 +461,7 @@ export const materials = [
       },
       {
         name: "Wireless Bridge (PTP Radio)",
-        image: images.antennaParabolic,
+        image: images.ptpRadio,
         category: "Backhaul",
         badge: "Jarak Jauh",
         description: "Perangkat khusus yang dirancang untuk membentuk link wireless point-to-point jarak jauh. Biasanya sudah termasuk antena terintegrasi atau port untuk antena eksternal.",
@@ -371,6 +469,32 @@ export const materials = [
         usage: "Menghubungkan dua kantor yang berbeda gedung/kota, backhaul untuk repeater atau BTS.",
         features: ["Throughput hingga 1+ Gbps (tergantung model)", "Link jarak 1–100+ km", "Fitur AES encryption untuk keamanan link", "Adaptive coding & modulation"],
         examples: ["Ubiquiti PowerBeam M5", "Cambium PTP 450", "MikroTik NetMetal 5", "Mimosa B5c"]
+      }
+    ],
+    exercise: [
+      {
+        type: 'choice',
+        question: "Singkatan AP dalam konteks jaringan nirkabel adalah...",
+        options: ["Application Protocol", "Access Point", "Antenna Port", "Automatic Power"],
+        answer: 1
+      },
+      {
+        type: 'fill',
+        question: "Perangkat yang dipasang di atap rumah pelanggan untuk menerima sinyal dari tower ISP disebut _______.",
+        answer: ["CPE", "cpe", "Customer Premises Equipment"],
+        hint: "Singkatan 3 huruf: C-P-E"
+      },
+      {
+        type: 'choice',
+        question: "Teknologi apa yang memungkinkan AP diberi daya listrik melalui kabel LAN?",
+        options: ["VPN", "VLAN", "PoE", "DHCP"],
+        answer: 2
+      },
+      {
+        type: 'fill',
+        question: "Router yang menggabungkan fungsi routing, switch, dan access point dalam satu unit cocok untuk kategori _______.",
+        answer: ["SOHO", "soho", "rumahan", "home"],
+        hint: "Small Office/Home Office"
       }
     ]
   },
@@ -436,7 +560,33 @@ export const materials = [
         { text: "Meningkatkan power transmit AP agar lebih kuat dari AP palsu", correct: false, feedback: "Salah! Ini melanggar regulasi EIRP dan tidak menyelesaikan masalah. AP palsu bisa terus ikut meningkatkan powernya juga." },
         { text: "Memberitahu seluruh pelanggan SSID dan password baru melalui media sosial", correct: false, feedback: "Salah! Ini malah menyebarkan password ke publik dan tidak menyelesaikan masalah AP palsu." }
       ]
-    }
+    },
+    exercise: [
+      {
+        type: 'fill',
+        question: "Protokol keamanan Wi-Fi yang menggunakan enkripsi RC4 dan sudah dianggap TIDAK AMAN adalah _______.",
+        answer: ["WEP", "wep"],
+        hint: "Wired Equivalent Privacy — 3 huruf"
+      },
+      {
+        type: 'choice',
+        question: "Serangan apa yang membuat perangkat klien memutuskan koneksi dari AP asli dengan memalsukan paket manajemen?",
+        options: ["Packet Sniffing", "Brute Force Password", "Deauthentication Attack", "Evil Twin"],
+        answer: 2
+      },
+      {
+        type: 'choice',
+        question: "Protokol keamanan Wi-Fi terbaru yang menggunakan SAE (Simultaneous Authentication of Equals) adalah?",
+        options: ["WEP", "WPA", "WPA2", "WPA3"],
+        answer: 3
+      },
+      {
+        type: 'fill',
+        question: "Penyerang yang membuat Access Point palsu dengan SSID yang sama disebut serangan _______.",
+        answer: ["Evil Twin", "evil twin", "Rogue AP", "rogue ap"],
+        hint: "'Kembaran jahat' dalam bahasa Inggris"
+      }
+    ]
   },
 
   // ─────────────────────────────────────────────────────────────
@@ -575,6 +725,32 @@ export const materials = [
         color: "slate",
         category: "Short Range"
       }
+    ],
+    exercise: [
+      {
+        type: 'fill',
+        question: "Teknologi Wi-Fi yang menggunakan pita 6 GHz disebut Wi-Fi _______.",
+        answer: ["6E", "6e"],
+        hint: "Wi-Fi 6 + huruf ekstra"
+      },
+      {
+        type: 'choice',
+        question: "Teknologi wireless apa yang memiliki jangkauan paling jauh (hingga 40+ km) dengan konsumsi daya sangat rendah?",
+        options: ["Bluetooth", "Zigbee", "LoRa / LoRaWAN", "NFC"],
+        answer: 2
+      },
+      {
+        type: 'choice',
+        question: "Fitur OFDMA pada Wi-Fi 6 berfungsi untuk...",
+        options: ["Meningkatkan jangkauan sinyal", "Melayani banyak klien secara bersamaan dengan efisien", "Mengenkripsi data transmisi", "Mengurangi ukuran antena"],
+        answer: 1
+      },
+      {
+        type: 'fill',
+        question: "Wi-Fi 7 memiliki kecepatan teoritis hingga _______ Gbps.",
+        answer: ["46"],
+        hint: "Angka dua digit"
+      }
     ]
   },
 
@@ -607,6 +783,26 @@ export const materials = [
         { title: "Manajemen Spektrum", description: "Spektrum frekuensi adalah sumber daya alam yang terbatas dan diatur secara ketat oleh pemerintah. Penggunaan frekuensi yang tidak tepat bisa melanggar hukum dan mengakibatkan interferensi masif.", solution: "Di Indonesia, penggunaan frekuensi diatur oleh Kementerian Komunikasi dan Informatika (Kominfo). Pita 2.4 GHz dan 5.8 GHz unlicensed, namun tetap ada batasan power (EIRP). Operator seluler membeli lisensi frekuensi dari pemerintah." },
         { title: "Skalabilitas di Lingkungan Sangat Padat", description: "Merancang jaringan Wi-Fi untuk ribuan perangkat di area terbatas (stadion, konser, pameran) adalah tantangan engineering yang sangat kompleks.", solution: "Pendekatan: High Density WLAN design menggunakan AP dengan daya rendah yang banyak (bukan sedikit AP dengan daya tinggi). Setiap AP hanya melayani puluhan klien. Teknologi seperti Band Steering, OFDMA (Wi-Fi 6), dan agresifnya penggunaan 5/6 GHz." }
       ]
-    }
+    },
+    exercise: [
+      {
+        type: 'choice',
+        question: "Apa kelebihan utama jaringan nirkabel dibanding jaringan kabel dalam hal instalasi?",
+        options: ["Kecepatan lebih tinggi", "Tidak perlu menarik kabel, instalasi lebih cepat dan fleksibel", "Lebih aman dari serangan", "Tidak terpengaruh interferensi"],
+        answer: 1
+      },
+      {
+        type: 'fill',
+        question: "Sinyal Wi-Fi yang memantul dari berbagai permukaan dan tiba di penerima pada waktu berbeda disebut efek _______.",
+        answer: ["multipath", "Multipath"],
+        hint: "Kata bahasa Inggris: 'banyak jalur'"
+      },
+      {
+        type: 'choice',
+        question: "Mengapa jaringan nirkabel memiliki keamanan yang lebih kompleks dibanding kabel?",
+        options: ["Karena sinyalnya lebih cepat", "Karena sinyal menyebar di udara dan bisa diterima siapa saja dalam jangkauan", "Karena menggunakan enkripsi yang lemah", "Karena tidak mendukung firewall"],
+        answer: 1
+      }
+    ]
   }
 ];

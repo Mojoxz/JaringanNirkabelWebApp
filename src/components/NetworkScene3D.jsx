@@ -1,255 +1,555 @@
-import { useRef, useMemo, useState } from 'react';
-import { Canvas, useFrame, useThree } from '@react-three/fiber';
-import { OrbitControls, Sphere, Line, Float, MeshDistortMaterial, Stars, Environment, ContactShadows, Html } from '@react-three/drei';
+import { useRef, useMemo, useState, Suspense } from 'react';
+import { Canvas, useFrame } from '@react-three/fiber';
+import { OrbitControls, Environment, ContactShadows, Html, Line, Float } from '@react-three/drei';
 import * as THREE from 'three';
 
-// ─── Floating Node (Device) ────────────────────────────────────
-function NetworkNode({ position, color = '#3b82f6', size = 0.18, label, onClick, isActive }) {
+// ── Realistic Access Point model ──────────────────────────────────
+function AccessPointModel({ isHub = false }) {
   const ref = useRef();
-  const [hovered, setHovered] = useState(false);
-
   useFrame((state) => {
     if (ref.current) {
-      ref.current.rotation.x = Math.sin(state.clock.elapsedTime * 0.5) * 0.1;
-      ref.current.rotation.y += 0.008;
-      const scale = isActive ? 1.3 : hovered ? 1.15 : 1;
-      ref.current.scale.lerp(new THREE.Vector3(scale, scale, scale), 0.1);
+      const pulse = 1 + Math.sin(state.clock.elapsedTime * 2) * 0.018;
+      ref.current.scale.set(pulse, pulse, pulse);
     }
   });
 
+  const bodyMat = <meshStandardMaterial color="#e8ecf0" roughness={0.28} metalness={0.55} />;
+  const darkMat = <meshStandardMaterial color="#2d3748" roughness={0.5} metalness={0.35} />;
+  const ledMat  = <meshStandardMaterial color="#22c55e" emissive="#22c55e" emissiveIntensity={1.8} />;
+
   return (
-    <group position={position}>
-      <mesh
-        ref={ref}
-        onClick={onClick}
-        onPointerOver={(e) => { e.stopPropagation(); setHovered(true); document.body.style.cursor = 'pointer'; }}
-        onPointerOut={() => { setHovered(false); document.body.style.cursor = 'auto'; }}
-        castShadow
-      >
-        <icosahedronGeometry args={[size, 1]} />
-        <meshStandardMaterial
-          color={isActive ? '#7c3aed' : hovered ? '#60a5fa' : color}
-          emissive={isActive ? '#4c1d95' : hovered ? '#1e3a8a' : '#0f172a'}
-          emissiveIntensity={0.4}
-          roughness={0.15}
-          metalness={0.85}
-          envMapIntensity={1.4}
-        />
+    <group ref={ref}>
+      {/* Main flat body */}
+      <mesh castShadow>
+        <boxGeometry args={[0.9, 0.1, 0.75]} />
+        {bodyMat}
       </mesh>
-      {/* Glow ring */}
-      <mesh rotation={[Math.PI / 2, 0, 0]}>
-        <torusGeometry args={[size * 1.5, size * 0.06, 8, 32]} />
-        <meshStandardMaterial
-          color={isActive ? '#a855f7' : color}
-          emissive={isActive ? '#7c3aed' : color}
-          emissiveIntensity={0.8}
-          transparent
-          opacity={hovered || isActive ? 0.9 : 0.35}
-        />
+      {/* Slight dome top */}
+      <mesh position={[0, 0.06, 0]}>
+        <cylinderGeometry args={[0.44, 0.45, 0.02, 32]} />
+        {bodyMat}
       </mesh>
-      {/* Always-on floating label so each device is identifiable without clicking */}
-      <Html position={[0, size + 0.22, 0]} center distanceFactor={8} occlude sprite>
-        <div
-          className="pointer-events-none whitespace-nowrap rounded-full px-2.5 py-1 text-[11px] font-semibold backdrop-blur-sm border transition-opacity"
-          style={{
-            background: isActive || hovered ? 'rgba(255,255,255,0.95)' : 'rgba(15,23,42,0.65)',
-            color: isActive || hovered ? '#1e293b' : '#e2e8f0',
-            borderColor: isActive || hovered ? color : 'rgba(148,163,184,0.3)',
-          }}
-        >
-          {label}
-        </div>
-      </Html>
+      {/* Bottom darker base */}
+      <mesh position={[0, -0.065, 0]}>
+        <boxGeometry args={[0.88, 0.02, 0.73]} />
+        {darkMat}
+      </mesh>
+      {/* LED strip row */}
+      {[-0.3, -0.1, 0.1, 0.3].map((x, i) => (
+        <mesh key={i} position={[x, 0.062, 0.3]}>
+          <boxGeometry args={[0.04, 0.008, 0.012]} />
+          <meshStandardMaterial
+            color={i === 0 ? '#3b82f6' : '#22c55e'}
+            emissive={i === 0 ? '#3b82f6' : '#22c55e'}
+            emissiveIntensity={1.5}
+          />
+        </mesh>
+      ))}
+      {/* Two internal antennas visible as ridges on top */}
+      {[-0.3, 0.3].map((x, i) => (
+        <mesh key={i} position={[x, 0.075, 0]}>
+          <boxGeometry args={[0.025, 0.025, 0.72]} />
+          <meshStandardMaterial color="#c8d0da" roughness={0.4} metalness={0.5} />
+        </mesh>
+      ))}
+      {/* Port row on back */}
+      {[-0.25, -0.08, 0.08, 0.25].map((x, i) => (
+        <mesh key={i} position={[x, -0.04, -0.38]}>
+          <boxGeometry args={[0.07, 0.045, 0.018]} />
+          <meshStandardMaterial color="#1a202c" roughness={0.7} metalness={0.3} />
+        </mesh>
+      ))}
+      {/* Cisco logo ridge placeholder */}
+      <mesh position={[0, 0.058, 0.05]}>
+        <boxGeometry args={[0.22, 0.003, 0.06]} />
+        <meshStandardMaterial color="#c8d0da" roughness={0.3} metalness={0.6} />
+      </mesh>
+      {/* Mounting plate underneath */}
+      <mesh position={[0, -0.09, 0]}>
+        <cylinderGeometry args={[0.16, 0.16, 0.04, 20]} />
+        {darkMat}
+      </mesh>
     </group>
   );
 }
 
-// ─── Animated Signal Particle along a line ─────────────────────
+// ── Realistic Router model ─────────────────────────────────────────
+function RouterModel() {
+  const bodyMat = <meshStandardMaterial color="#1a1c2e" roughness={0.45} metalness={0.3} />;
+  const plasticMat = <meshStandardMaterial color="#14162a" roughness={0.6} metalness={0.15} />;
+
+  return (
+    <group>
+      {/* Main body */}
+      <mesh castShadow>
+        <boxGeometry args={[0.72, 0.14, 0.42]} />
+        {bodyMat}
+      </mesh>
+      {/* Ventilation grille on top */}
+      {Array.from({ length: 5 }).map((_, i) => (
+        <mesh key={i} position={[-0.24 + i * 0.12, 0.072, 0]}>
+          <boxGeometry args={[0.06, 0.005, 0.38]} />
+          <meshStandardMaterial color="#0f1020" roughness={0.8} />
+        </mesh>
+      ))}
+      {/* Front LED row */}
+      {[-0.22, -0.1, 0.02, 0.14, 0.26].map((x, i) => (
+        <mesh key={i} position={[x, 0, 0.212]}>
+          <boxGeometry args={[0.025, 0.025, 0.01]} />
+          <meshStandardMaterial
+            color={i < 2 ? '#22c55e' : '#3b82f6'}
+            emissive={i < 2 ? '#22c55e' : '#3b82f6'}
+            emissiveIntensity={1.6}
+          />
+        </mesh>
+      ))}
+      {/* 3 external antennas */}
+      {[-0.28, 0, 0.28].map((x, i) => (
+        <group key={i} position={[x, 0, -0.24]}>
+          {/* Hinge */}
+          <mesh rotation={[Math.PI / 2, 0, 0]}>
+            <cylinderGeometry args={[0.025, 0.025, 0.06, 12]} />
+            <meshStandardMaterial color="#374151" roughness={0.4} metalness={0.6} />
+          </mesh>
+          {/* Antenna rod */}
+          <mesh position={[0, 0.32, 0]}>
+            <cylinderGeometry args={[0.015, 0.018, 0.6, 10]} />
+            <meshStandardMaterial color="#1f2937" roughness={0.5} metalness={0.45} />
+          </mesh>
+          {/* Tip */}
+          <mesh position={[0, 0.64, 0]}>
+            <sphereGeometry args={[0.018, 8, 8]} />
+            <meshStandardMaterial color="#374151" roughness={0.4} metalness={0.5} />
+          </mesh>
+        </group>
+      ))}
+      {/* Port area back */}
+      <mesh position={[0, -0.01, -0.22]}>
+        <boxGeometry args={[0.58, 0.09, 0.01]} />
+        {plasticMat}
+      </mesh>
+      {/* Ethernet ports */}
+      {[-0.18, -0.06, 0.06, 0.18].map((x, i) => (
+        <mesh key={i} position={[x, -0.01, -0.218]}>
+          <boxGeometry args={[0.06, 0.045, 0.01]} />
+          <meshStandardMaterial color="#0d0f1a" roughness={0.8} />
+        </mesh>
+      ))}
+    </group>
+  );
+}
+
+// ── Realistic Tower/BTS model ─────────────────────────────────────
+function TowerModel() {
+  const metalMat = <meshStandardMaterial color="#94a3b8" roughness={0.3} metalness={0.8} />;
+  const darkMat  = <meshStandardMaterial color="#334155" roughness={0.4} metalness={0.65} />;
+
+  return (
+    <group>
+      {/* Main triangular lattice tower - simplified as tapered box */}
+      <mesh castShadow position={[0, 0, 0]}>
+        <cylinderGeometry args={[0.04, 0.12, 1.6, 4]} />
+        {darkMat}
+      </mesh>
+      {/* Cross braces */}
+      {[-0.55, -0.15, 0.25, 0.65].map((y, i) => (
+        <mesh key={i} position={[0, y, 0]} rotation={[0, i * 0.4, 0]}>
+          <boxGeometry args={[0.18 - i * 0.02, 0.014, 0.014]} />
+          {metalMat}
+        </mesh>
+      ))}
+      {/* Platform */}
+      <mesh position={[0, 0.84, 0]}>
+        <boxGeometry args={[0.26, 0.025, 0.26]} />
+        {metalMat}
+      </mesh>
+      {/* Panel antennas at top (3 sector) */}
+      {[0, Math.PI * 2 / 3, (Math.PI * 4) / 3].map((angle, i) => (
+        <group key={i} position={[Math.sin(angle) * 0.14, 1.08, Math.cos(angle) * 0.14]} rotation={[0, angle, 0]}>
+          <mesh>
+            <boxGeometry args={[0.07, 0.38, 0.035]} />
+            <meshStandardMaterial color="#c8d0d8" roughness={0.22} metalness={0.75} />
+          </mesh>
+          <mesh position={[0, 0, 0.022]}>
+            <boxGeometry args={[0.065, 0.375, 0.005]} />
+            <meshStandardMaterial color="#e8edf2" roughness={0.5} metalness={0.05} />
+          </mesh>
+        </group>
+      ))}
+      {/* Mast above */}
+      <mesh position={[0, 1.4, 0]}>
+        <cylinderGeometry args={[0.015, 0.02, 0.22, 8]} />
+        {metalMat}
+      </mesh>
+      {/* Red aviation light */}
+      <mesh position={[0, 1.52, 0]}>
+        <sphereGeometry args={[0.022, 8, 8]} />
+        <meshStandardMaterial color="#ef4444" emissive="#ef4444" emissiveIntensity={1.8} />
+      </mesh>
+      {/* Base mount */}
+      <mesh position={[0, -0.86, 0]}>
+        <boxGeometry args={[0.28, 0.06, 0.28]} />
+        {darkMat}
+      </mesh>
+    </group>
+  );
+}
+
+// ── Realistic Laptop model ─────────────────────────────────────────
+function LaptopModel() {
+  const bodyMat  = <meshStandardMaterial color="#b0b8c0" roughness={0.2} metalness={0.82} />;
+  const screenMat = <meshStandardMaterial color="#0a0f1e" roughness={0.6} metalness={0.1} />;
+  const keyMat   = <meshStandardMaterial color="#9ca3af" roughness={0.5} metalness={0.3} />;
+
+  return (
+    <group>
+      {/* Base */}
+      <mesh position={[0, 0, 0.08]} castShadow>
+        <boxGeometry args={[0.72, 0.04, 0.5]} />
+        {bodyMat}
+      </mesh>
+      {/* Keyboard area */}
+      <mesh position={[0, 0.025, 0.08]}>
+        <boxGeometry args={[0.62, 0.005, 0.38]} />
+        {keyMat}
+      </mesh>
+      {/* Trackpad */}
+      <mesh position={[0, 0.026, 0.28]}>
+        <boxGeometry args={[0.18, 0.003, 0.13]} />
+        <meshStandardMaterial color="#8b929a" roughness={0.35} metalness={0.6} />
+      </mesh>
+      {/* Screen lid */}
+      <group position={[0, 0.02, -0.17]} rotation={[-Math.PI / 2 + 0.35, 0, 0]}>
+        {/* Lid outer */}
+        <mesh position={[0, 0.26, 0]}>
+          <boxGeometry args={[0.72, 0.5, 0.025]} />
+          {bodyMat}
+        </mesh>
+        {/* Screen bezel */}
+        <mesh position={[0, 0.26, 0.014]}>
+          <boxGeometry args={[0.66, 0.44, 0.005]} />
+          {screenMat}
+        </mesh>
+        {/* Screen glow */}
+        <mesh position={[0, 0.26, 0.016]}>
+          <boxGeometry args={[0.60, 0.38, 0.002]} />
+          <meshStandardMaterial color="#1e40af" emissive="#1e40af" emissiveIntensity={0.6} transparent opacity={0.85} />
+        </mesh>
+        {/* Camera dot */}
+        <mesh position={[0, 0.49, 0.015]}>
+          <sphereGeometry args={[0.01, 8, 8]} />
+          <meshStandardMaterial color="#374151" roughness={0.4} />
+        </mesh>
+      </group>
+    </group>
+  );
+}
+
+// ── Smartphone model ───────────────────────────────────────────────
+function SmartphoneModel() {
+  const bodyMat   = <meshStandardMaterial color="#1c1c1e" roughness={0.18} metalness={0.85} />;
+  const screenMat = <meshStandardMaterial color="#0a0f1e" roughness={0.1} metalness={0.05} />;
+
+  return (
+    <group>
+      {/* Body */}
+      <mesh castShadow>
+        <boxGeometry args={[0.24, 0.5, 0.034]} />
+        {bodyMat}
+      </mesh>
+      {/* Screen */}
+      <mesh position={[0, 0, 0.019]}>
+        <boxGeometry args={[0.21, 0.46, 0.003]} />
+        {screenMat}
+      </mesh>
+      {/* Screen blue glow */}
+      <mesh position={[0, 0.01, 0.021]}>
+        <boxGeometry args={[0.19, 0.38, 0.001]} />
+        <meshStandardMaterial color="#3b82f6" emissive="#3b82f6" emissiveIntensity={0.55} transparent opacity={0.8} />
+      </mesh>
+      {/* Notch / island */}
+      <mesh position={[0, 0.2, 0.022]}>
+        <boxGeometry args={[0.06, 0.018, 0.002]} />
+        <meshStandardMaterial color="#0a0f1e" roughness={0.8} />
+      </mesh>
+      {/* Side button */}
+      <mesh position={[0.123, 0.06, 0]}>
+        <boxGeometry args={[0.006, 0.07, 0.022]} />
+        {bodyMat}
+      </mesh>
+      {/* Volume buttons */}
+      {[-0.02, 0.04].map((y, i) => (
+        <mesh key={i} position={[-0.123, y, 0]}>
+          <boxGeometry args={[0.006, 0.055, 0.022]} />
+          {bodyMat}
+        </mesh>
+      ))}
+      {/* Camera bump */}
+      <mesh position={[-0.05, 0.16, -0.022]}>
+        <boxGeometry args={[0.11, 0.11, 0.01]} />
+        <meshStandardMaterial color="#131316" roughness={0.25} metalness={0.7} />
+      </mesh>
+      <mesh position={[-0.06, 0.18, -0.029]}>
+        <cylinderGeometry args={[0.024, 0.024, 0.01, 20]} />
+        <meshStandardMaterial color="#0a0a0c" roughness={0.1} metalness={0.6} />
+      </mesh>
+    </group>
+  );
+}
+
+// ── IoT sensor / smart device ─────────────────────────────────────
+function IoTModel() {
+  const ref = useRef();
+  useFrame((s) => {
+    if (ref.current) ref.current.material.emissiveIntensity = 0.8 + Math.sin(s.clock.elapsedTime * 3) * 0.6;
+  });
+
+  return (
+    <group>
+      <mesh castShadow>
+        <boxGeometry args={[0.28, 0.18, 0.28]} />
+        <meshStandardMaterial color="#1e293b" roughness={0.45} metalness={0.4} />
+      </mesh>
+      {/* Top face */}
+      <mesh position={[0, 0.095, 0]}>
+        <cylinderGeometry args={[0.1, 0.13, 0.01, 20]} />
+        <meshStandardMaterial color="#0f172a" roughness={0.6} metalness={0.3} />
+      </mesh>
+      {/* Status LED */}
+      <mesh ref={ref} position={[0, 0.1, 0]}>
+        <sphereGeometry args={[0.022, 10, 10]} />
+        <meshStandardMaterial color="#14b8a6" emissive="#14b8a6" emissiveIntensity={1} />
+      </mesh>
+      {/* Antenna stub */}
+      <mesh position={[0.1, 0.22, 0]}>
+        <cylinderGeometry args={[0.008, 0.01, 0.2, 8]} />
+        <meshStandardMaterial color="#475569" roughness={0.4} metalness={0.6} />
+      </mesh>
+      {/* Port */}
+      <mesh position={[0, -0.062, 0.14]}>
+        <boxGeometry args={[0.08, 0.04, 0.01]} />
+        <meshStandardMaterial color="#0f172a" roughness={0.8} />
+      </mesh>
+    </group>
+  );
+}
+
+// ── Server model ──────────────────────────────────────────────────
+function ServerModel() {
+  return (
+    <group>
+      {[0, 0.15, 0.3].map((y, i) => (
+        <group key={i} position={[0, y, 0]}>
+          {/* 1U chassis */}
+          <mesh castShadow>
+            <boxGeometry args={[0.6, 0.09, 0.38]} />
+            <meshStandardMaterial color={i === 0 ? '#1e293b' : '#0f172a'} roughness={0.45} metalness={0.55} />
+          </mesh>
+          {/* Front panel */}
+          <mesh position={[0, 0, 0.2]}>
+            <boxGeometry args={[0.58, 0.07, 0.01]} />
+            <meshStandardMaterial color="#0a0f1e" roughness={0.6} />
+          </mesh>
+          {/* LED strip */}
+          {[-0.22, -0.14, -0.06, 0.02].map((x, j) => (
+            <mesh key={j} position={[x, 0.01, 0.206]}>
+              <boxGeometry args={[0.02, 0.015, 0.003]} />
+              <meshStandardMaterial
+                color={j % 2 === 0 ? '#22c55e' : '#3b82f6'}
+                emissive={j % 2 === 0 ? '#22c55e' : '#3b82f6'}
+                emissiveIntensity={1.5}
+              />
+            </mesh>
+          ))}
+          {/* Drive bays */}
+          {[-0.12, 0, 0.12].map((x, k) => (
+            <mesh key={k} position={[x + 0.18, 0, 0.198]}>
+              <boxGeometry args={[0.08, 0.055, 0.005]} />
+              <meshStandardMaterial color="#1a2030" roughness={0.7} />
+            </mesh>
+          ))}
+        </group>
+      ))}
+      {/* Rack frame */}
+      {[-0.32, 0.32].map((x, i) => (
+        <mesh key={i} position={[x, 0.2, 0]}>
+          <boxGeometry args={[0.025, 0.56, 0.4]} />
+          <meshStandardMaterial color="#334155" roughness={0.35} metalness={0.7} />
+        </mesh>
+      ))}
+    </group>
+  );
+}
+
+// ── Signal Particle ────────────────────────────────────────────────
 function SignalParticle({ start, end, color, speed = 1, delay = 0 }) {
   const ref = useRef();
   const progress = useRef(delay % 1);
-
   const startVec = useMemo(() => new THREE.Vector3(...start), [start]);
-  const endVec = useMemo(() => new THREE.Vector3(...end), [end]);
-  const tempVec = useMemo(() => new THREE.Vector3(), []);
+  const endVec   = useMemo(() => new THREE.Vector3(...end), [end]);
+  const tmp       = useMemo(() => new THREE.Vector3(), []);
 
   useFrame((_, delta) => {
     if (ref.current) {
-      progress.current = (progress.current + delta * speed * 0.4) % 1;
-      tempVec.lerpVectors(startVec, endVec, progress.current);
-      ref.current.position.copy(tempVec);
+      progress.current = (progress.current + delta * speed * 0.38) % 1;
+      tmp.lerpVectors(startVec, endVec, progress.current);
+      ref.current.position.copy(tmp);
     }
   });
 
   return (
     <mesh ref={ref}>
-      <sphereGeometry args={[0.045, 8, 8]} />
-      <meshStandardMaterial color={color} emissive={color} emissiveIntensity={1.5} />
+      <sphereGeometry args={[0.035, 8, 8]} />
+      <meshStandardMaterial color={color} emissive={color} emissiveIntensity={2} />
     </mesh>
   );
 }
 
-// ─── Connection Line ────────────────────────────────────────────
-function ConnectionLine({ start, end, color = '#3b82f6', opacity = 0.35 }) {
-  const points = useMemo(() => [new THREE.Vector3(...start), new THREE.Vector3(...end)], [start, end]);
-  return (
-    <Line points={points} color={color} lineWidth={1.2} transparent opacity={opacity} />
-  );
+// ── Connection beam ────────────────────────────────────────────────
+function ConnectionBeam({ start, end, color }) {
+  const pts = useMemo(() => [new THREE.Vector3(...start), new THREE.Vector3(...end)], [start, end]);
+  return <Line points={pts} color={color} lineWidth={1.0} transparent opacity={0.3} />;
 }
 
-// ─── Central Hub (Access Point) ────────────────────────────────
-function CentralHub() {
-  const ref = useRef();
-  const ringRef = useRef();
-
-  useFrame((state) => {
-    if (ref.current) {
-      ref.current.rotation.y += 0.006;
-    }
-    if (ringRef.current) {
-      ringRef.current.rotation.z += 0.01;
-      const s = 1 + Math.sin(state.clock.elapsedTime * 2) * 0.05;
-      ringRef.current.scale.set(s, s, s);
-    }
-  });
-
-  return (
-    <group position={[0, 0, 0]}>
-      {/* Core sphere */}
-      <mesh ref={ref}>
-        <icosahedronGeometry args={[0.32, 2]} />
-        <meshStandardMaterial color="#1d4ed8" emissive="#1e40af" emissiveIntensity={0.6} roughness={0.1} metalness={0.9} />
-      </mesh>
-      {/* Orbiting rings */}
-      {[0, Math.PI / 3, (2 * Math.PI) / 3].map((rot, i) => (
-        <mesh key={i} ref={i === 0 ? ringRef : undefined} rotation={[Math.PI / 2 + rot * 0.3, rot, 0]}>
-          <torusGeometry args={[0.55 + i * 0.12, 0.018, 8, 48]} />
-          <meshStandardMaterial color="#60a5fa" emissive="#3b82f6" emissiveIntensity={0.9} transparent opacity={0.7} />
-        </mesh>
-      ))}
-      {/* Outer glow sphere */}
-      <mesh>
-        <sphereGeometry args={[0.5, 16, 16]} />
-        <meshStandardMaterial color="#3b82f6" transparent opacity={0.06} side={THREE.BackSide} />
-      </mesh>
-      <Html position={[0, -0.55, 0]} center distanceFactor={8} occlude sprite>
-        <div className="pointer-events-none whitespace-nowrap rounded-full px-2.5 py-1 text-[11px] font-bold bg-blue-500/90 text-white border border-blue-300/50 backdrop-blur-sm">
-          Access Point
-        </div>
-      </Html>
-    </group>
-  );
-}
-
-// ─── Main 3D Scene ──────────────────────────────────────────────
+// ── Main network scene ─────────────────────────────────────────────
 function Scene({ activeNode, onNodeClick }) {
-  const nodes = useMemo(() => [
-    { id: 'router', pos: [-2.8, 0.8, 0.4], color: '#10b981', label: 'Router' },
-    { id: 'laptop', pos: [2.6, 1.0, -0.5], color: '#f59e0b', label: 'Laptop' },
-    { id: 'phone', pos: [1.2, -1.6, 1.2], color: '#ec4899', label: 'Phone' },
-    { id: 'tower', pos: [-1.5, 1.8, -1.4], color: '#8b5cf6', label: 'Tower' },
-    { id: 'iot', pos: [2.2, -0.8, -1.6], color: '#14b8a6', label: 'IoT' },
-    { id: 'server', pos: [-2.2, -1.2, -0.8], color: '#f97316', label: 'Server' },
-  ], []);
+  const nodes = [
+    { id: 'tower',  pos: [-2.6, 0.9, 0.2],  color: '#8b5cf6', label: 'Tower BTS',  model: 'tower',      scale: 0.55 },
+    { id: 'router', pos: [2.4, 0.6, 0.4],   color: '#10b981', label: 'Router',     model: 'router',     scale: 0.7 },
+    { id: 'laptop', pos: [1.0, -0.8, 1.5],  color: '#f59e0b', label: 'Laptop',     model: 'laptop',     scale: 0.7 },
+    { id: 'phone',  pos: [-1.2, -0.9, 1.6], color: '#ec4899', label: 'Smartphone', model: 'phone',      scale: 0.85 },
+    { id: 'iot',    pos: [2.4, -0.8, -1.4], color: '#14b8a6', label: 'IoT Device', model: 'iot',        scale: 0.85 },
+    { id: 'server', pos: [-2.4, -0.6, -1.2],color: '#f97316', label: 'Server',     model: 'server',     scale: 0.55 },
+  ];
 
-  const edges = useMemo(() => [
-    { from: [0, 0, 0], to: [-2.8, 0.8, 0.4], color: '#10b981', speed: 0.7, delay: 0 },
-    { from: [0, 0, 0], to: [2.6, 1.0, -0.5], color: '#f59e0b', speed: 0.9, delay: 0.3 },
-    { from: [0, 0, 0], to: [1.2, -1.6, 1.2], color: '#ec4899', speed: 0.6, delay: 0.6 },
-    { from: [0, 0, 0], to: [-1.5, 1.8, -1.4], color: '#8b5cf6', speed: 1.1, delay: 0.1 },
-    { from: [0, 0, 0], to: [2.2, -0.8, -1.6], color: '#14b8a6', speed: 0.8, delay: 0.5 },
-    { from: [0, 0, 0], to: [-2.2, -1.2, -0.8], color: '#f97316', speed: 0.75, delay: 0.8 },
-    { from: [-2.8, 0.8, 0.4], to: [-2.2, -1.2, -0.8], color: '#6366f1', speed: 0.5, delay: 0.2 },
-    { from: [2.6, 1.0, -0.5], to: [2.2, -0.8, -1.6], color: '#06b6d4', speed: 0.65, delay: 0.4 },
-  ], []);
+  const edges = [
+    { from: [0, 0.2, 0], to: [-2.6, 0.9, 0.2],  color: '#8b5cf6', speed: 0.8, delay: 0.0 },
+    { from: [0, 0.2, 0], to: [2.4, 0.6, 0.4],   color: '#10b981', speed: 1.0, delay: 0.3 },
+    { from: [0, 0.2, 0], to: [1.0, -0.8, 1.5],  color: '#f59e0b', speed: 0.7, delay: 0.5 },
+    { from: [0, 0.2, 0], to: [-1.2, -0.9, 1.6], color: '#ec4899', speed: 0.9, delay: 0.2 },
+    { from: [0, 0.2, 0], to: [2.4, -0.8, -1.4], color: '#14b8a6', speed: 0.75, delay: 0.7 },
+    { from: [0, 0.2, 0], to: [-2.4, -0.6, -1.2],color: '#f97316', speed: 0.65, delay: 0.9 },
+    { from: [2.4, 0.6, 0.4], to: [2.4, -0.8, -1.4], color: '#6ee7b7', speed: 0.5, delay: 0.1 },
+    { from: [-2.6, 0.9, 0.2], to: [-2.4, -0.6, -1.2], color: '#c4b5fd', speed: 0.55, delay: 0.4 },
+  ];
+
+  const renderModel = (model, scale) => {
+    switch (model) {
+      case 'tower':  return <group scale={scale}><TowerModel /></group>;
+      case 'router': return <group scale={scale}><RouterModel /></group>;
+      case 'laptop': return <group scale={scale}><LaptopModel /></group>;
+      case 'phone':  return <group scale={scale}><SmartphoneModel /></group>;
+      case 'iot':    return <group scale={scale}><IoTModel /></group>;
+      case 'server': return <group scale={scale}><ServerModel /></group>;
+      default: return null;
+    }
+  };
 
   return (
     <>
-      <ambientLight intensity={0.35} />
-      <directionalLight position={[4, 6, 4]} intensity={1.2} color="#ffffff" castShadow />
-      <pointLight position={[5, 5, 5]} intensity={1.2} color="#60a5fa" />
-      <pointLight position={[-5, -5, 3]} intensity={1} color="#a78bfa" />
-      <pointLight position={[0, 8, -5]} intensity={0.7} color="#34d399" />
-      <Environment preset="city" environmentIntensity={0.7} />
-      <Stars radius={30} depth={10} count={300} factor={2} saturation={0} fade speed={0.5} />
-      <ContactShadows position={[0, -2.4, 0]} opacity={0.45} scale={12} blur={2.6} far={3} color="#000000" />
+      <ambientLight intensity={0.4} />
+      <directionalLight position={[5, 8, 5]} intensity={1.4} castShadow />
+      <pointLight position={[6, 5, 6]} intensity={1.1} color="#60a5fa" />
+      <pointLight position={[-5, -5, 4]} intensity={0.8} color="#a78bfa" />
+      <Environment preset="city" environmentIntensity={0.75} />
+      <ContactShadows position={[0, -2.3, 0]} opacity={0.5} scale={14} blur={2.8} far={3} />
 
       {/* Connection lines */}
-      {edges.map((e, i) => (
-        <ConnectionLine key={i} start={e.from} end={e.to} color={e.color} />
-      ))}
+      {edges.map((e, i) => <ConnectionBeam key={i} start={e.from} end={e.to} color={e.color} />)}
 
-      {/* Animated particles */}
-      {edges.map((e, i) => (
-        <SignalParticle key={i} start={e.from} end={e.to} color={e.color} speed={e.speed} delay={e.delay} />
-      ))}
-      {edges.map((e, i) => (
-        <SignalParticle key={`r-${i}`} start={e.to} end={e.from} color={e.color} speed={e.speed * 0.7} delay={e.delay + 0.5} />
-      ))}
+      {/* Signal particles */}
+      {edges.map((e, i) => <SignalParticle key={i} start={e.from} end={e.to} color={e.color} speed={e.speed} delay={e.delay} />)}
+      {edges.map((e, i) => <SignalParticle key={`r-${i}`} start={e.to} end={e.from} color={e.color} speed={e.speed * 0.65} delay={e.delay + 0.5} />)}
 
-      {/* Central Hub */}
-      <Float speed={1.5} rotationIntensity={0.2} floatIntensity={0.3}>
-        <CentralHub />
+      {/* Central AP hub */}
+      <Float speed={1.2} floatIntensity={0.2} rotationIntensity={0.05}>
+        <group position={[0, 0.2, 0]}>
+          <AccessPointModel isHub />
+          <Html position={[0, -0.25, 0]} center distanceFactor={9}>
+            <div className="pointer-events-none whitespace-nowrap rounded-full px-2.5 py-1 text-[11px] font-bold bg-blue-600/90 text-white border border-blue-400/40 backdrop-blur-sm">
+              Access Point
+            </div>
+          </Html>
+        </group>
       </Float>
 
-      {/* Network Nodes */}
-      {nodes.map((node) => (
-        <Float key={node.id} speed={1 + Math.random()} rotationIntensity={0.1} floatIntensity={0.4}>
-          <NetworkNode
+      {/* Device nodes */}
+      {nodes.map(node => (
+        <Float key={node.id} speed={0.8 + Math.random() * 0.6} floatIntensity={0.18} rotationIntensity={0.04}>
+          <group
             position={node.pos}
-            color={node.color}
-            label={node.label}
-            isActive={activeNode === node.id}
             onClick={() => onNodeClick(node.id)}
-          />
+            onPointerOver={() => { document.body.style.cursor = 'pointer'; }}
+            onPointerOut={() => { document.body.style.cursor = 'auto'; }}
+          >
+            {renderModel(node.model, node.scale)}
+            {/* Click-to-activate glow ring */}
+            {activeNode === node.id && (
+              <mesh rotation={[Math.PI / 2, 0, 0]}>
+                <torusGeometry args={[0.38, 0.03, 8, 32]} />
+                <meshStandardMaterial color={node.color} emissive={node.color} emissiveIntensity={1.5} transparent opacity={0.7} />
+              </mesh>
+            )}
+            <Html position={[0, 0.5, 0]} center distanceFactor={9}>
+              <div className="pointer-events-none whitespace-nowrap rounded-full px-2 py-0.5 text-[10px] font-semibold backdrop-blur-sm border"
+                style={{ background: activeNode === node.id ? 'rgba(255,255,255,0.9)' : 'rgba(15,23,42,0.65)', color: activeNode === node.id ? '#1e293b' : node.color, borderColor: node.color }}>
+                {node.label}
+              </div>
+            </Html>
+          </group>
         </Float>
       ))}
 
       <OrbitControls
-        enableZoom={false}
+        enableZoom
         enablePan={false}
         autoRotate
-        autoRotateSpeed={0.6}
-        maxPolarAngle={Math.PI * 0.75}
-        minPolarAngle={Math.PI * 0.25}
+        autoRotateSpeed={0.5}
+        maxPolarAngle={Math.PI * 0.72}
+        minPolarAngle={Math.PI * 0.22}
+        minDistance={3}
+        maxDistance={16}
+        zoomSpeed={0.8}
       />
     </>
   );
 }
 
-// ─── Public Export ──────────────────────────────────────────────
+// ── Public export ──────────────────────────────────────────────────
 export default function NetworkScene3D({ height = '480px' }) {
   const [activeNode, setActiveNode] = useState(null);
 
-  const nodeLabels = {
-    router: { name: 'Wireless Router', desc: 'Pusat distribusi sinyal ke seluruh perangkat dalam jaringan lokal.' },
-    laptop: { name: 'Laptop / PC', desc: 'Perangkat end-user yang menerima sinyal Wi-Fi untuk akses internet.' },
-    phone: { name: 'Smartphone', desc: 'Perangkat mobile yang terhubung via Wi-Fi atau seluler.' },
-    tower: { name: 'Tower BTS / AP Outdoor', desc: 'Menara yang memancarkan sinyal untuk jangkauan lebih luas.' },
-    iot: { name: 'Perangkat IoT', desc: 'Sensor, kamera, smart home device yang terhubung ke jaringan.' },
-    server: { name: 'Server / Gateway', desc: 'Mengelola dan memproses data dari seluruh jaringan.' },
+  const nodeInfo = {
+    tower:  { name: 'Tower BTS / AP Outdoor', desc: 'Menara yang memancarkan sinyal untuk jangkauan lebih luas. Dilengkapi 3 antena sectoral untuk PTMP.' },
+    router: { name: 'Wireless Router',        desc: 'Router dengan 3 antena eksternal untuk distribusi sinyal Wi-Fi ke seluruh jaringan lokal.' },
+    laptop: { name: 'Laptop',                 desc: 'Perangkat end-user yang terhubung via Wi-Fi untuk akses internet dan kerja.' },
+    phone:  { name: 'Smartphone',             desc: 'Perangkat mobile yang terhubung via Wi-Fi atau jaringan seluler LTE/5G.' },
+    iot:    { name: 'IoT Device',             desc: 'Sensor dan perangkat smart home yang selalu terhubung dengan daya sangat rendah.' },
+    server: { name: 'Server / Rack',          desc: '3U rack server yang memproses dan menyimpan data seluruh jaringan.' },
   };
 
-  const handleNodeClick = (id) => setActiveNode(prev => prev === id ? null : id);
-
   return (
-    <div className="relative w-full rounded-3xl overflow-hidden bg-slate-950 border border-slate-800 shadow-2xl" style={{ height }}>
-      <Canvas shadows dpr={[1, 2]} camera={{ position: [0, 0, 8], fov: 55 }} gl={{ antialias: true }}>
-        <Scene activeNode={activeNode} onNodeClick={handleNodeClick} />
+    <div className="relative w-full rounded-2xl overflow-hidden bg-gradient-to-b from-slate-900 to-slate-950 border border-slate-800 shadow-2xl" style={{ height }}>
+      <Canvas shadows dpr={[1, 2]} camera={{ position: [0, 1, 9], fov: 52 }} gl={{ antialias: true }}>
+        <Suspense fallback={null}>
+          <Scene activeNode={activeNode} onNodeClick={(id) => setActiveNode(p => p === id ? null : id)} />
+        </Suspense>
       </Canvas>
 
-      {/* Label overlay */}
-      <div className="absolute top-4 left-4 text-white">
-        <div className="text-xs text-slate-400 font-mono uppercase tracking-widest mb-1">Wireless Network</div>
-        <div className="text-lg font-bold">Topologi Interaktif</div>
+      {/* Header overlay */}
+      <div className="absolute top-4 left-4 pointer-events-none">
+        <div className="text-[10px] text-slate-400 font-mono uppercase tracking-widest">Wireless Network</div>
+        <div className="text-base font-bold text-white">Topologi Interaktif</div>
       </div>
-      <div className="absolute bottom-4 left-4 text-slate-500 text-xs font-mono">Drag untuk rotasi · Klik node untuk info</div>
+      <div className="absolute bottom-4 left-4 text-slate-500 text-[10px] font-mono pointer-events-none">
+        Drag rotasi · Scroll zoom · Klik perangkat untuk info
+      </div>
 
-      {/* Node Info Panel */}
-      {activeNode && nodeLabels[activeNode] && (
-        <div className="absolute top-4 right-4 bg-white/10 backdrop-blur-md rounded-2xl p-4 max-w-[200px] border border-white/10">
-          <div className="text-white font-bold text-sm mb-1">{nodeLabels[activeNode].name}</div>
-          <div className="text-slate-300 text-xs leading-relaxed">{nodeLabels[activeNode].desc}</div>
+      {/* Node info panel */}
+      {activeNode && nodeInfo[activeNode] && (
+        <div className="absolute top-4 right-4 bg-white/10 backdrop-blur-md rounded-2xl p-4 max-w-[200px] border border-white/15">
+          <div className="text-white font-bold text-sm mb-1">{nodeInfo[activeNode].name}</div>
+          <div className="text-slate-300 text-xs leading-relaxed">{nodeInfo[activeNode].desc}</div>
         </div>
       )}
     </div>

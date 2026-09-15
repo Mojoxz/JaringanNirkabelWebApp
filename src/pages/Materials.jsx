@@ -11,75 +11,67 @@ import SecurityScenario from '../components/SecurityScenario';
 import AntennaPattern3D from '../components/AntennaPattern3D';
 import NetworkScene3D from '../components/NetworkScene3D';
 import WaveSignal3D from '../components/WaveSignal3D';
-import { CheckCircle2, ChevronRight, ChevronLeft, Menu, Info, Lock, Unlock, X, Eye, Signal, Zap, TrendingUp, Layers, Cloud, Circle, Radio, BookOpen, History, RadioTower, Waypoints, Router, ShieldAlert, BarChart3, Scale } from 'lucide-react';
+import {
+  CheckCircle2, ChevronRight, ChevronLeft, Menu, Info,
+  Lock, Unlock, X, Eye, Signal, Zap, TrendingUp, Layers,
+  Cloud, Circle, Radio, BookOpen, History, RadioTower,
+  Waypoints, Router, ShieldAlert, BarChart3, Scale, Shield, AlertTriangle
+} from 'lucide-react';
 import clsx from 'clsx';
 import Modal from '../components/Modal';
+import ChapterExercise from '../components/ChapterExercise';
 
-// ─────────────────────────────────────────────────────────────
-// Icon Map for factors chapter
-// ─────────────────────────────────────────────────────────────
 const iconMap = { Eye, Signal, Zap, TrendingUp, Layers, Cloud, Circle, Radio };
 
-// ─────────────────────────────────────────────────────────────
-// BADGE COLOR HELPER
-// ─────────────────────────────────────────────────────────────
-const badgeColors = {
-  blue: 'bg-blue-100 text-blue-700',
-  purple: 'bg-purple-100 text-purple-700',
-  emerald: 'bg-emerald-100 text-emerald-700',
-  orange: 'bg-orange-100 text-orange-700',
-  red: 'bg-red-100 text-red-700',
-  slate: 'bg-slate-100 text-slate-700',
-  green: 'bg-green-100 text-green-700',
-  cyan: 'bg-cyan-100 text-cyan-700',
-  pink: 'bg-pink-100 text-pink-700',
-  indigo: 'bg-indigo-100 text-indigo-700',
-};
-
-const techCategoryColors = {
-  WiFi: 'bg-primary-100 text-primary-700',
-  'Short Range': 'bg-purple-100 text-purple-700',
-  IoT: 'bg-orange-100 text-orange-700',
-  LPWAN: 'bg-green-100 text-green-700',
-};
-
-const severityColors = {
-  high: { bg: 'bg-red-50 border-red-200', badge: 'bg-red-100 text-red-700', dot: 'bg-red-500' },
-  medium: { bg: 'bg-orange-50 border-orange-200', badge: 'bg-orange-100 text-orange-700', dot: 'bg-orange-500' },
-  low: { bg: 'bg-yellow-50 border-yellow-200', badge: 'bg-yellow-100 text-yellow-700', dot: 'bg-yellow-500' },
-};
-
-const protocolColors = {
-  broken: { bg: 'bg-red-100', label: 'text-red-800', bar: 'bg-red-400', badge: 'bg-red-200 text-red-900' },
-  weak: { bg: 'bg-orange-100', label: 'text-orange-800', bar: 'bg-orange-400', badge: 'bg-orange-200 text-orange-900' },
-  good: { bg: 'bg-blue-100', label: 'text-blue-800', bar: 'bg-blue-400', badge: 'bg-blue-200 text-blue-900' },
-  best: { bg: 'bg-green-100', label: 'text-green-800', bar: 'bg-green-500', badge: 'bg-green-200 text-green-900' },
-};
-
-const protocolStatusLabel = { broken: 'Tidak Aman', weak: 'Lemah', good: 'Aman', best: 'Sangat Aman' };
-
-// ─────────────────────────────────────────────────────────────
-// PER-CHAPTER VISUAL IDENTITY
-// ─────────────────────────────────────────────────────────────
 const chapterMeta = {
-  timeline: { icon: History, iconBg: 'bg-slate-800', accent: 'bg-slate-800' },
-  'cards-antenna': { icon: RadioTower, iconBg: 'bg-blue-600', accent: 'bg-blue-600' },
-  diagram: { icon: Waypoints, iconBg: 'bg-indigo-600', accent: 'bg-indigo-600' },
-  factors: { icon: Signal, iconBg: 'bg-amber-500', accent: 'bg-amber-500' },
-  equipment: { icon: Router, iconBg: 'bg-primary-600', accent: 'bg-primary-600' },
-  security: { icon: ShieldAlert, iconBg: 'bg-red-600', accent: 'bg-red-600' },
-  'tech-comparison': { icon: BarChart3, iconBg: 'bg-cyan-600', accent: 'bg-cyan-600' },
-  'pros-cons-extended': { icon: Scale, iconBg: 'bg-emerald-600', accent: 'bg-emerald-600' },
+  timeline:             { icon: History,     iconBg: 'bg-slate-600' },
+  'cards-antenna':      { icon: RadioTower,  iconBg: 'bg-primary-600' },
+  diagram:              { icon: Waypoints,   iconBg: 'bg-primary-600' },
+  factors:              { icon: Signal,      iconBg: 'bg-primary-600' },
+  equipment:            { icon: Router,      iconBg: 'bg-primary-600' },
+  security:             { icon: ShieldAlert, iconBg: 'bg-slate-700' },
+  'tech-comparison':    { icon: BarChart3,   iconBg: 'bg-primary-600' },
+  'pros-cons-extended': { icon: Scale,       iconBg: 'bg-primary-600' },
 };
+
+const protocolLevel = {
+  broken: { bar: 'w-1/4 bg-red-400',   badge: 'bg-red-50 text-red-600 border border-red-200',   label: 'Tidak Aman', lockIcon: Lock },
+  weak:   { bar: 'w-2/4 bg-amber-400', badge: 'bg-amber-50 text-amber-700 border border-amber-200', label: 'Lemah',     lockIcon: Lock },
+  good:   { bar: 'w-3/4 bg-blue-400',  badge: 'bg-blue-50 text-blue-700 border border-blue-200',   label: 'Aman',      lockIcon: Unlock },
+  best:   { bar: 'w-full bg-emerald-500', badge: 'bg-emerald-50 text-emerald-700 border border-emerald-200', label: 'Sangat Aman', lockIcon: Unlock },
+};
+
+const severityBadge = {
+  high:   'bg-red-50 text-red-600 border border-red-200',
+  medium: 'bg-amber-50 text-amber-700 border border-amber-200',
+  low:    'bg-green-50 text-green-700 border border-green-200',
+};
+
+// ── Image with graceful fallback ──────────────────────────────
+function ImageWithFallback({ src, alt, className }) {
+  const [err, setErr] = useState(false);
+  if (err || !src) {
+    return (
+      <div className={clsx('bg-slate-100 flex items-center justify-center', className)}>
+        <svg className="text-slate-300 w-10 h-10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+          <rect x="3" y="3" width="18" height="18" rx="2" />
+          <circle cx="8.5" cy="8.5" r="1.5" />
+          <polyline points="21 15 16 10 5 21" />
+        </svg>
+      </div>
+    );
+  }
+  return <img src={src} alt={alt} className={className} onError={() => setErr(true)} />;
+}
 
 export default function Materials() {
   const { completedMaterials, markAsComplete, isCompleted, lastVisitedChapter, setLastVisitedChapter } = useProgress();
-
   const [activeChapterId, setActiveChapterId] = useState(lastVisitedChapter);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
   const [expandedFactor, setExpandedFactor] = useState(null);
   const [expandedProCon, setExpandedProCon] = useState({ type: null, idx: null });
+  const [exercisePassed, setExercisePassed] = useState({});
 
   const activeIndex = materials.findIndex(m => m.id === activeChapterId);
   const chapter = materials[activeIndex];
@@ -91,131 +83,129 @@ export default function Materials() {
     setExpandedProCon({ type: null, idx: null });
   }, [activeChapterId, setLastVisitedChapter]);
 
-  const handleNext = () => {
-    if (activeIndex < materials.length - 1) setActiveChapterId(materials[activeIndex + 1].id);
-  };
-  const handlePrev = () => {
-    if (activeIndex > 0) setActiveChapterId(materials[activeIndex - 1].id);
+  const handleExercisePassed = (chapterId) => {
+    setExercisePassed(prev => ({ ...prev, [chapterId]: true }));
   };
 
-  // ─────────────────────────────────────────────────────────────
-  // RENDER CHAPTER 02: CARDS-ANTENNA
-  // ─────────────────────────────────────────────────────────────
+  const canComplete = (chapterId) => {
+    if (!chapter?.exercise?.length) return true;
+    return exercisePassed[chapterId] || isCompleted(chapterId);
+  };
+
+  const handleNext = () => { if (activeIndex < materials.length - 1) setActiveChapterId(materials[activeIndex + 1].id); };
+  const handlePrev = () => { if (activeIndex > 0) setActiveChapterId(materials[activeIndex - 1].id); };
+
+  // ── CHAPTER 02: ANTENNA CARDS ─────────────────────────────────
   const renderAntennaCards = () => (
-    <div className="space-y-8 mt-8">
+    <div className="space-y-8 mt-6">
       {chapter.intro && (
-        <div className="bg-primary-50 border border-primary-100 rounded-2xl p-6">
-          <div className="flex items-start gap-3">
-            <Info size={20} className="text-primary-600 shrink-0 mt-0.5" />
-            <p className="text-primary-900 leading-relaxed">{chapter.intro}</p>
-          </div>
+        <div className="flex gap-3 p-5 bg-primary-50 border border-primary-100 rounded-2xl">
+          <Info size={18} className="text-primary-500 shrink-0 mt-0.5" />
+          <p className="text-slate-700 text-sm leading-relaxed">{chapter.intro}</p>
         </div>
       )}
 
-      {/* ── 3D Antenna Radiation Pattern ─────────────────────── */}
-      <motion.div
-        initial={{ opacity: 0, y: 24 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.5 }}
-        className="rounded-3xl bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 p-6 border border-slate-700 shadow-2xl"
-      >
-        <div className="flex items-center gap-3 mb-5">
-          <div className="w-2 h-8 rounded-full bg-gradient-to-b from-blue-400 to-violet-500" />
-          <div>
-            <h3 className="text-white font-bold text-lg">Visualisasi 3D Pola Pancaran Antena</h3>
-            <p className="text-slate-400 text-sm">Interaktif — pilih jenis antena untuk melihat pola radiasi berbeda</p>
-          </div>
+      {/* 3D Visualizer */}
+      <div className="rounded-2xl bg-slate-900 p-6 border border-slate-800">
+        <div className="flex items-center gap-2 mb-4">
+          <div className="w-1 h-6 bg-primary-500 rounded-full" />
+          <h3 className="text-white font-semibold">Visualisasi 3D Pola Pancaran Antena</h3>
+          <span className="text-slate-500 text-xs ml-auto">Interaktif</span>
         </div>
         <AntennaPattern3D defaultType="omni" />
-      </motion.div>
+      </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      {/* Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {chapter.content.map((item, idx) => (
-          <InteractiveCard key={idx} delay={idx * 0.08} onClick={() => setSelectedItem(item)} className="overflow-hidden">
+          <motion.div
+            key={idx}
+            initial={{ opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: '-40px' }}
+            transition={{ duration: 0.4, delay: idx * 0.07 }}
+            whileHover={{ y: -3 }}
+            whileTap={{ scale: 0.99 }}
+            onClick={() => setSelectedItem(item)}
+            className="group cursor-pointer bg-white border border-slate-200 hover:border-primary-300 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all duration-200"
+          >
             <div className="flex">
-              <div className="w-1/3 shrink-0 relative">
-                <img src={item.image} alt={item.name} className="h-full w-full object-cover min-h-[120px]" />
+              {/* Image */}
+              <div className="w-32 shrink-0 relative overflow-hidden">
+                <ImageWithFallback
+                  src={item.image}
+                  alt={item.name}
+                  className="w-full h-full object-cover min-h-[120px] transition-transform duration-400 group-hover:scale-105"
+                />
                 {item.badge && (
-                  <span className={`absolute top-2 left-2 text-xs font-bold px-2 py-0.5 rounded-full ${badgeColors[item.badgeColor] || 'bg-slate-100 text-slate-700'}`}>
+                  <span className="absolute top-2 left-2 text-xs font-semibold bg-white/90 text-slate-700 px-2 py-0.5 rounded-full border border-slate-200">
                     {item.badge}
                   </span>
                 )}
               </div>
-              <div className="p-5 flex flex-col justify-between">
+              {/* Text */}
+              <div className="p-4 flex flex-col justify-between flex-1 min-w-0">
                 <div>
-                  <h4 className="font-bold text-base text-slate-900 mb-2">{item.name}</h4>
-                  <p className="text-slate-600 text-sm leading-relaxed line-clamp-3">{item.description}</p>
+                  <h4 className="font-semibold text-slate-900 mb-1.5 text-sm">{item.name}</h4>
+                  <p className="text-slate-500 text-xs leading-relaxed line-clamp-3">{item.description}</p>
                 </div>
-                <div className="mt-3 flex items-center gap-1 text-primary-600 text-sm font-semibold">
-                  Lihat Detail <ChevronRight size={14} />
+                <div className="mt-3 flex items-center gap-1 text-primary-600 text-xs font-semibold">
+                  Detail <ChevronRight size={12} className="transition-transform group-hover:translate-x-0.5" />
                 </div>
               </div>
             </div>
-          </InteractiveCard>
+          </motion.div>
         ))}
       </div>
     </div>
   );
 
-  // ─────────────────────────────────────────────────────────────
-  // RENDER CHAPTER 03: DIAGRAM (PTP/PTMP)
-  // ─────────────────────────────────────────────────────────────
+  // ── CHAPTER 03: DIAGRAM ───────────────────────────────────────
   const renderDiagram = () => (
-    <div className="space-y-16 mt-8">
+    <div className="space-y-12 mt-6">
       {chapter.intro && (
-        <div className="bg-slate-50 border border-slate-200 rounded-2xl p-6">
-          <p className="text-slate-700 leading-relaxed">{chapter.intro}</p>
+        <div className="p-5 bg-slate-50 border border-slate-200 rounded-2xl">
+          <p className="text-slate-600 text-sm leading-relaxed">{chapter.intro}</p>
         </div>
       )}
 
-      {/* ── 3D Interactive Network Topology ─────────────────── */}
-      <motion.div
-        initial={{ opacity: 0, y: 24 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.5 }}
-        className="rounded-3xl bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900 p-6 border border-indigo-900/50 shadow-2xl"
-      >
-        <div className="flex items-center gap-3 mb-5">
-          <div className="w-2 h-8 rounded-full bg-gradient-to-b from-indigo-400 to-cyan-400" />
-          <div>
-            <h3 className="text-white font-bold text-lg">Topologi Jaringan 3D Interaktif</h3>
-            <p className="text-slate-400 text-sm">Klik node untuk melihat detail perangkat · Drag untuk rotasi</p>
-          </div>
+      {/* 3D Network */}
+      <div className="rounded-2xl bg-slate-900 p-6 border border-slate-800">
+        <div className="flex items-center gap-2 mb-4">
+          <div className="w-1 h-6 bg-primary-500 rounded-full" />
+          <h3 className="text-white font-semibold">Topologi Jaringan 3D Interaktif</h3>
+          <span className="text-slate-500 text-xs ml-auto">Drag · Klik node</span>
         </div>
         <NetworkScene3D height="420px" />
-      </motion.div>
+      </div>
 
-      {/* PTP Section */}
+      {/* PTP */}
       <div className="space-y-4">
-        <div className="flex items-center gap-3 mb-4">
-          <span className="w-8 h-8 bg-primary-100 text-primary-700 rounded-full flex items-center justify-center font-bold text-sm shrink-0">A</span>
+        <div className="flex items-center gap-3">
+          <span className="w-8 h-8 bg-primary-600 text-white rounded-xl flex items-center justify-center font-bold text-sm shrink-0">A</span>
           <div>
-            <h3 className="text-2xl font-bold text-slate-900">Point-to-Point (PTP)</h3>
-            <p className="text-slate-600 text-sm">{chapter.content.ptp.description}</p>
+            <h3 className="text-xl font-bold text-slate-900">Point-to-Point (PTP)</h3>
+            <p className="text-slate-500 text-sm">{chapter.content.ptp.description}</p>
           </div>
         </div>
         <TopologyDiagram type="ptp" />
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-          <div className="bg-blue-50 rounded-2xl p-5 border border-blue-100">
-            <h4 className="font-bold text-blue-900 mb-3">Keunggulan PTP</h4>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="bg-primary-50 border border-primary-100 rounded-2xl p-5">
+            <h4 className="font-semibold text-slate-900 mb-3 text-sm">Keunggulan PTP</h4>
             <ul className="space-y-2">
               {chapter.content.ptp.advantages.map((a, i) => (
-                <li key={i} className="flex items-start gap-2 text-blue-800 text-sm">
-                  <CheckCircle2 size={16} className="text-blue-500 shrink-0 mt-0.5" />
-                  {a}
+                <li key={i} className="flex items-start gap-2 text-slate-700 text-sm">
+                  <CheckCircle2 size={14} className="text-primary-500 shrink-0 mt-0.5" />{a}
                 </li>
               ))}
             </ul>
           </div>
-          <div className="bg-slate-50 rounded-2xl p-5 border border-slate-200">
-            <h4 className="font-bold text-slate-900 mb-3">Kasus Penggunaan</h4>
+          <div className="bg-slate-50 border border-slate-200 rounded-2xl p-5">
+            <h4 className="font-semibold text-slate-900 mb-3 text-sm">Kasus Penggunaan</h4>
             <ul className="space-y-2">
               {chapter.content.ptp.usecases.map((u, i) => (
-                <li key={i} className="flex items-start gap-2 text-slate-700 text-sm">
-                  <ChevronRight size={14} className="text-slate-400 shrink-0 mt-0.5" />
-                  {u}
+                <li key={i} className="flex items-start gap-2 text-slate-600 text-sm">
+                  <ChevronRight size={12} className="text-slate-400 shrink-0 mt-1" />{u}
                 </li>
               ))}
             </ul>
@@ -223,37 +213,35 @@ export default function Materials() {
         </div>
       </div>
 
-      <hr className="border-slate-200" />
+      <div className="border-t border-dashed border-slate-200" />
 
-      {/* PTMP Section */}
+      {/* PTMP */}
       <div className="space-y-4">
-        <div className="flex items-center gap-3 mb-4">
-          <span className="w-8 h-8 bg-emerald-100 text-emerald-700 rounded-full flex items-center justify-center font-bold text-sm shrink-0">B</span>
+        <div className="flex items-center gap-3">
+          <span className="w-8 h-8 bg-slate-700 text-white rounded-xl flex items-center justify-center font-bold text-sm shrink-0">B</span>
           <div>
-            <h3 className="text-2xl font-bold text-slate-900">Point-to-Multipoint (PTMP)</h3>
-            <p className="text-slate-600 text-sm">{chapter.content.ptmp.description}</p>
+            <h3 className="text-xl font-bold text-slate-900">Point-to-Multipoint (PTMP)</h3>
+            <p className="text-slate-500 text-sm">{chapter.content.ptmp.description}</p>
           </div>
         </div>
         <TopologyDiagram type="ptmp" />
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-          <div className="bg-emerald-50 rounded-2xl p-5 border border-emerald-100">
-            <h4 className="font-bold text-emerald-900 mb-3">Keunggulan PTMP</h4>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="bg-slate-50 border border-slate-200 rounded-2xl p-5">
+            <h4 className="font-semibold text-slate-900 mb-3 text-sm">Keunggulan PTMP</h4>
             <ul className="space-y-2">
               {chapter.content.ptmp.advantages.map((a, i) => (
-                <li key={i} className="flex items-start gap-2 text-emerald-800 text-sm">
-                  <CheckCircle2 size={16} className="text-emerald-500 shrink-0 mt-0.5" />
-                  {a}
+                <li key={i} className="flex items-start gap-2 text-slate-700 text-sm">
+                  <CheckCircle2 size={14} className="text-slate-500 shrink-0 mt-0.5" />{a}
                 </li>
               ))}
             </ul>
           </div>
-          <div className="bg-slate-50 rounded-2xl p-5 border border-slate-200">
-            <h4 className="font-bold text-slate-900 mb-3">Kasus Penggunaan</h4>
+          <div className="bg-slate-50 border border-slate-200 rounded-2xl p-5">
+            <h4 className="font-semibold text-slate-900 mb-3 text-sm">Kasus Penggunaan</h4>
             <ul className="space-y-2">
               {chapter.content.ptmp.usecases.map((u, i) => (
-                <li key={i} className="flex items-start gap-2 text-slate-700 text-sm">
-                  <ChevronRight size={14} className="text-slate-400 shrink-0 mt-0.5" />
-                  {u}
+                <li key={i} className="flex items-start gap-2 text-slate-600 text-sm">
+                  <ChevronRight size={12} className="text-slate-400 shrink-0 mt-1" />{u}
                 </li>
               ))}
             </ul>
@@ -263,67 +251,65 @@ export default function Materials() {
     </div>
   );
 
-  // ─────────────────────────────────────────────────────────────
-  // RENDER CHAPTER 04: FACTORS
-  // ─────────────────────────────────────────────────────────────
+  // ── CHAPTER 04: FACTORS ───────────────────────────────────────
   const renderFactors = () => (
-    <div className="space-y-6 mt-8">
+    <div className="space-y-5 mt-6">
       {chapter.intro && (
-        <div className="bg-primary-50 border border-primary-100 rounded-2xl p-6">
-          <p className="text-primary-900 leading-relaxed">{chapter.intro}</p>
+        <div className="p-5 bg-slate-50 border border-slate-200 rounded-2xl">
+          <p className="text-slate-600 text-sm leading-relaxed">{chapter.intro}</p>
         </div>
       )}
-      <div className="space-y-3">
+
+      <div className="space-y-2">
         {chapter.content.map((item, idx) => {
           const IconComponent = iconMap[item.icon] || Info;
           const isExpanded = expandedFactor === idx;
           return (
             <motion.div
               key={idx}
-              initial={{ opacity: 0, y: 10 }}
+              initial={{ opacity: 0, y: 8 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ delay: idx * 0.05 }}
-              className="bg-white rounded-2xl border border-slate-200 overflow-hidden"
+              transition={{ delay: idx * 0.04 }}
+              className="bg-white border border-slate-200 rounded-2xl overflow-hidden"
             >
               <button
                 onClick={() => setExpandedFactor(isExpanded ? null : idx)}
-                className="w-full flex items-center gap-4 p-5 text-left hover:bg-slate-50 transition-colors"
+                className="w-full flex items-center gap-4 px-5 py-4 text-left hover:bg-slate-50 transition-colors"
               >
-                <div className={`p-2.5 rounded-xl bg-${item.color}-100 text-${item.color}-600 shrink-0`}>
-                  <IconComponent size={20} />
+                <div className="w-9 h-9 bg-primary-50 rounded-xl flex items-center justify-center shrink-0">
+                  <IconComponent size={16} className="text-primary-600" />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <h4 className="font-bold text-slate-900">{item.name}</h4>
-                  <p className="text-slate-500 text-sm mt-0.5 truncate">{item.summary}</p>
+                  <p className="font-semibold text-slate-900 text-sm">{item.name}</p>
+                  <p className="text-slate-500 text-xs mt-0.5 truncate">{item.summary}</p>
                 </div>
                 <ChevronRight
-                  size={20}
-                  className={`text-slate-400 shrink-0 transition-transform duration-300 ${isExpanded ? 'rotate-90' : ''}`}
+                  size={16}
+                  className={`text-slate-400 shrink-0 transition-transform duration-200 ${isExpanded ? 'rotate-90' : ''}`}
                 />
               </button>
-
               <AnimatePresence>
                 {isExpanded && (
                   <motion.div
                     initial={{ height: 0, opacity: 0 }}
                     animate={{ height: 'auto', opacity: 1 }}
                     exit={{ height: 0, opacity: 0 }}
-                    transition={{ duration: 0.3, ease: 'easeInOut' }}
+                    transition={{ duration: 0.25 }}
                     className="overflow-hidden"
                   >
-                    <div className="px-5 pb-6 space-y-4 border-t border-slate-100 pt-4">
-                      <p className="text-slate-700 leading-relaxed">{item.description}</p>
-                      <div className="bg-slate-50 rounded-xl p-4 border border-slate-100">
+                    <div className="px-5 pb-5 space-y-3 border-t border-slate-100 pt-4">
+                      <p className="text-slate-700 text-sm leading-relaxed">{item.description}</p>
+                      <div className="bg-slate-50 border border-slate-100 rounded-xl p-4">
                         <p className="text-slate-600 text-sm leading-relaxed">{item.detail}</p>
                       </div>
                       {item.tips && (
-                        <div className="bg-amber-50 rounded-xl p-4 border border-amber-100 flex items-start gap-3">
-                          <Info size={18} className="text-amber-600 shrink-0 mt-0.5" />
-                          <p className="text-amber-800 text-sm leading-relaxed">
-                            <strong className="block mb-1">Tips Praktis:</strong>
-                            {item.tips}
-                          </p>
+                        <div className="flex gap-3 bg-amber-50 border border-amber-100 rounded-xl p-4">
+                          <Info size={15} className="text-amber-500 shrink-0 mt-0.5" />
+                          <div>
+                            <p className="text-xs font-semibold text-amber-700 mb-1">Tips Praktis</p>
+                            <p className="text-amber-800 text-sm leading-relaxed">{item.tips}</p>
+                          </div>
                         </div>
                       )}
                     </div>
@@ -335,224 +321,246 @@ export default function Materials() {
         })}
       </div>
 
-      {/* ── 3D Wave Propagation ─────────────────────────────── */}
-      <motion.div
-        initial={{ opacity: 0, y: 24 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.5 }}
-        className="rounded-3xl bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 p-6 border border-slate-700 shadow-2xl"
-      >
-        <div className="flex items-center gap-3 mb-5">
-          <div className="w-2 h-8 rounded-full bg-gradient-to-b from-blue-400 to-amber-400" />
-          <div>
-            <h3 className="text-white font-bold text-lg">Simulasi 3D Propagasi Sinyal</h3>
-            <p className="text-slate-400 text-sm">Pilih skenario untuk melihat fenomena propagasi gelombang nirkabel</p>
-          </div>
+      {/* 3D Wave */}
+      <div className="rounded-2xl bg-slate-900 p-6 border border-slate-800">
+        <div className="flex items-center gap-2 mb-4">
+          <div className="w-1 h-6 bg-primary-500 rounded-full" />
+          <h3 className="text-white font-semibold">Simulasi 3D Propagasi Sinyal</h3>
         </div>
         <WaveSignal3D height="340px" />
-      </motion.div>
+      </div>
 
-      {/* Link Simulator */}
       <LinkSimulator />
     </div>
   );
 
-  // ─────────────────────────────────────────────────────────────
-  // RENDER CHAPTER 05: EQUIPMENT
-  // ─────────────────────────────────────────────────────────────
+  // ── CHAPTER 05: EQUIPMENT ─────────────────────────────────────
   const renderEquipment = () => (
-    <div className="space-y-6 mt-8">
+    <div className="space-y-6 mt-6">
       {chapter.intro && (
-        <div className="bg-slate-50 border border-slate-200 rounded-2xl p-6">
-          <p className="text-slate-700 leading-relaxed">{chapter.intro}</p>
+        <div className="p-5 bg-slate-50 border border-slate-200 rounded-2xl">
+          <p className="text-slate-600 text-sm leading-relaxed">{chapter.intro}</p>
         </div>
       )}
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
         {chapter.content.map((item, idx) => (
-          <InteractiveCard key={idx} delay={idx * 0.07} onClick={() => setSelectedItem(item)} className="overflow-hidden flex flex-col">
-            <div className="relative">
-              <img src={item.image} alt={item.name} className="w-full h-44 object-cover" />
+          <motion.div
+            key={idx}
+            initial={{ opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: '-40px' }}
+            transition={{ duration: 0.4, delay: idx * 0.06 }}
+            whileHover={{ y: -4 }}
+            whileTap={{ scale: 0.99 }}
+            onClick={() => setSelectedItem(item)}
+            className="group cursor-pointer bg-white border border-slate-200 hover:border-primary-300 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all duration-200 flex flex-col"
+          >
+            {/* Image */}
+            <div className="relative h-44 overflow-hidden bg-slate-100">
+              <ImageWithFallback
+                src={item.image}
+                alt={item.name}
+                className="w-full h-full object-cover transition-transform duration-400 group-hover:scale-105"
+              />
               {item.badge && (
-                <span className="absolute top-3 right-3 bg-white/90 backdrop-blur-sm text-slate-800 text-xs font-bold px-2.5 py-1 rounded-full shadow-sm">
+                <span className="absolute top-3 right-3 text-xs font-semibold bg-white/95 text-slate-700 px-2.5 py-1 rounded-full border border-slate-200 shadow-sm">
                   {item.badge}
                 </span>
               )}
             </div>
+            {/* Content */}
             <div className="p-5 flex flex-col flex-1">
-              <span className="text-xs font-bold text-primary-600 uppercase tracking-wider mb-2 block">{item.category}</span>
-              <h4 className="font-bold text-lg text-slate-900 mb-2">{item.name}</h4>
-              <p className="text-slate-600 text-sm leading-relaxed line-clamp-3 flex-1">{item.description}</p>
+              <span className="text-xs font-semibold text-primary-600 uppercase tracking-wider mb-1.5">{item.category}</span>
+              <h4 className="font-semibold text-slate-900 mb-2 leading-snug">{item.name}</h4>
+              <p className="text-slate-500 text-sm leading-relaxed line-clamp-3 flex-1">{item.description}</p>
               <div className="mt-4 pt-4 border-t border-slate-100 flex items-center gap-1 text-primary-600 text-sm font-semibold">
-                Lihat Spesifikasi <ChevronRight size={14} />
+                Lihat Spesifikasi <ChevronRight size={14} className="transition-transform group-hover:translate-x-0.5" />
               </div>
             </div>
-          </InteractiveCard>
+          </motion.div>
         ))}
       </div>
     </div>
   );
 
-  // ─────────────────────────────────────────────────────────────
-  // RENDER CHAPTER 06: SECURITY
-  // ─────────────────────────────────────────────────────────────
+  // ── CHAPTER 06: SECURITY ──────────────────────────────────────
   const renderSecurity = () => (
-    <div className="space-y-10 mt-8">
+    <div className="space-y-10 mt-6">
       {chapter.intro && (
-        <div className="bg-red-50 border border-red-200 rounded-2xl p-6">
-          <div className="flex items-start gap-3">
-            <Info size={20} className="text-red-600 shrink-0 mt-0.5" />
-            <p className="text-red-900 leading-relaxed">{chapter.intro}</p>
-          </div>
+        <div className="flex gap-3 p-5 bg-red-50 border border-red-100 rounded-2xl">
+          <Info size={18} className="text-red-500 shrink-0 mt-0.5" />
+          <p className="text-slate-700 text-sm leading-relaxed">{chapter.intro}</p>
         </div>
       )}
 
-      {/* Protokol Keamanan */}
+      {/* Protokol */}
       <section>
-        <h3 className="text-xl font-bold text-slate-900 mb-5">Evolusi Protokol Keamanan Wi-Fi</h3>
-        <div className="space-y-4">
+        <h3 className="text-lg font-bold text-slate-900 mb-4">Evolusi Protokol Keamanan Wi-Fi</h3>
+        <div className="space-y-3">
           {chapter.protocols.map((p, idx) => {
-            const c = protocolColors[p.status];
+            const c = protocolLevel[p.status];
+            const LockIcon = c.lockIcon;
             return (
               <motion.div
                 key={idx}
-                initial={{ opacity: 0, x: -20 }}
+                initial={{ opacity: 0, x: -16 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
-                transition={{ delay: idx * 0.1 }}
-                className={`rounded-2xl p-5 ${c.bg}`}
+                transition={{ delay: idx * 0.08 }}
+                className="bg-white border border-slate-200 rounded-2xl p-5"
               >
-                <div className="flex items-start justify-between gap-4 flex-wrap mb-3">
+                <div className="flex items-start justify-between gap-3 mb-3">
                   <div className="flex items-center gap-3">
-                    {p.status === 'broken' || p.status === 'weak' ? <Lock size={20} className={c.label} /> : <Unlock size={20} className={c.label} />}
-                    <h4 className={`font-bold text-lg ${c.label}`}>{p.name}</h4>
+                    <LockIcon size={16} className="text-slate-400 shrink-0" />
+                    <h4 className="font-semibold text-slate-900">{p.name}</h4>
                   </div>
-                  <span className={`text-xs font-bold px-3 py-1 rounded-full ${c.badge}`}>
-                    {protocolStatusLabel[p.status]}
-                  </span>
+                  <span className={`text-xs font-semibold px-2.5 py-1 rounded-full shrink-0 ${c.badge}`}>{c.label}</span>
                 </div>
-                {/* Strength Bar */}
-                <div className="h-2 w-full bg-white/50 rounded-full mb-3 overflow-hidden">
-                  <div className={`h-full rounded-full ${c.bar}`} style={{ width: `${p.level * 25}%` }} />
+                {/* Strength bar */}
+                <div className="h-1.5 w-full bg-slate-100 rounded-full mb-3 overflow-hidden">
+                  <motion.div
+                    initial={{ width: 0 }}
+                    whileInView={{ width: `${p.level * 25}%` }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.7, delay: 0.1 }}
+                    className={`h-full rounded-full ${c.bar.split(' ')[1]}`}
+                  />
                 </div>
-                <p className={`text-sm leading-relaxed ${c.label} opacity-90`}>{p.description}</p>
+                <p className="text-slate-600 text-sm leading-relaxed">{p.description}</p>
               </motion.div>
             );
           })}
         </div>
       </section>
 
-      {/* Ancaman Keamanan */}
+      {/* Ancaman */}
       <section>
-        <h3 className="text-xl font-bold text-slate-900 mb-5">Ancaman Keamanan Nirkabel</h3>
-        <div className="space-y-4">
-          {chapter.threats.map((t, idx) => {
-            const sc = severityColors[t.severity];
-            return (
-              <InteractiveCard key={idx} delay={idx * 0.08} onClick={() => setSelectedItem({ ...t, isSecurityThreat: true })} className={`p-5 border ${sc.bg}`}>
-                <div className="flex items-start gap-4">
-                  <div className={`w-3 h-3 rounded-full ${sc.dot} shrink-0 mt-1.5`} />
-                  <div className="flex-1">
-                    <div className="flex items-center justify-between gap-3 mb-2 flex-wrap">
-                      <h4 className="font-bold text-slate-900">{t.name}</h4>
-                      <span className={`text-xs font-bold px-2.5 py-0.5 rounded-full ${sc.badge}`}>
-                        {t.severity === 'high' ? 'Risiko Tinggi' : t.severity === 'medium' ? 'Risiko Sedang' : 'Risiko Rendah'}
-                      </span>
-                    </div>
-                    <p className="text-slate-600 text-sm leading-relaxed line-clamp-2">{t.description}</p>
-                    <div className="mt-2 flex items-center gap-1 text-primary-600 text-xs font-semibold">
-                      Lihat Detail <ChevronRight size={12} />
-                    </div>
+        <h3 className="text-lg font-bold text-slate-900 mb-4">Ancaman Keamanan Nirkabel</h3>
+        <div className="space-y-3">
+          {chapter.threats.map((t, idx) => (
+            <motion.div
+              key={idx}
+              initial={{ opacity: 0, y: 8 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: idx * 0.07 }}
+              whileHover={{ x: 3 }}
+              whileTap={{ scale: 0.99 }}
+              onClick={() => setSelectedItem({ ...t, isSecurityThreat: true })}
+              className="cursor-pointer bg-white border border-slate-200 hover:border-slate-300 rounded-2xl p-5 transition-all shadow-sm hover:shadow-md"
+            >
+              <div className="flex items-start gap-3">
+                <div className="w-2 h-2 rounded-full bg-slate-400 shrink-0 mt-2" />
+                <div className="flex-1">
+                  <div className="flex items-center justify-between gap-3 mb-1.5 flex-wrap">
+                    <h4 className="font-semibold text-slate-900 text-sm">{t.name}</h4>
+                    <span className={`text-xs font-semibold px-2.5 py-0.5 rounded-full ${severityBadge[t.severity]}`}>
+                      {t.severity === 'high' ? 'Risiko Tinggi' : t.severity === 'medium' ? 'Risiko Sedang' : 'Risiko Rendah'}
+                    </span>
+                  </div>
+                  <p className="text-slate-500 text-sm leading-relaxed line-clamp-2">{t.description}</p>
+                  <div className="mt-2 flex items-center gap-1 text-primary-600 text-xs font-semibold">
+                    Lihat Detail <ChevronRight size={11} />
                   </div>
                 </div>
-              </InteractiveCard>
-            );
-          })}
+              </div>
+            </motion.div>
+          ))}
         </div>
       </section>
 
-      {/* Skenario Interaktif */}
       <section>
-        <h3 className="text-xl font-bold text-slate-900 mb-2">Uji Pemahaman Anda</h3>
+        <h3 className="text-lg font-bold text-slate-900 mb-3">Uji Pemahaman Anda</h3>
         <SecurityScenario scenario={chapter.scenario} />
       </section>
     </div>
   );
 
-  // ─────────────────────────────────────────────────────────────
-  // RENDER CHAPTER 07: TECH COMPARISON
-  // ─────────────────────────────────────────────────────────────
+  // ── CHAPTER 07: TECH COMPARISON ───────────────────────────────
   const renderTechComparison = () => {
     const categories = [...new Set(chapter.content.map(t => t.category))];
     return (
-      <div className="space-y-10 mt-8">
+      <div className="space-y-10 mt-6">
         {chapter.intro && (
-          <div className="bg-slate-50 border border-slate-200 rounded-2xl p-6">
-            <p className="text-slate-700 leading-relaxed">{chapter.intro}</p>
+          <div className="p-5 bg-slate-50 border border-slate-200 rounded-2xl">
+            <p className="text-slate-600 text-sm leading-relaxed">{chapter.intro}</p>
           </div>
         )}
-
         {categories.map(cat => (
           <div key={cat}>
-            <div className="flex items-center gap-3 mb-5">
-              <BookOpen size={20} className="text-slate-500" />
-              <h3 className="text-xl font-bold text-slate-800">{cat}</h3>
-              <span className={`text-xs font-bold px-2.5 py-1 rounded-full ${techCategoryColors[cat] || 'bg-slate-100 text-slate-700'}`}>{cat}</span>
+            <div className="flex items-center gap-2 mb-4">
+              <span className="w-2 h-2 rounded-full bg-primary-500" />
+              <h3 className="text-base font-bold text-slate-800">{cat}</h3>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {chapter.content.filter(t => t.category === cat).map((tech, idx) => (
-                <InteractiveCard key={idx} delay={idx * 0.08} onClick={() => setSelectedItem({ ...tech, isTech: true })} className="p-0 overflow-hidden">
-                  <div className={`h-1.5 w-full bg-${tech.color}-500`} />
-                  <div className="p-5 space-y-4">
-                    <div className="flex items-start justify-between gap-3">
+                <motion.div
+                  key={idx}
+                  initial={{ opacity: 0, y: 12 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: idx * 0.07 }}
+                  whileHover={{ y: -3 }}
+                  whileTap={{ scale: 0.99 }}
+                  onClick={() => setSelectedItem({ ...tech, isTech: true })}
+                  className="group cursor-pointer bg-white border border-slate-200 hover:border-primary-300 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all"
+                >
+                  <div className="h-1 bg-primary-500 w-full" />
+                  <div className="p-5 space-y-3">
+                    <div className="flex items-start justify-between gap-2">
                       <div>
-                        <h4 className="font-bold text-lg text-slate-900">{tech.name}</h4>
-                        <p className="text-xs text-slate-500">Sejak {tech.year}</p>
+                        <h4 className="font-semibold text-slate-900">{tech.name}</h4>
+                        <p className="text-xs text-slate-400">Sejak {tech.year}</p>
                       </div>
-                      <span className={`text-xs font-bold px-2 py-0.5 rounded-full ${techCategoryColors[tech.category] || ''}`}>{tech.category}</span>
+                      <span className="text-xs font-semibold bg-slate-100 text-slate-600 px-2 py-0.5 rounded-full shrink-0">{tech.category}</span>
                     </div>
-                    <div className="grid grid-cols-3 gap-3 text-center">
+                    <div className="grid grid-cols-3 gap-2 text-center">
                       {[
-                        { label: "Frekuensi", value: tech.freq },
-                        { label: "Kecepatan", value: tech.speed },
-                        { label: "Jangkauan", value: tech.range },
+                        { label: 'Frekuensi', value: tech.freq },
+                        { label: 'Kecepatan', value: tech.speed },
+                        { label: 'Jangkauan', value: tech.range },
                       ].map(s => (
-                        <div key={s.label} className="bg-slate-50 rounded-xl p-2">
-                          <div className="text-xs text-slate-500 mb-0.5">{s.label}</div>
-                          <div className="text-xs font-bold text-slate-800 leading-tight">{s.value}</div>
+                        <div key={s.label} className="bg-slate-50 border border-slate-100 rounded-xl p-2">
+                          <p className="text-xs text-slate-400 mb-0.5">{s.label}</p>
+                          <p className="text-xs font-semibold text-slate-700 leading-tight">{s.value}</p>
                         </div>
                       ))}
                     </div>
-                    <p className="text-sm text-slate-600 leading-relaxed line-clamp-2">{tech.usecase}</p>
+                    <p className="text-slate-500 text-sm leading-relaxed line-clamp-2">{tech.usecase}</p>
+                    <div className="flex items-center gap-1 text-primary-600 text-xs font-semibold">
+                      Detail <ChevronRight size={11} className="transition-transform group-hover:translate-x-0.5" />
+                    </div>
                   </div>
-                </InteractiveCard>
+                </motion.div>
               ))}
             </div>
           </div>
         ))}
 
-        {/* Comparison Table */}
+        {/* Table */}
         <div>
-          <h3 className="text-xl font-bold text-slate-900 mb-4">Tabel Perbandingan</h3>
-          <div className="overflow-x-auto rounded-2xl border border-slate-200">
+          <h3 className="text-base font-bold text-slate-900 mb-4">Tabel Perbandingan</h3>
+          <div className="overflow-x-auto rounded-2xl border border-slate-200 shadow-sm">
             <table className="w-full text-left">
-              <thead>
-                <tr className="bg-slate-50 border-b border-slate-200 text-xs uppercase tracking-wider text-slate-500">
-                  <th className="p-4 font-semibold">Teknologi</th>
-                  <th className="p-4 font-semibold">Kecepatan</th>
-                  <th className="p-4 font-semibold">Jangkauan</th>
-                  <th className="p-4 font-semibold">Konsumsi Daya</th>
-                  <th className="p-4 font-semibold">Kategori</th>
+              <thead className="bg-slate-50 border-b border-slate-200">
+                <tr className="text-xs uppercase tracking-wider text-slate-500">
+                  <th className="px-4 py-3 font-semibold">Teknologi</th>
+                  <th className="px-4 py-3 font-semibold">Kecepatan</th>
+                  <th className="px-4 py-3 font-semibold">Jangkauan</th>
+                  <th className="px-4 py-3 font-semibold">Daya</th>
+                  <th className="px-4 py-3 font-semibold">Kategori</th>
                 </tr>
               </thead>
-              <tbody>
+              <tbody className="bg-white divide-y divide-slate-100">
                 {chapter.content.map((t, idx) => (
-                  <tr key={idx} className="border-b border-slate-100 hover:bg-slate-50 transition-colors">
-                    <td className="p-4 font-semibold text-slate-900">{t.name}</td>
-                    <td className="p-4 text-slate-600 text-sm">{t.speed}</td>
-                    <td className="p-4 text-slate-600 text-sm">{t.range}</td>
-                    <td className="p-4 text-slate-600 text-sm">{t.power}</td>
-                    <td className="p-4"><span className={`text-xs font-bold px-2 py-0.5 rounded-full ${techCategoryColors[t.category] || 'bg-slate-100 text-slate-700'}`}>{t.category}</span></td>
+                  <tr key={idx} className="hover:bg-slate-50 transition-colors">
+                    <td className="px-4 py-3 font-semibold text-slate-900 text-sm">{t.name}</td>
+                    <td className="px-4 py-3 text-slate-600 text-sm">{t.speed}</td>
+                    <td className="px-4 py-3 text-slate-600 text-sm">{t.range}</td>
+                    <td className="px-4 py-3 text-slate-600 text-sm">{t.power}</td>
+                    <td className="px-4 py-3">
+                      <span className="text-xs font-semibold bg-slate-100 text-slate-600 px-2 py-0.5 rounded-full">{t.category}</span>
+                    </td>
                   </tr>
                 ))}
               </tbody>
@@ -563,37 +571,37 @@ export default function Materials() {
     );
   };
 
-  // ─────────────────────────────────────────────────────────────
-  // RENDER CHAPTER 08: PROS-CONS-EXTENDED
-  // ─────────────────────────────────────────────────────────────
+  // ── CHAPTER 08: PROS-CONS ─────────────────────────────────────
   const renderProsConsExtended = () => (
-    <div className="space-y-10 mt-8">
+    <div className="space-y-10 mt-6">
       {chapter.intro && (
-        <div className="bg-slate-50 border border-slate-200 rounded-2xl p-6">
-          <p className="text-slate-700 leading-relaxed">{chapter.intro}</p>
+        <div className="p-5 bg-slate-50 border border-slate-200 rounded-2xl">
+          <p className="text-slate-600 text-sm leading-relaxed">{chapter.intro}</p>
         </div>
       )}
 
       {/* Kelebihan */}
       <section>
-        <h3 className="text-2xl font-bold text-green-700 mb-5 flex items-center gap-2">
-          <CheckCircle2 size={24} /> Kelebihan
+        <h3 className="font-bold text-slate-900 text-lg mb-4 flex items-center gap-2">
+          <CheckCircle2 size={20} className="text-emerald-500" /> Kelebihan
         </h3>
-        <div className="space-y-3">
+        <div className="space-y-2">
           {chapter.content.pros.map((item, idx) => {
             const isOpen = expandedProCon.type === 'pro' && expandedProCon.idx === idx;
             return (
-              <motion.div key={idx} className="bg-white border border-green-200 rounded-2xl overflow-hidden">
+              <div key={idx} className="bg-white border border-slate-200 rounded-2xl overflow-hidden">
                 <button
                   onClick={() => setExpandedProCon(isOpen ? { type: null, idx: null } : { type: 'pro', idx })}
-                  className="w-full flex items-center gap-4 p-5 hover:bg-green-50 transition-colors text-left"
+                  className="w-full flex items-center gap-4 px-5 py-4 hover:bg-slate-50 transition-colors text-left"
                 >
-                  <CheckCircle2 size={20} className="text-green-500 shrink-0" />
-                  <div className="flex-1">
-                    <h4 className="font-bold text-slate-900">{item.title}</h4>
-                    <p className="text-slate-500 text-sm mt-0.5">{item.description}</p>
+                  <div className="w-5 h-5 rounded-full border-2 border-emerald-300 flex items-center justify-center shrink-0">
+                    <div className="w-2 h-2 rounded-full bg-emerald-400" />
                   </div>
-                  <ChevronRight size={20} className={`text-slate-400 shrink-0 transition-transform duration-300 ${isOpen ? 'rotate-90' : ''}`} />
+                  <div className="flex-1">
+                    <p className="font-semibold text-slate-900 text-sm">{item.title}</p>
+                    <p className="text-slate-500 text-xs mt-0.5">{item.description}</p>
+                  </div>
+                  <ChevronRight size={15} className={`text-slate-400 shrink-0 transition-transform duration-200 ${isOpen ? 'rotate-90' : ''}`} />
                 </button>
                 <AnimatePresence>
                   {isOpen && (
@@ -603,13 +611,13 @@ export default function Materials() {
                       exit={{ height: 0, opacity: 0 }}
                       className="overflow-hidden"
                     >
-                      <div className="px-5 pb-5 pt-2 bg-green-50 border-t border-green-100">
-                        <p className="text-green-800 text-sm leading-relaxed">{item.detail}</p>
+                      <div className="px-5 pb-4 pt-1 bg-emerald-50/50 border-t border-slate-100">
+                        <p className="text-slate-700 text-sm leading-relaxed">{item.detail}</p>
                       </div>
                     </motion.div>
                   )}
                 </AnimatePresence>
-              </motion.div>
+              </div>
             );
           })}
         </div>
@@ -617,24 +625,26 @@ export default function Materials() {
 
       {/* Kekurangan */}
       <section>
-        <h3 className="text-2xl font-bold text-red-700 mb-5 flex items-center gap-2">
-          <X size={24} /> Kekurangan
+        <h3 className="font-bold text-slate-900 text-lg mb-4 flex items-center gap-2">
+          <X size={20} className="text-red-400" /> Kekurangan
         </h3>
-        <div className="space-y-3">
+        <div className="space-y-2">
           {chapter.content.cons.map((item, idx) => {
             const isOpen = expandedProCon.type === 'con' && expandedProCon.idx === idx;
             return (
-              <motion.div key={idx} className="bg-white border border-red-200 rounded-2xl overflow-hidden">
+              <div key={idx} className="bg-white border border-slate-200 rounded-2xl overflow-hidden">
                 <button
                   onClick={() => setExpandedProCon(isOpen ? { type: null, idx: null } : { type: 'con', idx })}
-                  className="w-full flex items-center gap-4 p-5 hover:bg-red-50 transition-colors text-left"
+                  className="w-full flex items-center gap-4 px-5 py-4 hover:bg-slate-50 transition-colors text-left"
                 >
-                  <span className="w-5 h-5 bg-red-100 text-red-600 rounded-full flex items-center justify-center text-sm font-bold shrink-0">!</span>
-                  <div className="flex-1">
-                    <h4 className="font-bold text-slate-900">{item.title}</h4>
-                    <p className="text-slate-500 text-sm mt-0.5">{item.description}</p>
+                  <div className="w-5 h-5 rounded-full border-2 border-red-200 flex items-center justify-center shrink-0">
+                    <div className="w-2 h-2 rounded-full bg-red-400" />
                   </div>
-                  <ChevronRight size={20} className={`text-slate-400 shrink-0 transition-transform duration-300 ${isOpen ? 'rotate-90' : ''}`} />
+                  <div className="flex-1">
+                    <p className="font-semibold text-slate-900 text-sm">{item.title}</p>
+                    <p className="text-slate-500 text-xs mt-0.5">{item.description}</p>
+                  </div>
+                  <ChevronRight size={15} className={`text-slate-400 shrink-0 transition-transform duration-200 ${isOpen ? 'rotate-90' : ''}`} />
                 </button>
                 <AnimatePresence>
                   {isOpen && (
@@ -644,13 +654,13 @@ export default function Materials() {
                       exit={{ height: 0, opacity: 0 }}
                       className="overflow-hidden"
                     >
-                      <div className="px-5 pb-5 pt-2 bg-red-50 border-t border-red-100">
-                        <p className="text-red-800 text-sm leading-relaxed">{item.detail}</p>
+                      <div className="px-5 pb-4 pt-1 bg-red-50/40 border-t border-slate-100">
+                        <p className="text-slate-700 text-sm leading-relaxed">{item.detail}</p>
                       </div>
                     </motion.div>
                   )}
                 </AnimatePresence>
-              </motion.div>
+              </div>
             );
           })}
         </div>
@@ -658,42 +668,47 @@ export default function Materials() {
 
       {/* Tantangan */}
       <section>
-        <h3 className="text-2xl font-bold text-orange-700 mb-5">Tantangan & Solusi</h3>
-        <div className="space-y-4">
+        <h3 className="font-bold text-slate-900 text-lg mb-4">Tantangan &amp; Solusi</h3>
+        <div className="space-y-3">
           {chapter.content.challenges.map((item, idx) => (
-            <InteractiveCard key={idx} delay={idx * 0.1} className="p-6 border-l-4 border-l-orange-400">
-              <h4 className="font-bold text-slate-900 mb-2">{item.title}</h4>
-              <p className="text-slate-600 text-sm leading-relaxed mb-4">{item.description}</p>
-              <div className="bg-orange-50 rounded-xl p-4 border border-orange-100">
-                <span className="font-bold text-orange-800 block mb-1 text-sm">Solusi / Pendekatan:</span>
-                <p className="text-orange-700 text-sm leading-relaxed">{item.solution}</p>
+            <motion.div
+              key={idx}
+              initial={{ opacity: 0, y: 8 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: idx * 0.1 }}
+              className="bg-white border border-slate-200 border-l-4 border-l-primary-400 rounded-2xl p-5"
+            >
+              <h4 className="font-semibold text-slate-900 mb-2 text-sm">{item.title}</h4>
+              <p className="text-slate-500 text-sm leading-relaxed mb-3">{item.description}</p>
+              <div className="bg-primary-50 border border-primary-100 rounded-xl p-4">
+                <p className="text-xs font-semibold text-primary-700 mb-1">Solusi / Pendekatan</p>
+                <p className="text-slate-700 text-sm leading-relaxed">{item.solution}</p>
               </div>
-            </InteractiveCard>
+            </motion.div>
           ))}
         </div>
       </section>
     </div>
   );
 
-  // ─────────────────────────────────────────────────────────────
-  // MAIN RENDER CONTENT DISPATCHER
-  // ─────────────────────────────────────────────────────────────
+  // ── MAIN DISPATCH ─────────────────────────────────────────────
   const renderContent = () => {
     switch (chapter.type) {
-      case 'timeline': return <Timeline data={chapter.content} intro={chapter.intro} />;
-      case 'cards-antenna': return renderAntennaCards();
-      case 'diagram': return renderDiagram();
-      case 'factors': return renderFactors();
-      case 'equipment': return renderEquipment();
-      case 'security': return renderSecurity();
-      case 'tech-comparison': return renderTechComparison();
+      case 'timeline':           return <Timeline data={chapter.content} intro={chapter.intro} />;
+      case 'cards-antenna':      return renderAntennaCards();
+      case 'diagram':            return renderDiagram();
+      case 'factors':            return renderFactors();
+      case 'equipment':          return renderEquipment();
+      case 'security':           return renderSecurity();
+      case 'tech-comparison':    return renderTechComparison();
       case 'pros-cons-extended': return renderProsConsExtended();
       default: return (
-        <div className="space-y-4 mt-8">
+        <div className="space-y-4 mt-6">
           {Array.isArray(chapter.content) && chapter.content.map((item, idx) => (
             <InteractiveCard key={idx} delay={idx * 0.1} className="p-6">
-              <h4 className="font-bold text-lg text-primary-700 mb-2">{item.name}</h4>
-              <p className="text-slate-600">{item.description}</p>
+              <h4 className="font-semibold text-primary-700 mb-2">{item.name}</h4>
+              <p className="text-slate-600 text-sm">{item.description}</p>
             </InteractiveCard>
           ))}
         </div>
@@ -701,28 +716,24 @@ export default function Materials() {
     }
   };
 
-  // ─────────────────────────────────────────────────────────────
-  // MODAL CONTENT
-  // ─────────────────────────────────────────────────────────────
+  // ── MODAL CONTENT ─────────────────────────────────────────────
   const renderModalContent = () => {
     if (!selectedItem) return null;
 
     if (selectedItem.isSecurityThreat) {
-      const sc = severityColors[selectedItem.severity];
       return (
         <div className="space-y-4">
-          <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold ${sc.badge}`}>
-            <span className={`w-2 h-2 rounded-full ${sc.dot}`} />
+          <span className={`inline-flex text-xs font-semibold px-3 py-1 rounded-full ${severityBadge[selectedItem.severity]}`}>
             {selectedItem.severity === 'high' ? 'Risiko Tinggi' : 'Risiko Sedang'}
+          </span>
+          <div className="bg-slate-50 border border-slate-200 rounded-xl p-4">
+            <p className="font-semibold text-slate-800 text-sm mb-1">Cara Kerja Serangan</p>
+            <p className="text-slate-600 text-sm leading-relaxed">{selectedItem.howItWorks}</p>
           </div>
-          <div className="bg-red-50 rounded-xl p-4 border border-red-100">
-            <p className="font-bold text-red-900 text-sm mb-1">Bagaimana Serangan Ini Bekerja:</p>
-            <p className="text-red-800 text-sm leading-relaxed">{selectedItem.howItWorks}</p>
-          </div>
-          <p className="text-slate-700 leading-relaxed">{selectedItem.description}</p>
-          <div className="bg-green-50 rounded-xl p-4 border border-green-100">
-            <p className="font-bold text-green-900 text-sm mb-1">Cara Pencegahan:</p>
-            <p className="text-green-800 text-sm leading-relaxed">{selectedItem.prevention}</p>
+          <p className="text-slate-700 text-sm leading-relaxed">{selectedItem.description}</p>
+          <div className="bg-primary-50 border border-primary-100 rounded-xl p-4">
+            <p className="font-semibold text-primary-800 text-sm mb-1">Cara Pencegahan</p>
+            <p className="text-slate-700 text-sm leading-relaxed">{selectedItem.prevention}</p>
           </div>
         </div>
       );
@@ -733,95 +744,93 @@ export default function Materials() {
         <div className="space-y-4">
           <div className="grid grid-cols-2 gap-3">
             {[
-              { label: "Frekuensi", value: selectedItem.freq },
-              { label: "Kecepatan", value: selectedItem.speed },
-              { label: "Jangkauan", value: selectedItem.range },
-              { label: "Daya", value: selectedItem.power },
+              { label: 'Frekuensi', value: selectedItem.freq },
+              { label: 'Kecepatan', value: selectedItem.speed },
+              { label: 'Jangkauan', value: selectedItem.range },
+              { label: 'Daya', value: selectedItem.power },
             ].map(s => (
-              <div key={s.label} className="bg-slate-50 rounded-xl p-3 text-center">
-                <div className="text-xs text-slate-500 mb-1">{s.label}</div>
-                <div className="text-sm font-bold text-slate-800">{s.value}</div>
+              <div key={s.label} className="bg-slate-50 border border-slate-100 rounded-xl p-3 text-center">
+                <p className="text-xs text-slate-400 mb-1">{s.label}</p>
+                <p className="text-sm font-semibold text-slate-800">{s.value}</p>
               </div>
             ))}
           </div>
-          <div>
-            <p className="font-semibold text-slate-800 mb-2">Fitur Utama:</p>
+          <div className="bg-slate-50 border border-slate-100 rounded-xl p-4">
+            <p className="font-semibold text-slate-800 text-sm mb-1">Fitur Utama</p>
             <p className="text-slate-600 text-sm leading-relaxed">{selectedItem.features}</p>
           </div>
-          <div className="bg-green-50 rounded-xl p-4 border border-green-100">
-            <p className="font-bold text-green-900 text-sm mb-1">Kelebihan:</p>
-            <p className="text-green-800 text-sm leading-relaxed">{selectedItem.pros}</p>
+          <div className="bg-primary-50 border border-primary-100 rounded-xl p-4">
+            <p className="font-semibold text-primary-800 text-sm mb-1">Kelebihan</p>
+            <p className="text-slate-700 text-sm leading-relaxed">{selectedItem.pros}</p>
           </div>
-          <div className="bg-orange-50 rounded-xl p-4 border border-orange-100">
-            <p className="font-bold text-orange-900 text-sm mb-1">Kekurangan:</p>
-            <p className="text-orange-800 text-sm leading-relaxed">{selectedItem.cons}</p>
+          <div className="bg-slate-50 border border-slate-200 rounded-xl p-4">
+            <p className="font-semibold text-slate-700 text-sm mb-1">Kekurangan</p>
+            <p className="text-slate-600 text-sm leading-relaxed">{selectedItem.cons}</p>
           </div>
-          <div className="bg-primary-50 rounded-xl p-4 border border-primary-100">
-            <p className="font-bold text-primary-900 text-sm mb-1">Kasus Penggunaan:</p>
-            <p className="text-primary-800 text-sm leading-relaxed">{selectedItem.usecase}</p>
+          <div className="bg-slate-50 border border-slate-100 rounded-xl p-4">
+            <p className="font-semibold text-slate-800 text-sm mb-1">Kasus Penggunaan</p>
+            <p className="text-slate-600 text-sm leading-relaxed">{selectedItem.usecase}</p>
           </div>
         </div>
       );
     }
 
-    // Default: antenna or equipment
     return (
       <div className="space-y-4">
         {selectedItem.image && (
-          <img src={selectedItem.image} alt={selectedItem.name} className="w-full h-56 object-cover rounded-xl" />
+          <div className="h-48 rounded-xl overflow-hidden bg-slate-100">
+            <ImageWithFallback src={selectedItem.image} alt={selectedItem.name} className="w-full h-full object-cover" />
+          </div>
         )}
         {selectedItem.category && (
-          <span className="text-xs font-bold bg-primary-100 text-primary-700 px-3 py-1 rounded-full">{selectedItem.category}</span>
+          <span className="inline-block text-xs font-semibold bg-primary-50 text-primary-700 border border-primary-100 px-3 py-1 rounded-full">{selectedItem.category}</span>
         )}
-        <p className="text-slate-700 leading-relaxed">{selectedItem.detail || selectedItem.description}</p>
-
+        <p className="text-slate-700 text-sm leading-relaxed">{selectedItem.detail || selectedItem.description}</p>
         {selectedItem.characteristics && (
-          <div className="bg-slate-50 rounded-xl p-4 border border-slate-100">
-            <p className="font-bold text-slate-900 text-sm mb-2">Karakteristik Teknis:</p>
-            <ul className="space-y-1">
+          <div className="bg-slate-50 border border-slate-100 rounded-xl p-4">
+            <p className="font-semibold text-slate-800 text-sm mb-2">Karakteristik Teknis</p>
+            <ul className="space-y-1.5">
               {selectedItem.characteristics.map((c, i) => (
-                <li key={i} className="text-slate-600 text-sm flex items-start gap-2">
-                  <ChevronRight size={14} className="text-slate-400 shrink-0 mt-0.5" />
-                  {c}
+                <li key={i} className="flex items-start gap-2 text-slate-600 text-sm">
+                  <ChevronRight size={13} className="text-slate-400 shrink-0 mt-0.5" />{c}
                 </li>
               ))}
             </ul>
           </div>
         )}
         {selectedItem.radiationPattern && (
-          <div className="bg-primary-50 rounded-xl p-4 border border-primary-100">
-            <p className="font-bold text-primary-900 text-sm mb-1">Pola Pancaran:</p>
-            <p className="text-primary-800 text-sm leading-relaxed">{selectedItem.radiationPattern}</p>
+          <div className="bg-primary-50 border border-primary-100 rounded-xl p-4">
+            <p className="font-semibold text-primary-800 text-sm mb-1">Pola Pancaran</p>
+            <p className="text-slate-700 text-sm leading-relaxed">{selectedItem.radiationPattern}</p>
           </div>
         )}
         {selectedItem.usage && (
-          <div className="bg-slate-50 rounded-xl p-4 border border-slate-100">
-            <p className="font-bold text-slate-900 text-sm mb-1">Contoh Penggunaan:</p>
+          <div className="bg-slate-50 border border-slate-100 rounded-xl p-4">
+            <p className="font-semibold text-slate-800 text-sm mb-1">Contoh Penggunaan</p>
             <p className="text-slate-600 text-sm leading-relaxed">{selectedItem.usage}</p>
           </div>
         )}
         {selectedItem.example && (
-          <div className="bg-amber-50 rounded-xl p-4 border border-amber-100">
-            <p className="font-bold text-amber-900 text-sm mb-1">Contoh Nyata:</p>
+          <div className="bg-amber-50 border border-amber-100 rounded-xl p-4">
+            <p className="font-semibold text-amber-900 text-sm mb-1">Contoh Nyata</p>
             <p className="text-amber-800 text-sm leading-relaxed">{selectedItem.example}</p>
           </div>
         )}
         {selectedItem.features && Array.isArray(selectedItem.features) && (
-          <div className="bg-slate-50 rounded-xl p-4 border border-slate-100">
-            <p className="font-bold text-slate-900 text-sm mb-2">Fitur Utama:</p>
-            <ul className="space-y-1">
+          <div className="bg-slate-50 border border-slate-100 rounded-xl p-4">
+            <p className="font-semibold text-slate-800 text-sm mb-2">Fitur Utama</p>
+            <ul className="space-y-1.5">
               {selectedItem.features.map((f, i) => (
-                <li key={i} className="text-slate-600 text-sm flex items-start gap-2">
-                  <CheckCircle2 size={14} className="text-primary-500 shrink-0 mt-0.5" />
-                  {f}
+                <li key={i} className="flex items-start gap-2 text-slate-600 text-sm">
+                  <CheckCircle2 size={13} className="text-primary-500 shrink-0 mt-0.5" />{f}
                 </li>
               ))}
             </ul>
           </div>
         )}
         {selectedItem.examples && (
-          <div className="bg-slate-50 rounded-xl p-4 border border-slate-100">
-            <p className="font-bold text-slate-900 text-sm mb-2">Contoh Produk:</p>
+          <div className="bg-slate-50 border border-slate-100 rounded-xl p-4">
+            <p className="font-semibold text-slate-800 text-sm mb-2">Contoh Produk</p>
             <div className="flex flex-wrap gap-2">
               {selectedItem.examples.map((e, i) => (
                 <span key={i} className="bg-white text-slate-700 text-xs px-3 py-1 rounded-full border border-slate-200 font-medium">{e}</span>
@@ -833,64 +842,53 @@ export default function Materials() {
     );
   };
 
+  // ── MAIN LAYOUT ───────────────────────────────────────────────
   return (
     <div className="flex flex-col md:flex-row gap-8 relative">
-      {/* Mobile Sidebar Toggle */}
+      {/* Mobile toggle */}
       <div className="md:hidden flex items-center justify-between bg-white p-4 rounded-2xl shadow-sm border border-slate-200">
-        <span className="font-bold text-slate-900">Materi Pembelajaran</span>
-        <button
-          onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-          className="p-2 bg-slate-100 rounded-lg"
-        >
-          <Menu size={20} />
+        <span className="font-semibold text-slate-900">Materi Pembelajaran</span>
+        <button onClick={() => setIsSidebarOpen(!isSidebarOpen)} className="p-2 bg-slate-100 rounded-xl">
+          <Menu size={18} />
         </button>
       </div>
 
-      {/* Sidebar Navigation */}
+      {/* Sidebar */}
       <AnimatePresence>
         {(isSidebarOpen || typeof window !== 'undefined' && window.innerWidth >= 768) && (
           <motion.div
-            initial={{ opacity: 0, x: -20, height: 0 }}
+            initial={{ opacity: 0, x: -16, height: 0 }}
             animate={{ opacity: 1, x: 0, height: 'auto' }}
-            exit={{ opacity: 0, x: -20, height: 0 }}
-            className={clsx(
-              "md:w-1/4 shrink-0 flex flex-col space-y-2",
-              isSidebarOpen ? "block" : "hidden md:flex"
-            )}
+            exit={{ opacity: 0, x: -16, height: 0 }}
+            className={clsx('md:w-64 shrink-0', isSidebarOpen ? 'block' : 'hidden md:block')}
           >
-            <div className="sticky top-24 bg-white p-6 rounded-3xl shadow-sm border border-slate-200">
-              <div className="mb-6 pb-6 border-b border-slate-100">
+            <div className="sticky top-24 bg-white border border-slate-200 rounded-2xl p-5 shadow-sm">
+              <div className="mb-5 pb-5 border-b border-slate-100">
                 <ProgressBar current={completedMaterials.length} total={materials.length} />
               </div>
-              <h3 className="font-bold text-xs text-slate-400 uppercase tracking-widest mb-4">Daftar Chapter</h3>
+              <p className="text-xs font-semibold text-slate-400 uppercase tracking-widest mb-3">Daftar Chapter</p>
               <nav className="space-y-1">
                 {materials.map((m) => {
                   const isActive = m.id === activeChapterId;
                   const isDone = isCompleted(m.id);
-                  const meta = chapterMeta[m.type] || { icon: BookOpen, iconBg: 'bg-slate-800' };
+                  const meta = chapterMeta[m.type] || { icon: BookOpen, iconBg: 'bg-slate-600' };
                   const MIcon = meta.icon;
                   return (
                     <button
                       key={m.id}
-                      onClick={() => {
-                        setActiveChapterId(m.id);
-                        setIsSidebarOpen(false);
-                      }}
+                      onClick={() => { setActiveChapterId(m.id); setIsSidebarOpen(false); }}
                       className={clsx(
-                        "w-full flex items-center gap-3 px-3 py-3 rounded-xl text-left transition-all font-medium text-sm",
+                        'w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-left transition-all text-sm',
                         isActive
-                          ? "bg-primary-600 text-white shadow-md shadow-primary-600/20"
-                          : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"
+                          ? 'bg-primary-600 text-white font-semibold shadow-sm'
+                          : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'
                       )}
                     >
-                      <span className={clsx(
-                        "w-7 h-7 rounded-lg flex items-center justify-center shrink-0",
-                        isActive ? "bg-white/20" : meta.iconBg
-                      )}>
-                        <MIcon size={14} className={isActive ? "text-white" : "text-white"} />
+                      <span className={clsx('w-7 h-7 rounded-lg flex items-center justify-center shrink-0', isActive ? 'bg-white/20' : meta.iconBg)}>
+                        <MIcon size={13} className="text-white" />
                       </span>
                       <span className="truncate flex-1">{m.title}</span>
-                      {isDone && <CheckCircle2 size={16} className={isActive ? "text-primary-200 shrink-0" : "text-green-500 shrink-0"} />}
+                      {isDone && <CheckCircle2 size={14} className={isActive ? 'text-primary-200 shrink-0' : 'text-emerald-500 shrink-0'} />}
                     </button>
                   );
                 })}
@@ -900,83 +898,104 @@ export default function Materials() {
         )}
       </AnimatePresence>
 
-      {/* Main Content Area */}
-      <div className="md:w-3/4 flex-1 min-w-0">
+      {/* Main Content */}
+      <div className="flex-1 min-w-0">
         <motion.div
           key={activeChapterId}
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.45 }}
-          className="pb-24"
+          transition={{ duration: 0.35 }}
+          className="pb-20"
         >
-          {/* Chapter Header */}
+          {/* Chapter Header — Clean White Card */}
           {(() => {
-            const meta = chapterMeta[chapter.type] || { icon: BookOpen, iconBg: 'bg-slate-800', accent: 'bg-slate-800' };
+            const meta = chapterMeta[chapter.type] || { icon: BookOpen, iconBg: 'bg-slate-600' };
             const ChapterIcon = meta.icon;
             return (
-              <div className="mb-10 relative pl-6">
-                <div className={clsx("absolute left-0 top-1 bottom-1 w-1 rounded-full", meta.accent)} />
+              <div className="bg-white border border-slate-200 rounded-2xl p-7 shadow-sm mb-2">
                 <div className="flex items-center gap-3 mb-4">
-                  <div className={clsx("w-11 h-11 rounded-2xl flex items-center justify-center text-white shadow-lg shrink-0", meta.iconBg)}>
-                    <ChapterIcon size={22} />
+                  <div className={clsx('w-10 h-10 rounded-xl flex items-center justify-center shrink-0', meta.iconBg)}>
+                    <ChapterIcon size={18} className="text-white" />
                   </div>
-                  <span className="text-slate-400 font-semibold text-sm">
-                    Chapter {chapter.id} dari {materials.length}
-                  </span>
+                  <span className="text-slate-400 text-sm">Chapter {chapter.id} <span className="text-slate-300">·</span> {materials.length} Total</span>
                 </div>
-                <h1 className="text-3xl md:text-4xl font-extrabold text-slate-900 mb-4 tracking-tight leading-tight">
-                  {chapter.title}
-                </h1>
-                <p className="text-lg text-slate-600 max-w-3xl leading-relaxed">
-                  {chapter.description}
-                </p>
+                <h1 className="text-2xl md:text-3xl font-bold text-slate-900 mb-2 leading-tight">{chapter.title}</h1>
+                <p className="text-slate-500 leading-relaxed max-w-2xl">{chapter.description}</p>
+
+                {/* Progress bar track */}
+                <div className="mt-5 flex items-center gap-1.5">
+                  {materials.map((m) => (
+                    <button
+                      key={m.id}
+                      onClick={() => setActiveChapterId(m.id)}
+                      title={m.title}
+                      className={clsx(
+                        'h-1 rounded-full transition-all duration-200',
+                        m.id === activeChapterId ? 'bg-primary-500 w-6'
+                          : isCompleted(m.id) ? 'bg-primary-200 w-3'
+                          : 'bg-slate-200 w-3 hover:bg-slate-300'
+                      )}
+                    />
+                  ))}
+                </div>
               </div>
             );
           })()}
 
-          {/* Dynamic Content */}
+          {/* Content */}
           {renderContent()}
 
-          {/* Bottom Navigation */}
-          <div className="mt-16 pt-8 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-4">
+          {/* Chapter Exercise — gating completion */}
+          {chapter.exercise && (
+            <div className="mt-10 border-t border-slate-100 pt-8">
+              <ChapterExercise
+                questions={chapter.exercise}
+                alreadyPassed={isCompleted(chapter.id) || !!exercisePassed[chapter.id]}
+                onPassed={() => handleExercisePassed(chapter.id)}
+              />
+            </div>
+          )}
+
+          {/* Bottom Nav */}
+          <div className="mt-12 pt-6 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-3">
             <button
               onClick={handlePrev}
               disabled={activeIndex === 0}
-              className="flex items-center gap-2 px-6 py-3 rounded-full font-medium text-slate-600 hover:bg-slate-100 disabled:opacity-40 disabled:cursor-not-allowed transition-colors w-full sm:w-auto justify-center"
+              className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-medium text-slate-600 hover:bg-slate-100 disabled:opacity-40 disabled:cursor-not-allowed transition-colors w-full sm:w-auto justify-center"
             >
-              <ChevronLeft size={20} /> Sebelumnya
+              <ChevronLeft size={18} /> Sebelumnya
             </button>
 
             <button
               onClick={() => markAsComplete(chapter.id)}
+              disabled={!canComplete(chapter.id)}
+              title={!canComplete(chapter.id) ? 'Selesaikan latihan soal terlebih dahulu' : ''}
               className={clsx(
-                "flex items-center gap-2 px-8 py-3 rounded-full font-bold transition-all shadow-sm w-full sm:w-auto justify-center",
+                'flex items-center gap-2 px-6 py-2.5 rounded-xl text-sm font-semibold transition-all w-full sm:w-auto justify-center border',
                 isCompleted(chapter.id)
-                  ? "bg-green-100 text-green-700 hover:bg-green-200"
-                  : "bg-primary-50 text-primary-700 hover:bg-primary-100 border border-primary-200"
+                  ? 'bg-emerald-50 text-emerald-700 border-emerald-200'
+                  : canComplete(chapter.id)
+                    ? 'bg-primary-600 text-white border-primary-600 hover:bg-primary-700 shadow-sm'
+                    : 'bg-slate-100 text-slate-400 border-slate-200 cursor-not-allowed'
               )}
             >
-              <CheckCircle2 size={20} />
-              {isCompleted(chapter.id) ? "Selesai Dipelajari" : "Tandai Selesai"}
+              <CheckCircle2 size={16} />
+              {isCompleted(chapter.id) ? 'Selesai Dipelajari' : 'Tandai Selesai'}
             </button>
 
             <button
               onClick={handleNext}
               disabled={activeIndex === materials.length - 1}
-              className="flex items-center gap-2 px-6 py-3 rounded-full font-medium text-white bg-slate-900 hover:bg-slate-800 disabled:opacity-40 disabled:cursor-not-allowed shadow-md w-full sm:w-auto justify-center"
+              className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-medium text-slate-600 hover:bg-slate-100 disabled:opacity-40 disabled:cursor-not-allowed transition-colors w-full sm:w-auto justify-center"
             >
-              Selanjutnya <ChevronRight size={20} />
+              Selanjutnya <ChevronRight size={18} />
             </button>
           </div>
         </motion.div>
       </div>
 
-      {/* Detail Modal */}
-      <Modal
-        isOpen={!!selectedItem}
-        onClose={() => setSelectedItem(null)}
-        title={selectedItem?.name || selectedItem?.threat}
-      >
+      {/* Modal */}
+      <Modal isOpen={!!selectedItem} onClose={() => setSelectedItem(null)} title={selectedItem?.name || selectedItem?.threat}>
         {renderModalContent()}
       </Modal>
     </div>
