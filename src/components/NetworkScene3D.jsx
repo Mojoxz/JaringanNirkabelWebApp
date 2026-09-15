@@ -1,6 +1,6 @@
 import { useRef, useMemo, useState } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
-import { OrbitControls, Sphere, Line, Float, MeshDistortMaterial, Stars } from '@react-three/drei';
+import { OrbitControls, Sphere, Line, Float, MeshDistortMaterial, Stars, Environment, ContactShadows, Html } from '@react-three/drei';
 import * as THREE from 'three';
 
 // ─── Floating Node (Device) ────────────────────────────────────
@@ -24,14 +24,16 @@ function NetworkNode({ position, color = '#3b82f6', size = 0.18, label, onClick,
         onClick={onClick}
         onPointerOver={(e) => { e.stopPropagation(); setHovered(true); document.body.style.cursor = 'pointer'; }}
         onPointerOut={() => { setHovered(false); document.body.style.cursor = 'auto'; }}
+        castShadow
       >
         <icosahedronGeometry args={[size, 1]} />
         <meshStandardMaterial
           color={isActive ? '#7c3aed' : hovered ? '#60a5fa' : color}
           emissive={isActive ? '#4c1d95' : hovered ? '#1e3a8a' : '#0f172a'}
           emissiveIntensity={0.4}
-          roughness={0.2}
-          metalness={0.7}
+          roughness={0.15}
+          metalness={0.85}
+          envMapIntensity={1.4}
         />
       </mesh>
       {/* Glow ring */}
@@ -45,6 +47,19 @@ function NetworkNode({ position, color = '#3b82f6', size = 0.18, label, onClick,
           opacity={hovered || isActive ? 0.9 : 0.35}
         />
       </mesh>
+      {/* Always-on floating label so each device is identifiable without clicking */}
+      <Html position={[0, size + 0.22, 0]} center distanceFactor={8} occlude sprite>
+        <div
+          className="pointer-events-none whitespace-nowrap rounded-full px-2.5 py-1 text-[11px] font-semibold backdrop-blur-sm border transition-opacity"
+          style={{
+            background: isActive || hovered ? 'rgba(255,255,255,0.95)' : 'rgba(15,23,42,0.65)',
+            color: isActive || hovered ? '#1e293b' : '#e2e8f0',
+            borderColor: isActive || hovered ? color : 'rgba(148,163,184,0.3)',
+          }}
+        >
+          {label}
+        </div>
+      </Html>
     </group>
   );
 }
@@ -117,6 +132,11 @@ function CentralHub() {
         <sphereGeometry args={[0.5, 16, 16]} />
         <meshStandardMaterial color="#3b82f6" transparent opacity={0.06} side={THREE.BackSide} />
       </mesh>
+      <Html position={[0, -0.55, 0]} center distanceFactor={8} occlude sprite>
+        <div className="pointer-events-none whitespace-nowrap rounded-full px-2.5 py-1 text-[11px] font-bold bg-blue-500/90 text-white border border-blue-300/50 backdrop-blur-sm">
+          Access Point
+        </div>
+      </Html>
     </group>
   );
 }
@@ -145,11 +165,14 @@ function Scene({ activeNode, onNodeClick }) {
 
   return (
     <>
-      <ambientLight intensity={0.5} />
-      <pointLight position={[5, 5, 5]} intensity={1.5} color="#60a5fa" />
-      <pointLight position={[-5, -5, 3]} intensity={1.2} color="#a78bfa" />
-      <pointLight position={[0, 8, -5]} intensity={0.8} color="#34d399" />
+      <ambientLight intensity={0.35} />
+      <directionalLight position={[4, 6, 4]} intensity={1.2} color="#ffffff" castShadow />
+      <pointLight position={[5, 5, 5]} intensity={1.2} color="#60a5fa" />
+      <pointLight position={[-5, -5, 3]} intensity={1} color="#a78bfa" />
+      <pointLight position={[0, 8, -5]} intensity={0.7} color="#34d399" />
+      <Environment preset="city" environmentIntensity={0.7} />
       <Stars radius={30} depth={10} count={300} factor={2} saturation={0} fade speed={0.5} />
+      <ContactShadows position={[0, -2.4, 0]} opacity={0.45} scale={12} blur={2.6} far={3} color="#000000" />
 
       {/* Connection lines */}
       {edges.map((e, i) => (
@@ -211,7 +234,7 @@ export default function NetworkScene3D({ height = '480px' }) {
 
   return (
     <div className="relative w-full rounded-3xl overflow-hidden bg-slate-950 border border-slate-800 shadow-2xl" style={{ height }}>
-      <Canvas camera={{ position: [0, 0, 8], fov: 55 }} gl={{ antialias: true }}>
+      <Canvas shadows dpr={[1, 2]} camera={{ position: [0, 0, 8], fov: 55 }} gl={{ antialias: true }}>
         <Scene activeNode={activeNode} onNodeClick={handleNodeClick} />
       </Canvas>
 

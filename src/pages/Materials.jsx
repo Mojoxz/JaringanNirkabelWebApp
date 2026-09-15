@@ -11,7 +11,7 @@ import SecurityScenario from '../components/SecurityScenario';
 import AntennaPattern3D from '../components/AntennaPattern3D';
 import NetworkScene3D from '../components/NetworkScene3D';
 import WaveSignal3D from '../components/WaveSignal3D';
-import { CheckCircle2, ChevronRight, ChevronLeft, Menu, Info, Lock, Unlock, X, Eye, Signal, Zap, TrendingUp, Layers, Cloud, Circle, Radio, BookOpen } from 'lucide-react';
+import { CheckCircle2, ChevronRight, ChevronLeft, Menu, Info, Lock, Unlock, X, Eye, Signal, Zap, TrendingUp, Layers, Cloud, Circle, Radio, BookOpen, History, RadioTower, Waypoints, Router, ShieldAlert, BarChart3, Scale } from 'lucide-react';
 import clsx from 'clsx';
 import Modal from '../components/Modal';
 
@@ -57,6 +57,20 @@ const protocolColors = {
 };
 
 const protocolStatusLabel = { broken: 'Tidak Aman', weak: 'Lemah', good: 'Aman', best: 'Sangat Aman' };
+
+// ─────────────────────────────────────────────────────────────
+// PER-CHAPTER VISUAL IDENTITY
+// ─────────────────────────────────────────────────────────────
+const chapterMeta = {
+  timeline: { icon: History, iconBg: 'bg-slate-800', accent: 'bg-slate-800' },
+  'cards-antenna': { icon: RadioTower, iconBg: 'bg-blue-600', accent: 'bg-blue-600' },
+  diagram: { icon: Waypoints, iconBg: 'bg-indigo-600', accent: 'bg-indigo-600' },
+  factors: { icon: Signal, iconBg: 'bg-amber-500', accent: 'bg-amber-500' },
+  equipment: { icon: Router, iconBg: 'bg-primary-600', accent: 'bg-primary-600' },
+  security: { icon: ShieldAlert, iconBg: 'bg-red-600', accent: 'bg-red-600' },
+  'tech-comparison': { icon: BarChart3, iconBg: 'bg-cyan-600', accent: 'bg-cyan-600' },
+  'pros-cons-extended': { icon: Scale, iconBg: 'bg-emerald-600', accent: 'bg-emerald-600' },
+};
 
 export default function Materials() {
   const { completedMaterials, markAsComplete, isCompleted, lastVisitedChapter, setLastVisitedChapter } = useProgress();
@@ -853,6 +867,8 @@ export default function Materials() {
                 {materials.map((m) => {
                   const isActive = m.id === activeChapterId;
                   const isDone = isCompleted(m.id);
+                  const meta = chapterMeta[m.type] || { icon: BookOpen, iconBg: 'bg-slate-800' };
+                  const MIcon = meta.icon;
                   return (
                     <button
                       key={m.id}
@@ -861,13 +877,19 @@ export default function Materials() {
                         setIsSidebarOpen(false);
                       }}
                       className={clsx(
-                        "w-full flex items-center justify-between px-4 py-3 rounded-xl text-left transition-all font-medium text-sm",
+                        "w-full flex items-center gap-3 px-3 py-3 rounded-xl text-left transition-all font-medium text-sm",
                         isActive
                           ? "bg-primary-600 text-white shadow-md shadow-primary-600/20"
                           : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"
                       )}
                     >
-                      <span className="truncate pr-2">{m.id}. {m.title}</span>
+                      <span className={clsx(
+                        "w-7 h-7 rounded-lg flex items-center justify-center shrink-0",
+                        isActive ? "bg-white/20" : meta.iconBg
+                      )}>
+                        <MIcon size={14} className={isActive ? "text-white" : "text-white"} />
+                      </span>
+                      <span className="truncate flex-1">{m.title}</span>
                       {isDone && <CheckCircle2 size={16} className={isActive ? "text-primary-200 shrink-0" : "text-green-500 shrink-0"} />}
                     </button>
                   );
@@ -888,17 +910,29 @@ export default function Materials() {
           className="pb-24"
         >
           {/* Chapter Header */}
-          <div className="mb-8">
-            <span className="text-primary-600 font-bold tracking-widest uppercase text-xs mb-3 block">
-              Chapter {chapter.id} / {materials.length}
-            </span>
-            <h1 className="text-3xl md:text-4xl font-extrabold text-slate-900 mb-4 tracking-tight leading-tight">
-              {chapter.title}
-            </h1>
-            <p className="text-lg text-slate-600 max-w-3xl leading-relaxed">
-              {chapter.description}
-            </p>
-          </div>
+          {(() => {
+            const meta = chapterMeta[chapter.type] || { icon: BookOpen, iconBg: 'bg-slate-800', accent: 'bg-slate-800' };
+            const ChapterIcon = meta.icon;
+            return (
+              <div className="mb-10 relative pl-6">
+                <div className={clsx("absolute left-0 top-1 bottom-1 w-1 rounded-full", meta.accent)} />
+                <div className="flex items-center gap-3 mb-4">
+                  <div className={clsx("w-11 h-11 rounded-2xl flex items-center justify-center text-white shadow-lg shrink-0", meta.iconBg)}>
+                    <ChapterIcon size={22} />
+                  </div>
+                  <span className="text-slate-400 font-semibold text-sm">
+                    Chapter {chapter.id} dari {materials.length}
+                  </span>
+                </div>
+                <h1 className="text-3xl md:text-4xl font-extrabold text-slate-900 mb-4 tracking-tight leading-tight">
+                  {chapter.title}
+                </h1>
+                <p className="text-lg text-slate-600 max-w-3xl leading-relaxed">
+                  {chapter.description}
+                </p>
+              </div>
+            );
+          })()}
 
           {/* Dynamic Content */}
           {renderContent()}

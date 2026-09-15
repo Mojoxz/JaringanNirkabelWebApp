@@ -1,6 +1,6 @@
 import { useRef, useMemo, useState } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
-import { OrbitControls, Stars, Line } from '@react-three/drei';
+import { OrbitControls, Stars, Line, Environment, ContactShadows, Html } from '@react-three/drei';
 import * as THREE from 'three';
 
 // ─── Expanding Wave Ring ───────────────────────────────────────
@@ -57,6 +57,7 @@ function Transmitter({ color = '#3b82f6' }) {
           emissiveIntensity={0.7}
           roughness={0.1}
           metalness={0.85}
+          envMapIntensity={1.5}
         />
       </mesh>
       <mesh ref={ringRef} rotation={[Math.PI / 2, 0, 0]}>
@@ -80,7 +81,7 @@ function Transmitter({ color = '#3b82f6' }) {
 }
 
 // ─── Receiver Node ─────────────────────────────────────────────
-function ReceiverNode({ position, color, signalStrength = 1 }) {
+function ReceiverNode({ position, color, signalStrength = 1, label }) {
   const ref = useRef();
   const [hovered, setHovered] = useState(false);
   const initPos = useMemo(() => [...position], [position]);
@@ -124,6 +125,14 @@ function ReceiverNode({ position, color, signalStrength = 1 }) {
           />
         </mesh>
       ))}
+      <Html position={[position[0], position[1] + size + 0.28, position[2]]} center distanceFactor={7} occlude sprite>
+        <div
+          className="pointer-events-none whitespace-nowrap rounded-full px-2.5 py-1 text-[11px] font-semibold backdrop-blur-sm border"
+          style={{ background: 'rgba(15,23,42,0.7)', color, borderColor: color }}
+        >
+          {label ? `${label} · ` : ''}{Math.round(signalStrength * 100)}%
+        </div>
+      </Html>
     </group>
   );
 }
@@ -151,9 +160,9 @@ function PropagationScene({ mode }) {
       color: '#3b82f6',
       rings: 5,
       receivers: [
-        { pos: [2.0, 0, 0], strength: 0.95, color: '#10b981' },
-        { pos: [3.2, 0, 0.5], strength: 0.7, color: '#f59e0b' },
-        { pos: [4.0, 0, -0.8], strength: 0.4, color: '#ef4444' },
+        { pos: [2.0, 0, 0], strength: 0.95, color: '#10b981', label: 'Dekat' },
+        { pos: [3.2, 0, 0.5], strength: 0.7, color: '#f59e0b', label: 'Sedang' },
+        { pos: [4.0, 0, -0.8], strength: 0.4, color: '#ef4444', label: 'Jauh' },
       ],
       obstacles: [],
     },
@@ -161,8 +170,8 @@ function PropagationScene({ mode }) {
       color: '#8b5cf6',
       rings: 4,
       receivers: [
-        { pos: [2.5, 0.3, 1.0], strength: 0.8, color: '#10b981' },
-        { pos: [3.5, -0.4, -1.2], strength: 0.55, color: '#f59e0b' },
+        { pos: [2.5, 0.3, 1.0], strength: 0.8, color: '#10b981', label: 'Pantulan 1' },
+        { pos: [3.5, -0.4, -1.2], strength: 0.55, color: '#f59e0b', label: 'Pantulan 2' },
       ],
       obstacles: [
         { pos: [1.5, 0, 0.5], color: '#334155', size: [0.15, 1.2, 0.8] },
@@ -173,8 +182,8 @@ function PropagationScene({ mode }) {
       color: '#f59e0b',
       rings: 4,
       receivers: [
-        { pos: [2.2, 0, -0.5], strength: 0.9, color: '#10b981' },
-        { pos: [3.5, 0, 0.8], strength: 0.2, color: '#ef4444' },
+        { pos: [2.2, 0, -0.5], strength: 0.9, color: '#10b981', label: 'Ada Halangan' },
+        { pos: [3.5, 0, 0.8], strength: 0.2, color: '#ef4444', label: 'Terhalang Penuh' },
       ],
       obstacles: [
         { pos: [2.2, 0, 0.4], color: '#1e293b', size: [0.3, 1.5, 1.5] },
@@ -186,11 +195,14 @@ function PropagationScene({ mode }) {
 
   return (
     <>
-      <ambientLight intensity={0.4} />
-      <pointLight position={[0, 5, 5]} intensity={1.8} color="#a5b4fc" />
-      <pointLight position={[0, -3, -3]} intensity={1} color={cfg.color} />
+      <ambientLight intensity={0.3} />
+      <directionalLight position={[3, 5, 3]} intensity={1} color="#ffffff" castShadow />
+      <pointLight position={[0, 5, 5]} intensity={1.5} color="#a5b4fc" />
+      <pointLight position={[0, -3, -3]} intensity={0.9} color={cfg.color} />
+      <Environment preset="night" environmentIntensity={0.6} />
       <Stars radius={25} depth={8} count={200} factor={2} saturation={0} fade speed={0.4} />
-      <gridHelper args={[10, 24, '#0f172a', '#0f172a']} position={[0, -1.2, 0]} />
+      <gridHelper args={[10, 24, '#1e293b', '#1e293b']} position={[0, -1.2, 0]} />
+      <ContactShadows position={[0, -1.19, 0]} opacity={0.5} scale={12} blur={2.4} far={2} color="#000000" />
 
       {Array.from({ length: cfg.rings }).map((_, i) => (
         <WaveRing key={i} delay={i / cfg.rings} color={cfg.color} maxRadius={5} speed={0.5} />
@@ -207,7 +219,7 @@ function PropagationScene({ mode }) {
       ))}
 
       {cfg.receivers.map((r, i) => (
-        <ReceiverNode key={i} position={r.pos} color={r.color} signalStrength={r.strength} />
+        <ReceiverNode key={i} position={r.pos} color={r.color} signalStrength={r.strength} label={r.label} />
       ))}
 
       <OrbitControls
@@ -261,7 +273,7 @@ export default function WaveSignal3D({ height = '340px' }) {
         className="w-full rounded-3xl overflow-hidden bg-slate-950 border border-slate-800 shadow-xl relative"
         style={{ height }}
       >
-        <Canvas camera={{ position: [4, 3, 5], fov: 52 }} gl={{ antialias: true }}>
+        <Canvas shadows dpr={[1, 2]} camera={{ position: [4, 3, 5], fov: 52 }} gl={{ antialias: true }}>
           <PropagationScene mode={mode} />
         </Canvas>
 

@@ -1,6 +1,6 @@
 import { useRef, useMemo, useState } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
-import { OrbitControls, Text3D, Html } from '@react-three/drei';
+import { OrbitControls, Text3D, Html, Environment, ContactShadows } from '@react-three/drei';
 import * as THREE from 'three';
 
 // ─── Omni Directional Pattern (Toroid) ────────────────────────
@@ -91,7 +91,7 @@ function AntennaBody({ type }) {
   const bodyRef = useRef();
   useFrame(() => { if (bodyRef.current) bodyRef.current.rotation.y += 0.006; });
 
-  const antennaMat = <meshStandardMaterial color="#94a3b8" roughness={0.3} metalness={0.8} />;
+  const antennaMat = <meshStandardMaterial color="#94a3b8" roughness={0.25} metalness={0.85} envMapIntensity={1.3} />;
 
   if (type === 'omni') {
     return (
@@ -166,21 +166,39 @@ function AntennaScene({ antennaType }) {
     panel: '#10b981',
     parabolic: '#f59e0b',
   };
+  const typeNames = {
+    omni: 'Antena Omni Directional',
+    panel: 'Antena Panel / Sectoral',
+    parabolic: 'Antena Parabolic Grid',
+  };
   const color = patternColors[antennaType] || '#3b82f6';
 
   return (
     <>
-      <ambientLight intensity={0.6} />
-      <pointLight position={[4, 4, 4]} intensity={2} color="#ffffff" />
-      <pointLight position={[-3, -3, 3]} intensity={1} color={color} />
+      <ambientLight intensity={0.45} />
+      <directionalLight position={[3, 5, 3]} intensity={1.1} color="#ffffff" castShadow />
+      <pointLight position={[4, 4, 4]} intensity={1.6} color="#ffffff" />
+      <pointLight position={[-3, -3, 3]} intensity={0.9} color={color} />
+      <Environment preset="city" environmentIntensity={0.65} />
 
-      {/* Grid floor */}
+      {/* Grid floor + grounded shadow */}
       <gridHelper args={[8, 20, '#1e293b', '#1e293b']} position={[0, -1.8, 0]} />
+      <ContactShadows position={[0, -1.79, 0]} opacity={0.5} scale={10} blur={2.2} far={2} color="#000000" />
 
       {/* Antenna body */}
       <group position={[0, -0.5, 0]}>
         <AntennaBody type={antennaType} />
       </group>
+
+      {/* Always-on label identifying which antenna type is shown */}
+      <Html position={[0, 1.6, 0]} center distanceFactor={9} occlude sprite>
+        <div
+          className="pointer-events-none whitespace-nowrap rounded-full px-3 py-1 text-xs font-bold backdrop-blur-sm border"
+          style={{ background: 'rgba(15,23,42,0.7)', color, borderColor: color }}
+        >
+          {typeNames[antennaType]}
+        </div>
+      </Html>
 
       {/* Radiation patterns */}
       <OmniPattern visible={antennaType === 'omni'} color={color} />
@@ -226,7 +244,7 @@ export default function AntennaPattern3D({ defaultType = 'omni' }) {
 
       {/* 3D Canvas */}
       <div className="w-full rounded-3xl overflow-hidden bg-slate-950 border border-slate-800 shadow-xl" style={{ height: '380px' }}>
-        <Canvas camera={{ position: [0, 2, 4.5], fov: 55 }} gl={{ antialias: true }}>
+        <Canvas shadows dpr={[1, 2]} camera={{ position: [0, 2, 4.5], fov: 55 }} gl={{ antialias: true }}>
           <AntennaScene antennaType={antennaType} />
         </Canvas>
       </div>
