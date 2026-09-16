@@ -1,6 +1,6 @@
 import { useRef, useMemo, useState, Suspense } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
-import { OrbitControls, Environment, ContactShadows, Html, RoundedBox } from '@react-three/drei';
+import { OrbitControls, Environment, ContactShadows, Html, Sky } from '@react-three/drei';
 import * as THREE from 'three';
 
 // ── Realistic Omni Antenna (rubber duck / pole style) ─────────────
@@ -228,25 +228,38 @@ function AntennaScene({ antennaType }) {
 
   return (
     <>
-      <ambientLight intensity={0.5} />
-      <directionalLight position={[4, 7, 4]} intensity={1.4} color="#fff" castShadow />
+      <Sky sunPosition={[10, 2, -5]} turbidity={1} rayleigh={2} />
+      <ambientLight intensity={0.6} />
+      <directionalLight position={[4, 7, 4]} intensity={1.5} color="#fff" castShadow />
       <pointLight position={[-4, 3, 4]} intensity={1.2} color={p.light} />
       <pointLight position={[4, -3, -3]} intensity={0.7} color="#ffffff" />
-      <Environment preset="studio" environmentIntensity={0.9} />
-      <gridHelper args={[8, 20, '#1e293b', '#1e293b']} position={[0, -1.95, 0]} />
-      <ContactShadows position={[0, -1.94, 0]} opacity={0.65} scale={10} blur={2.5} far={2.5} />
+      <Environment preset="sunset" environmentIntensity={0.9} />
+      
+      {/* Ground base (Grass/Dirt mound) */}
+      <mesh position={[0, -2.1, 0]} receiveShadow>
+        <cylinderGeometry args={[2.5, 2.8, 0.4, 32]} />
+        <meshStandardMaterial color="#224a22" roughness={1} />
+      </mesh>
+      
+      {/* Mounting Pole */}
+      <mesh position={[0, -1.1, 0]} castShadow>
+        <cylinderGeometry args={[0.08, 0.08, 2, 16]} />
+        <meshStandardMaterial color="#64748b" roughness={0.6} metalness={0.5} />
+      </mesh>
+
+      <ContactShadows position={[0, -1.9, 0]} opacity={0.75} scale={6} blur={2} far={2.5} />
 
       {/* Html label */}
-      <Html position={[0, 2.1, 0]} center distanceFactor={10}>
-        <div className="pointer-events-none whitespace-nowrap rounded-full px-3 py-1 text-xs font-bold backdrop-blur-sm border"
-          style={{ background: 'rgba(15,23,42,0.75)', color: p.color, borderColor: p.color }}>
+      <Html position={[0, 2.5, 0]} center distanceFactor={10}>
+        <div className="pointer-events-none whitespace-nowrap rounded-full px-3 py-1 text-xs font-bold backdrop-blur-sm border shadow-lg"
+          style={{ background: 'rgba(255,255,255,0.85)', color: p.color, borderColor: p.color }}>
           {typeNames[antennaType]}
         </div>
       </Html>
 
       <Suspense fallback={null}>
-        <AutoRotate speed={0.005}>
-          <group position={[0, -0.3, 0]}>
+        <AutoRotate speed={0.006}>
+          <group position={[0, 0, 0]}>
             {antennaType === 'omni' && <OmniAntennaModel color={p.color} />}
             {antennaType === 'panel' && <PanelAntennaModel color={p.color} />}
             {antennaType === 'parabolic' && <ParabolicAntennaModel color={p.color} />}

@@ -414,23 +414,23 @@ function ConnectionBeam({ start, end, color }) {
 // ── Main network scene ─────────────────────────────────────────────
 function Scene({ activeNode, onNodeClick }) {
   const nodes = [
-    { id: 'tower',  pos: [-2.6, 0.9, 0.2],  color: '#8b5cf6', label: 'Tower BTS',  model: 'tower',      scale: 0.55 },
-    { id: 'router', pos: [2.4, 0.6, 0.4],   color: '#10b981', label: 'Router',     model: 'router',     scale: 0.7 },
-    { id: 'laptop', pos: [1.0, -0.8, 1.5],  color: '#f59e0b', label: 'Laptop',     model: 'laptop',     scale: 0.7 },
-    { id: 'phone',  pos: [-1.2, -0.9, 1.6], color: '#ec4899', label: 'Smartphone', model: 'phone',      scale: 0.85 },
-    { id: 'iot',    pos: [2.4, -0.8, -1.4], color: '#14b8a6', label: 'IoT Device', model: 'iot',        scale: 0.85 },
-    { id: 'server', pos: [-2.4, -0.6, -1.2],color: '#f97316', label: 'Server',     model: 'server',     scale: 0.55 },
+    { id: 'tower',  pos: [-3.2, 0.8, -0.5], color: '#8b5cf6', label: 'Tower BTS',  model: 'tower',      scale: 0.55 },
+    { id: 'router', pos: [2.0, 0.0, -1.2],  color: '#10b981', label: 'Router',     model: 'router',     scale: 0.7 },
+    { id: 'laptop', pos: [1.2, 0.0, 1.0],   color: '#f59e0b', label: 'Laptop',     model: 'laptop',     scale: 0.7 },
+    { id: 'phone',  pos: [2.8, 0.0, 1.2],   color: '#ec4899', label: 'Smartphone', model: 'phone',      scale: 0.85 },
+    { id: 'iot',    pos: [3.2, 0.0, -0.5],  color: '#14b8a6', label: 'IoT Device', model: 'iot',        scale: 0.85 },
+    { id: 'server', pos: [-0.5, 0.4, -1.5], color: '#f97316', label: 'Server',     model: 'server',     scale: 0.55 },
   ];
 
   const edges = [
-    { from: [0, 0.2, 0], to: [-2.6, 0.9, 0.2],  color: '#8b5cf6', speed: 0.8, delay: 0.0 },
-    { from: [0, 0.2, 0], to: [2.4, 0.6, 0.4],   color: '#10b981', speed: 1.0, delay: 0.3 },
-    { from: [0, 0.2, 0], to: [1.0, -0.8, 1.5],  color: '#f59e0b', speed: 0.7, delay: 0.5 },
-    { from: [0, 0.2, 0], to: [-1.2, -0.9, 1.6], color: '#ec4899', speed: 0.9, delay: 0.2 },
-    { from: [0, 0.2, 0], to: [2.4, -0.8, -1.4], color: '#14b8a6', speed: 0.75, delay: 0.7 },
-    { from: [0, 0.2, 0], to: [-2.4, -0.6, -1.2],color: '#f97316', speed: 0.65, delay: 0.9 },
-    { from: [2.4, 0.6, 0.4], to: [2.4, -0.8, -1.4], color: '#6ee7b7', speed: 0.5, delay: 0.1 },
-    { from: [-2.6, 0.9, 0.2], to: [-2.4, -0.6, -1.2], color: '#c4b5fd', speed: 0.55, delay: 0.4 },
+    { from: [0, 0.2, 0], to: [-3.2, 0.8, -0.5], color: '#8b5cf6', speed: 0.8, delay: 0.0 }, // AP to Tower
+    { from: [0, 0.2, 0], to: [2.0, 0.0, -1.2],  color: '#10b981', speed: 1.0, delay: 0.3 }, // AP to Router
+    { from: [0, 0.2, 0], to: [1.2, 0.0, 1.0],   color: '#f59e0b', speed: 0.7, delay: 0.5 }, // AP to Laptop
+    { from: [0, 0.2, 0], to: [2.8, 0.0, 1.2],   color: '#ec4899', speed: 0.9, delay: 0.2 }, // AP to Phone
+    { from: [0, 0.2, 0], to: [3.2, 0.0, -0.5],  color: '#14b8a6', speed: 0.75, delay: 0.7 }, // AP to IoT
+    { from: [0, 0.2, 0], to: [-0.5, 0.4, -1.5], color: '#f97316', speed: 0.65, delay: 0.9 }, // AP to Server
+    { from: [2.0, 0.0, -1.2], to: [3.2, 0.0, -0.5], color: '#6ee7b7', speed: 0.5, delay: 0.1 }, // Router to IoT
+    { from: [-3.2, 0.8, -0.5], to: [-0.5, 0.4, -1.5], color: '#c4b5fd', speed: 0.55, delay: 0.4 }, // Tower to Server
   ];
 
   const renderModel = (model, scale) => {
@@ -447,12 +447,38 @@ function Scene({ activeNode, onNodeClick }) {
 
   return (
     <>
-      <ambientLight intensity={0.4} />
-      <directionalLight position={[5, 8, 5]} intensity={1.4} castShadow />
+      <ambientLight intensity={0.5} />
+      <directionalLight position={[5, 8, 5]} intensity={1.5} castShadow shadow-mapSize={[1024, 1024]} />
       <pointLight position={[6, 5, 6]} intensity={1.1} color="#60a5fa" />
       <pointLight position={[-5, -5, 4]} intensity={0.8} color="#a78bfa" />
-      <Environment preset="city" environmentIntensity={0.75} />
-      <ContactShadows position={[0, -2.3, 0]} opacity={0.5} scale={14} blur={2.8} far={3} />
+      <Environment preset="city" environmentIntensity={0.85} />
+      
+      {/* Unified Transparent Floor Plan */}
+      <mesh position={[0, -0.2, 0]} receiveShadow>
+        <boxGeometry args={[9, 0.1, 6]} />
+        <meshPhysicalMaterial color="#0f172a" transparent opacity={0.75} roughness={0.1} metalness={0.8} clearcoat={1} />
+      </mesh>
+      <gridHelper args={[9, 18, '#3b82f6', '#1e293b']} position={[0, -0.14, 0]} />
+
+      {/* Room Dividers (Glass Walls) */}
+      {/* Divider between Server Room and AP/Office */}
+      <mesh position={[-1.6, 0.6, -1]} receiveShadow>
+        <boxGeometry args={[0.05, 1.5, 4]} />
+        <meshPhysicalMaterial color="#38bdf8" transparent opacity={0.2} roughness={0.1} transmission={0.9} />
+      </mesh>
+      {/* Divider for Outdoor (Tower) */}
+      <mesh position={[-2.4, 0.6, 1]} rotation={[0, Math.PI/2, 0]} receiveShadow>
+        <boxGeometry args={[0.05, 1.5, 2]} />
+        <meshPhysicalMaterial color="#38bdf8" transparent opacity={0.2} roughness={0.1} transmission={0.9} />
+      </mesh>
+
+      {/* Office Desk */}
+      <mesh position={[2.0, 0.1, -1.2]} receiveShadow castShadow>
+        <boxGeometry args={[2.5, 0.6, 1.0]} />
+        <meshStandardMaterial color="#94a3b8" roughness={0.8} />
+      </mesh>
+
+      <ContactShadows position={[0, -0.3, 0]} opacity={0.8} scale={18} blur={2.5} far={3} />
 
       {/* Connection lines */}
       {edges.map((e, i) => <ConnectionBeam key={i} start={e.from} end={e.to} color={e.color} />)}
@@ -475,29 +501,31 @@ function Scene({ activeNode, onNodeClick }) {
 
       {/* Device nodes */}
       {nodes.map(node => (
-        <Float key={node.id} speed={0.8 + Math.random() * 0.6} floatIntensity={0.18} rotationIntensity={0.04}>
-          <group
-            position={node.pos}
-            onClick={() => onNodeClick(node.id)}
-            onPointerOver={() => { document.body.style.cursor = 'pointer'; }}
-            onPointerOut={() => { document.body.style.cursor = 'auto'; }}
-          >
-            {renderModel(node.model, node.scale)}
-            {/* Click-to-activate glow ring */}
-            {activeNode === node.id && (
-              <mesh rotation={[Math.PI / 2, 0, 0]}>
-                <torusGeometry args={[0.38, 0.03, 8, 32]} />
-                <meshStandardMaterial color={node.color} emissive={node.color} emissiveIntensity={1.5} transparent opacity={0.7} />
-              </mesh>
-            )}
-            <Html position={[0, 0.5, 0]} center distanceFactor={9}>
-              <div className="pointer-events-none whitespace-nowrap rounded-full px-2 py-0.5 text-[10px] font-semibold backdrop-blur-sm border"
-                style={{ background: activeNode === node.id ? 'rgba(255,255,255,0.9)' : 'rgba(15,23,42,0.65)', color: activeNode === node.id ? '#1e293b' : node.color, borderColor: node.color }}>
-                {node.label}
-              </div>
-            </Html>
-          </group>
-        </Float>
+        <group key={node.id} position={node.pos}>
+          {/* Subtle hover animation instead of drifting Float */}
+          <Float speed={2} floatIntensity={0.05} rotationIntensity={0.02}>
+            <group
+              onClick={(e) => { e.stopPropagation(); onNodeClick(node.id); }}
+              onPointerOver={() => { document.body.style.cursor = 'pointer'; }}
+              onPointerOut={() => { document.body.style.cursor = 'auto'; }}
+            >
+              {renderModel(node.model, node.scale)}
+              {/* Click-to-activate glow ring */}
+              {activeNode === node.id && (
+                <mesh rotation={[Math.PI / 2, 0, 0]}>
+                  <torusGeometry args={[0.38, 0.03, 8, 32]} />
+                  <meshStandardMaterial color={node.color} emissive={node.color} emissiveIntensity={1.5} transparent opacity={0.7} />
+                </mesh>
+              )}
+              <Html position={[0, 0.5, 0]} center distanceFactor={9}>
+                <div className="pointer-events-none whitespace-nowrap rounded-full px-2 py-0.5 text-[10px] font-semibold backdrop-blur-sm border"
+                  style={{ background: activeNode === node.id ? 'rgba(255,255,255,0.9)' : 'rgba(15,23,42,0.65)', color: activeNode === node.id ? '#1e293b' : node.color, borderColor: node.color }}>
+                  {node.label}
+                </div>
+              </Html>
+            </group>
+          </Float>
+        </group>
       ))}
 
       <OrbitControls

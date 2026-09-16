@@ -1,7 +1,61 @@
 import { useRef, useMemo, useState, Suspense } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
-import { OrbitControls, Environment, ContactShadows, Html, Line } from '@react-three/drei';
+import { OrbitControls, Environment, ContactShadows, Html, Line, Sky } from '@react-three/drei';
 import * as THREE from 'three';
+
+// ── Environment Models ───────────────────────────────────────────
+function TreeModel({ position, scale = 1 }) {
+  return (
+    <group position={position} scale={scale}>
+      <mesh position={[0, 0.2, 0]} castShadow><cylinderGeometry args={[0.05, 0.08, 0.4, 5]} /><meshStandardMaterial color="#4a3018" roughness={0.9} /></mesh>
+      <mesh position={[0, 0.6, 0]} castShadow><coneGeometry args={[0.3, 0.8, 5]} /><meshStandardMaterial color="#2d5a27" roughness={0.8} flatShading /></mesh>
+      <mesh position={[0, 0.9, 0]} castShadow><coneGeometry args={[0.25, 0.6, 5]} /><meshStandardMaterial color="#3a7033" roughness={0.8} flatShading /></mesh>
+    </group>
+  );
+}
+
+function MountainModel({ position, scale = 1, color = "#1a361a", label }) {
+  return (
+    <group position={position} scale={scale}>
+      <mesh castShadow receiveShadow>
+        <coneGeometry args={[2, 3, 5]} />
+        <meshStandardMaterial color={color} roughness={0.9} flatShading />
+      </mesh>
+      {label && (
+        <Html position={[0, 1.8, 0]} center distanceFactor={7}>
+          <div className="pointer-events-none whitespace-nowrap rounded-full px-2 py-0.5 text-[10px] font-bold bg-slate-800/80 text-white border border-slate-600/40 backdrop-blur-sm shadow-md">
+            {label}
+          </div>
+        </Html>
+      )}
+    </group>
+  );
+}
+
+function BuildingModel({ position, scale = 1, size = [0.4, 1.2, 0.4], color = "#e2e8f0", label }) {
+  return (
+    <group position={position} scale={scale}>
+      <mesh castShadow receiveShadow>
+        <boxGeometry args={size} />
+        <meshStandardMaterial color={color} roughness={0.7} />
+      </mesh>
+      {/* Windows */}
+      {Array.from({ length: 3 }).map((_, i) => (
+        <mesh key={i} position={[0, -size[1]/2 + 0.3 + i*0.4, size[2]/2 + 0.01]}>
+          <boxGeometry args={[size[0] * 0.7, 0.2, 0.02]} />
+          <meshStandardMaterial color="#38bdf8" roughness={0.2} metalness={0.8} />
+        </mesh>
+      ))}
+      {label && (
+        <Html position={[0, size[1] / 2 + 0.2, 0]} center distanceFactor={7}>
+          <div className="pointer-events-none whitespace-nowrap rounded-full px-2 py-0.5 text-[10px] font-bold bg-slate-800/80 text-white border border-slate-600/40 backdrop-blur-sm shadow-md">
+            {label}
+          </div>
+        </Html>
+      )}
+    </group>
+  );
+}
 
 // ── Realistic Access Point Transmitter ────────────────────────────
 function APTransmitter({ color }) {
@@ -9,9 +63,7 @@ function APTransmitter({ color }) {
   const ringRef = useRef();
 
   useFrame((state) => {
-    if (ref.current) {
-      ref.current.rotation.y += 0.006;
-    }
+    if (ref.current) ref.current.rotation.y += 0.006;
     if (ringRef.current) {
       const pulse = 1 + Math.sin(state.clock.elapsedTime * 2.5) * 0.04;
       ringRef.current.scale.set(pulse, pulse, pulse);
@@ -20,33 +72,21 @@ function APTransmitter({ color }) {
   });
 
   return (
-    <group>
-      {/* AP body */}
+    <group position={[0, 0, 0]}>
+      {/* Tower pole */}
+      <mesh position={[0, -0.6, 0]} castShadow>
+        <cylinderGeometry args={[0.04, 0.04, 1.2, 8]} />
+        <meshStandardMaterial color="#64748b" roughness={0.6} />
+      </mesh>
+      
       <group ref={ref}>
-        <mesh castShadow>
-          <boxGeometry args={[0.55, 0.07, 0.42]} />
-          <meshStandardMaterial color="#d8e0e8" roughness={0.28} metalness={0.6} />
-        </mesh>
-        {/* LED */}
-        <mesh position={[0, 0.038, 0.16]}>
-          <boxGeometry args={[0.18, 0.006, 0.008]} />
-          <meshStandardMaterial color={color} emissive={color} emissiveIntensity={2} />
-        </mesh>
-        {/* Internal antenna ridges */}
+        <mesh castShadow><boxGeometry args={[0.55, 0.07, 0.42]} /><meshStandardMaterial color="#d8e0e8" roughness={0.28} metalness={0.6} /></mesh>
+        <mesh position={[0, 0.038, 0.16]}><boxGeometry args={[0.18, 0.006, 0.008]} /><meshStandardMaterial color={color} emissive={color} emissiveIntensity={2} /></mesh>
         {[-0.2, 0.2].map((x, i) => (
-          <mesh key={i} position={[x, 0.04, 0]}>
-            <boxGeometry args={[0.018, 0.014, 0.4]} />
-            <meshStandardMaterial color="#c0c8d0" roughness={0.4} metalness={0.5} />
-          </mesh>
+          <mesh key={i} position={[x, 0.04, 0]}><boxGeometry args={[0.018, 0.014, 0.4]} /><meshStandardMaterial color="#c0c8d0" roughness={0.4} metalness={0.5} /></mesh>
         ))}
-        {/* Mount */}
-        <mesh position={[0, -0.062, 0]}>
-          <cylinderGeometry args={[0.1, 0.1, 0.028, 18]} />
-          <meshStandardMaterial color="#475569" roughness={0.4} metalness={0.6} />
-        </mesh>
       </group>
 
-      {/* Orbital signal rings */}
       {[0.5, 0.7, 0.9].map((r, i) => (
         <mesh key={i} ref={i === 0 ? ringRef : undefined} rotation={[Math.PI / 2, 0, i * 0.6]}>
           <torusGeometry args={[r, 0.012, 8, 40]} />
@@ -54,7 +94,6 @@ function APTransmitter({ color }) {
         </mesh>
       ))}
 
-      {/* Glow sphere */}
       <mesh>
         <sphereGeometry args={[0.55, 16, 16]} />
         <meshStandardMaterial color={color} transparent opacity={0.04} side={THREE.BackSide} />
@@ -84,41 +123,7 @@ function WaveRing({ delay = 0, color = '#3b82f6', maxRadius = 4.5, speed = 0.55,
   );
 }
 
-// ── Obstacle (realistic wall/building slab) ────────────────────────
-function ObstacleWall({ position, size = [0.12, 1.2, 0.8], label }) {
-  return (
-    <group position={position}>
-      {/* Wall body */}
-      <mesh castShadow>
-        <boxGeometry args={size} />
-        <meshStandardMaterial color="#475569" roughness={0.7} metalness={0.2} transparent opacity={0.82} />
-      </mesh>
-      {/* Brick texture lines */}
-      {Array.from({ length: 4 }).map((_, i) => (
-        <mesh key={i} position={[0, -size[1] / 2 + (i + 1) * size[1] / 5, 0]}>
-          <boxGeometry args={[size[0] + 0.005, 0.008, size[2] + 0.005]} />
-          <meshStandardMaterial color="#334155" roughness={0.8} />
-        </mesh>
-      ))}
-      {/* Mortar vertical lines */}
-      {[-size[2] / 4, size[2] / 4].map((z, i) => (
-        <mesh key={i} position={[0, 0, z]}>
-          <boxGeometry args={[size[0] + 0.005, size[1], 0.008]} />
-          <meshStandardMaterial color="#334155" roughness={0.8} transparent opacity={0.5} />
-        </mesh>
-      ))}
-      {label && (
-        <Html position={[0, size[1] / 2 + 0.18, 0]} center distanceFactor={7}>
-          <div className="pointer-events-none whitespace-nowrap rounded-full px-2 py-0.5 text-[10px] font-semibold bg-slate-800/80 text-slate-300 border border-slate-600/40 backdrop-blur-sm">
-            {label}
-          </div>
-        </Html>
-      )}
-    </group>
-  );
-}
-
-// ── Receiver device (small AP/CPE) ────────────────────────────────
+// ── Receiver device ────────────────────────────────────────────────
 function ReceiverDevice({ position, color, signalStrength = 1, label }) {
   const ref = useRef();
   const glowRef = useRef();
@@ -138,38 +143,18 @@ function ReceiverDevice({ position, color, signalStrength = 1, label }) {
 
   return (
     <group ref={ref} position={position}>
-      {/* CPE/AP body */}
-      <mesh castShadow>
-        <boxGeometry args={[0.24, 0.08, 0.18]} />
-        <meshStandardMaterial color="#c8d0d8" roughness={0.28} metalness={0.65} transparent opacity={alpha} />
-      </mesh>
-      {/* Antenna stub */}
-      <mesh position={[0, 0.12, 0]}>
-        <cylinderGeometry args={[0.014, 0.018, 0.2, 10]} />
-        <meshStandardMaterial color="#94a3b8" roughness={0.35} metalness={0.6} transparent opacity={alpha} />
-      </mesh>
-      {/* Signal LED */}
-      <mesh ref={glowRef} position={[0, 0.044, 0.075]}>
-        <boxGeometry args={[0.06, 0.01, 0.006]} />
-        <meshStandardMaterial color={color} emissive={color} emissiveIntensity={1} />
-      </mesh>
-      {/* Signal bars under device */}
+      <mesh castShadow><boxGeometry args={[0.24, 0.08, 0.18]} /><meshStandardMaterial color="#c8d0d8" roughness={0.28} metalness={0.65} transparent opacity={alpha} /></mesh>
+      <mesh position={[0, 0.12, 0]}><cylinderGeometry args={[0.014, 0.018, 0.2, 10]} /><meshStandardMaterial color="#94a3b8" roughness={0.35} metalness={0.6} transparent opacity={alpha} /></mesh>
+      <mesh ref={glowRef} position={[0, 0.044, 0.075]}><boxGeometry args={[0.06, 0.01, 0.006]} /><meshStandardMaterial color={color} emissive={color} emissiveIntensity={1} /></mesh>
       {[0, 1, 2].map((i) => (
         <mesh key={i} position={[(i - 1) * 0.07, -0.065 - i * 0.025, 0]}>
           <boxGeometry args={[0.038, 0.02 + i * 0.03, 0.038]} />
-          <meshStandardMaterial
-            color={color}
-            emissive={color}
-            emissiveIntensity={i / 2 <= signalStrength ? 0.9 : 0.1}
-            transparent
-            opacity={i / 2 <= signalStrength ? 0.9 : 0.25}
-          />
+          <meshStandardMaterial color={color} emissive={color} emissiveIntensity={i / 2 <= signalStrength ? 0.9 : 0.1} transparent opacity={i / 2 <= signalStrength ? 0.9 : 0.25} />
         </mesh>
       ))}
-      {/* Label */}
-      <Html position={[0, 0.28, 0]} center distanceFactor={7}>
-        <div className="pointer-events-none whitespace-nowrap rounded-full px-2.5 py-0.5 text-[10px] font-semibold backdrop-blur-sm border"
-          style={{ background: 'rgba(15,23,42,0.72)', color, borderColor: color }}>
+      <Html position={[0, 0.35, 0]} center distanceFactor={7}>
+        <div className="pointer-events-none whitespace-nowrap rounded-full px-2 py-0.5 text-[10px] font-bold backdrop-blur-sm border shadow-md"
+          style={{ background: 'rgba(255,255,255,0.9)', color, borderColor: color }}>
           {label} · {Math.round(signalStrength * 100)}%
         </div>
       </Html>
@@ -180,61 +165,71 @@ function ReceiverDevice({ position, color, signalStrength = 1, label }) {
 // ── Beam line ─────────────────────────────────────────────────────
 function SignalBeam({ from, to, color, opacity = 0.32 }) {
   const pts = useMemo(() => [new THREE.Vector3(...from), new THREE.Vector3(...to)], [from, to]);
-  return <Line points={pts} color={color} lineWidth={0.9} transparent opacity={opacity} />;
+  return <Line points={pts} color={color} lineWidth={1.5} dashed dashSize={0.2} gapSize={0.1} transparent opacity={opacity} />;
 }
 
 // ── Mode scenes ────────────────────────────────────────────────────
 function PropagationScene({ mode }) {
-  const configs = {
-    freespace: {
-      color: '#3b82f6',
-      rings: 5,
-      ringTilt: 0,
-      receivers: [
-        { pos: [2.2, 0.1, 0],    strength: 0.96, color: '#22c55e', label: 'Dekat (−35 dB)' },
-        { pos: [3.4, 0.1, 0.4],  strength: 0.65, color: '#f59e0b', label: 'Sedang (−56 dB)' },
-        { pos: [4.6, 0.1, -0.5], strength: 0.28, color: '#ef4444', label: 'Jauh (−76 dB)' },
-      ],
-      obstacles: [],
-    },
-    multipath: {
-      color: '#8b5cf6',
-      rings: 4,
-      ringTilt: 0.15,
-      receivers: [
-        { pos: [2.8, 0.3, 1.2],  strength: 0.75, color: '#22c55e', label: 'Pantulan 1' },
-        { pos: [3.6, -0.3, -1.4], strength: 0.48, color: '#f59e0b', label: 'Pantulan 2' },
-      ],
-      obstacles: [
-        { pos: [1.6, 0.1, 0.5], size: [0.12, 1.4, 0.85], label: 'Tembok A' },
-        { pos: [2.9, 0.2, -0.5], size: [0.12, 1.1, 0.7], label: 'Tembok B' },
-      ],
-    },
-    shadowing: {
-      color: '#f59e0b',
-      rings: 4,
-      ringTilt: 0,
-      receivers: [
-        { pos: [2.2, 0.1, -0.6], strength: 0.88, color: '#22c55e', label: 'Tidak Terhalang' },
-        { pos: [3.8, 0.1, 0.7],  strength: 0.14, color: '#ef4444', label: 'Terhalang Penuh' },
-      ],
-      obstacles: [
-        { pos: [2.6, 0.2, 0.3], size: [0.28, 1.6, 1.6], label: 'Gedung' },
-      ],
-    },
-  };
+  const isFreeSpace = mode === 'freespace';
+  const isMultipath = mode === 'multipath';
+  const isShadowing = mode === 'shadowing';
 
-  const cfg = configs[mode] || configs.freespace;
+  const cfg = {
+    color: isFreeSpace ? '#3b82f6' : isMultipath ? '#8b5cf6' : '#f59e0b',
+    rings: isFreeSpace ? 5 : 4,
+    ringTilt: isMultipath ? 0.15 : 0,
+  };
 
   return (
     <>
-      <ambientLight intensity={0.35} />
-      <directionalLight position={[4, 7, 4]} intensity={1.3} castShadow />
-      <pointLight position={[0, 5, 5]} intensity={1.3} color="#a5b4fc" />
-      <pointLight position={[0, -3, -3]} intensity={0.8} color={cfg.color} />
-      <Environment preset="night" environmentIntensity={0.55} />
-      <gridHelper args={[12, 26, '#1e293b', '#1e293b']} position={[0, -1.25, 0]} />
-      <ContactShadows position={[0, -1.24, 0]} opacity={0.55} scale={14} blur={2.6} far={2.2} />
+      <Sky sunPosition={[5, 8, 5]} turbidity={0.6} rayleigh={0.8} />
+      <ambientLight intensity={0.6} />
+      <directionalLight position={[4, 7, 4]} intensity={1.5} castShadow shadow-mapSize={[1024, 1024]} />
+      
+      {/* Dynamic Terrain based on mode */}
+      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -1.2, 0]} receiveShadow>
+        <planeGeometry args={[30, 30]} />
+        <meshStandardMaterial color={isFreeSpace ? "#4ade80" : "#94a3b8"} roughness={1} />
+      </mesh>
+
+      {/* Decorative environment */}
+      {isFreeSpace && (
+        <>
+          <TreeModel position={[-2, -1.2, -2]} scale={1.2} />
+          <TreeModel position={[3, -1.2, -3]} scale={1.5} />
+          <TreeModel position={[-3, -1.2, 2]} scale={0.9} />
+        </>
+      )}
+
+      {isMultipath && (
+        <>
+          {/* City buildings causing multipath */}
+          <BuildingModel position={[1.6, -0.5, 0.5]} size={[0.4, 1.4, 1.5]} label="Gedung A" />
+          <BuildingModel position={[3.2, -0.6, -1]} size={[0.6, 1.2, 0.8]} color="#cbd5e1" label="Gedung B" />
+          <BuildingModel position={[-2, -0.2, -2]} size={[1.2, 2, 1.2]} color="#94a3b8" />
+          <TreeModel position={[1.6, -1.2, 1.5]} scale={0.8} />
+          
+          {/* Signal paths bouncing */}
+          <SignalBeam from={[0,0,0]} to={[1.4, 0, 0.5]} color={cfg.color} opacity={0.6} />
+          <SignalBeam from={[1.4, 0, 0.5]} to={[2.8, 0, 1.2]} color={cfg.color} opacity={0.4} />
+          
+          <SignalBeam from={[0,0,0]} to={[3.0, 0, -0.8]} color={cfg.color} opacity={0.6} />
+          <SignalBeam from={[3.0, 0, -0.8]} to={[3.6, 0, -1.4]} color={cfg.color} opacity={0.4} />
+        </>
+      )}
+
+      {isShadowing && (
+        <>
+          {/* Large building blocking signal */}
+          <BuildingModel position={[2.6, -0.6, 0.3]} size={[0.8, 1.8, 1.2]} color="#475569" label="Gedung Tinggi (Penghalang)" />
+          <TreeModel position={[1, -1.2, 1]} scale={1} />
+          <TreeModel position={[3.5, -1.2, -1]} scale={1.2} />
+          
+          {/* Beams */}
+          <SignalBeam from={[0,0,0]} to={[2.2, 0, -0.6]} color={cfg.color} opacity={0.8} />
+          <SignalBeam from={[0,0,0]} to={[2.6, 0, 0.3]} color={cfg.color} opacity={0.3} />
+        </>
+      )}
 
       {/* Expanding wave rings */}
       {Array.from({ length: cfg.rings }).map((_, i) => (
@@ -244,88 +239,98 @@ function PropagationScene({ mode }) {
       {/* Transmitter AP */}
       <APTransmitter color={cfg.color} />
 
-      {/* Obstacles */}
-      {cfg.obstacles.map((obs, i) => (
-        <ObstacleWall key={i} position={obs.pos} size={obs.size} label={obs.label} />
-      ))}
+      {/* Receivers */}
+      {isFreeSpace && (
+        <>
+          <ReceiverDevice position={[2.2, -0.8, 0]} signalStrength={0.96} color="#22c55e" label="Dekat" />
+          <ReceiverDevice position={[3.4, -0.8, 0.4]} signalStrength={0.65} color="#f59e0b" label="Sedang" />
+          <ReceiverDevice position={[4.6, -0.8, -0.5]} signalStrength={0.28} color="#ef4444" label="Jauh" />
+        </>
+      )}
 
-      {/* Signal beams */}
-      {cfg.receivers.map((r, i) => (
-        <SignalBeam key={i} from={[0, 0.1, 0]} to={r.pos} color={r.color} opacity={r.strength * 0.4} />
-      ))}
+      {isMultipath && (
+        <>
+          <ReceiverDevice position={[2.8, -0.8, 1.2]} signalStrength={0.75} color="#22c55e" label="Pantulan 1" />
+          <ReceiverDevice position={[3.6, -0.8, -1.4]} signalStrength={0.48} color="#f59e0b" label="Pantulan 2" />
+        </>
+      )}
 
-      {/* Receiver devices */}
-      {cfg.receivers.map((r, i) => (
-        <ReceiverDevice key={i} position={r.pos} color={r.color} signalStrength={r.strength} label={r.label} />
-      ))}
-
-      <OrbitControls enableZoom enablePan={false} autoRotate autoRotateSpeed={0.5}
-        maxPolarAngle={Math.PI * 0.72} minPolarAngle={Math.PI * 0.24}
-        minDistance={3} maxDistance={14} zoomSpeed={0.8} />
+      {isShadowing && (
+        <>
+          <ReceiverDevice position={[2.2, -0.8, -1.2]} signalStrength={0.88} color="#22c55e" label="LOS (Aman)" />
+          <ReceiverDevice position={[3.8, -0.8, 0.7]} signalStrength={0.14} color="#ef4444" label="Shadow Area" />
+        </>
+      )}
     </>
   );
 }
 
-// ── Public export ──────────────────────────────────────────────────
-export default function WaveSignal3D({ height = '360px' }) {
+// ── Main UI ────────────────────────────────────────────────────────
+export default function WaveSignal3D({ height = '380px' }) {
   const [mode, setMode] = useState('freespace');
 
   const modes = [
-    { id: 'freespace', label: 'Free Space',  desc: 'Propagasi ideal', color: 'blue' },
-    { id: 'multipath', label: 'Multipath',   desc: 'Pantulan dinding', color: 'violet' },
-    { id: 'shadowing', label: 'Shadowing',   desc: 'Efek penghalang', color: 'amber' },
+    { id: 'freespace', label: 'Free Space', color: 'blue', desc: 'Sinyal melemah secara alami seiring jarak di ruang terbuka tanpa halangan.' },
+    { id: 'multipath', label: 'Multipath', color: 'violet', desc: 'Sinyal memantul pada gedung/benda padat, menciptakan jalur ganda ke penerima.' },
+    { id: 'shadowing', label: 'Shadowing', color: 'amber', desc: 'Gedung pencakar langit memblokir jalur sinyal, menciptakan "area bayangan".' },
   ];
 
   return (
-    <div className="w-full space-y-4">
+    <div className="bg-slate-900 rounded-xl p-5 md:p-6 space-y-6">
+      <div className="text-center">
+        <h3 className="text-lg font-bold text-white">Simulasi Propagasi Lingkungan</h3>
+        <p className="text-slate-400 text-sm mt-1">Lihat bagaimana kondisi alam & kota memengaruhi gelombang nirkabel</p>
+      </div>
+
       <div className="flex flex-wrap gap-3 justify-center">
         {modes.map(m => (
           <button key={m.id} onClick={() => setMode(m.id)}
-            className={`px-4 py-2 rounded-full font-semibold text-sm border-2 transition-all ${
+            className={`px-4 py-2 rounded-full font-semibold text-sm border transition-all ${
               mode === m.id
-                ? m.color === 'blue'   ? 'bg-blue-600 border-blue-600 text-white shadow-lg shadow-blue-500/30'
-                : m.color === 'violet' ? 'bg-violet-600 border-violet-600 text-white shadow-lg shadow-violet-500/30'
-                :                        'bg-amber-500 border-amber-500 text-white shadow-lg shadow-amber-400/30'
-                : 'bg-white border-slate-200 text-slate-700 hover:border-slate-400'
+                ? m.color === 'blue'   ? 'bg-blue-500 border-blue-400 text-white shadow-lg shadow-blue-500/30'
+                : m.color === 'violet' ? 'bg-violet-500 border-violet-400 text-white shadow-lg shadow-violet-500/30'
+                :                        'bg-amber-500 border-amber-400 text-white shadow-lg shadow-amber-500/30'
+                : 'bg-slate-800 border-slate-700 text-slate-300 hover:bg-slate-700 hover:border-slate-500'
             }`}>
             {m.label}
-            <span className="ml-1.5 text-xs font-normal opacity-70 hidden sm:inline">— {m.desc}</span>
+            <span className="ml-1.5 text-[10px] font-normal opacity-80 hidden md:inline">— {m.desc}</span>
           </button>
         ))}
       </div>
 
-      <div className="relative w-full rounded-2xl overflow-hidden bg-gradient-to-b from-slate-900 to-slate-950 border border-slate-800 shadow-xl" style={{ height }}>
-        <Canvas shadows dpr={[1, 2]} camera={{ position: [4, 3, 6], fov: 50 }} gl={{ antialias: true }}>
+      <div className="relative w-full rounded-xl overflow-hidden bg-gradient-to-b from-sky-300 to-sky-100 border border-slate-200 shadow-inner" style={{ height }}>
+        <Canvas shadows dpr={[1, 2]} camera={{ position: [0, 4, 8], fov: 50 }} gl={{ antialias: true }}>
           <Suspense fallback={null}>
             <PropagationScene mode={mode} />
+            <OrbitControls enableZoom={true} enablePan={false} maxPolarAngle={Math.PI / 2 - 0.05} minDistance={2} maxDistance={15} />
           </Suspense>
         </Canvas>
 
         <div className="absolute top-3 left-4 pointer-events-none">
-          <div className="text-[10px] text-slate-400 font-mono uppercase tracking-widest">Signal Propagation 3D</div>
-          <div className="text-sm font-bold text-white">
-            {mode === 'freespace' && 'Free Space Path Loss'}
-            {mode === 'multipath' && 'Multipath Fading'}
-            {mode === 'shadowing' && 'Shadowing / Obstacle Loss'}
+          <div className="text-[10px] text-slate-700 font-mono uppercase tracking-widest bg-white/60 px-2 py-0.5 rounded-full backdrop-blur-sm border border-white/40 mb-1 inline-block">Propagasi Sinyal 3D</div>
+          <div className="text-sm font-bold text-slate-800 drop-shadow-sm">
+            {mode === 'freespace' && 'Ruang Terbuka (Free Space Path Loss)'}
+            {mode === 'multipath' && 'Perkotaan (Multipath Fading)'}
+            {mode === 'shadowing' && 'Area Gedung Tinggi (Shadowing)'}
           </div>
         </div>
 
-        <div className="absolute bottom-3 right-4 flex flex-col gap-1 pointer-events-none">
+        <div className="absolute bottom-3 right-4 flex flex-col gap-1 pointer-events-none bg-white/60 p-2 rounded backdrop-blur-sm border border-white/50">
           {[
             { color: '#22c55e', label: 'Sinyal Kuat' },
             { color: '#f59e0b', label: 'Sinyal Sedang' },
             { color: '#ef4444', label: 'Sinyal Lemah' },
           ].map(l => (
-            <div key={l.label} className="flex items-center gap-1.5">
+            <div key={l.label} className="flex items-center gap-2">
               <span className="w-2 h-2 rounded-full shrink-0" style={{ background: l.color }} />
-              <span className="text-[10px] text-slate-400 font-mono">{l.label}</span>
+              <span className="text-[10px] text-slate-800 font-bold">{l.label}</span>
             </div>
           ))}
         </div>
-      </div>
-
-      <div className="text-center text-xs text-slate-500">
-        Drag untuk rotasi · Scroll untuk zoom · Pilih mode untuk melihat fenomena propagasi sinyal nirkabel
+        
+        <div className="absolute bottom-3 left-4 text-slate-600 bg-white/60 px-2 py-0.5 rounded backdrop-blur-sm border border-white/50 text-[10px] font-mono pointer-events-none">
+          Drag rotasi · Scroll zoom
+        </div>
       </div>
     </div>
   );
