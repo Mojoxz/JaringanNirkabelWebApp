@@ -9,7 +9,7 @@ export default function ProgressBar({ current, total }) {
         <span>Progress Belajar</span>
         <span>{percentage}% ({current}/{total})</span>
       </div>
-      <div className="h-3 w-full bg-slate-200 rounded-full overflow-hidden">
+      <div className="h-2 w-full bg-slate-200 rounded-full overflow-hidden">
         <motion.div
           className="h-full bg-primary-600 rounded-full"
           initial={{ width: 0 }}

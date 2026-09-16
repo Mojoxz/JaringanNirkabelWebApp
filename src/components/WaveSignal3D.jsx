@@ -259,8 +259,9 @@ function PropagationScene({ mode }) {
         <ReceiverDevice key={i} position={r.pos} color={r.color} signalStrength={r.strength} label={r.label} />
       ))}
 
-      <OrbitControls enableZoom={false} enablePan={false} autoRotate autoRotateSpeed={0.5}
-        maxPolarAngle={Math.PI * 0.72} minPolarAngle={Math.PI * 0.24} />
+      <OrbitControls enableZoom enablePan={false} autoRotate autoRotateSpeed={0.5}
+        maxPolarAngle={Math.PI * 0.72} minPolarAngle={Math.PI * 0.24}
+        minDistance={3} maxDistance={14} zoomSpeed={0.8} />
     </>
   );
 }
@@ -324,7 +325,7 @@ export default function WaveSignal3D({ height = '360px' }) {
       </div>
 
       <div className="text-center text-xs text-slate-500">
-        Drag untuk rotasi · Pilih mode untuk melihat fenomena propagasi sinyal nirkabel
+        Drag untuk rotasi · Scroll untuk zoom · Pilih mode untuk melihat fenomena propagasi sinyal nirkabel
       </div>
     </div>
   );

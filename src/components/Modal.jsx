@@ -31,7 +31,7 @@ export default function Modal({ isOpen, onClose, title, children }) {
             exit={{ opacity: 0, scale: 0.95, y: 20 }}
             className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-lg z-50 p-4"
           >
-            <div className="bg-white rounded-2xl shadow-xl overflow-hidden max-h-[90vh] flex flex-col">
+            <div className="bg-white rounded-xl shadow-xl overflow-hidden max-h-[90vh] flex flex-col">
               <div className="flex justify-between items-center p-4 border-b border-slate-100">
                 <h3 className="font-semibold text-lg text-slate-900">{title}</h3>
                 <button

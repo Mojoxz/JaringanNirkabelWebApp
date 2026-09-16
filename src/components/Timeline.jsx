@@ -9,7 +9,7 @@ export default function Timeline({ data, intro }) {
   return (
     <div className="space-y-8 mt-6">
       {intro && (
-        <div className="bg-primary-50 border border-primary-100 rounded-2xl p-6">
+        <div className="bg-primary-50 border border-primary-100 rounded-xl p-5">
           <div className="flex items-start gap-3">
             <Info size={20} className="text-primary-600 shrink-0 mt-0.5" />
             <p className="text-primary-900 leading-relaxed">{intro}</p>
@@ -52,7 +52,7 @@ export default function Timeline({ data, intro }) {
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: -20 }}
               transition={{ duration: 0.35 }}
-              className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden"
+              className="bg-white rounded-xl border border-slate-200 overflow-hidden"
             >
               {data[activeIndex].image && (
                 <img
