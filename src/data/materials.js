@@ -1,808 +1,1208 @@
 import { images } from './images';
 
 export const materials = [
-  // ─────────────────────────────────────────────────────────────
-  // CHAPTER 01 — SEJARAH
-  // ─────────────────────────────────────────────────────────────
   {
-    id: "01",
-    title: "Sejarah Jaringan Nirkabel",
-    description: "Perjalanan panjang teknologi komunikasi nirkabel — dari gelombang radio abad ke-19 hingga Wi-Fi 7 yang hadir di era kini. Klik setiap titik untuk melihat cerita di baliknya.",
-    type: "timeline",
-    intro: "Jaringan nirkabel bukanlah teknologi baru. Perjalanannya dimulai dari penemuan gelombang elektromagnetik oleh Heinrich Hertz pada akhir 1800-an dan terus berkembang pesat hingga hari ini.",
+    id: '01',
+    title: 'Sejarah Jaringan Nirkabel',
+    description:
+      'Perjalanan panjang teknologi komunikasi nirkabel dari gelombang radio abad ke-19 hingga standar IEEE 802.11be (Wi-Fi 7) di era kini. Pilih setiap titik tahun untuk mempelajari terobosannya.',
+    type: 'timeline',
+    estimatedMinutes: 8,
+    objectives: [
+      'Memahami eksperimen awal gelombang elektromagnetik oleh Heinrich Hertz dan Guglielmo Marconi.',
+      'Menjelaskan peran ALOHAnet (1971) sebagai cikal bakal protokol akses medium jaringan komputer modern.',
+      'Membedakan karakteristik tiap generasi standar IEEE 802.11 dari Wi-Fi 1 (802.11b) hingga Wi-Fi 7 (802.11be).',
+    ],
+    keyFormula: {
+      title: 'Hubungan Panjang Gelombang & Frekuensi',
+      code: 'λ = c / f   (c = 3 × 10^8 m/s, f = frekuensi dalam Hz)',
+      note: 'Semakin tinggi frekuensi (misal 6 GHz dibanding 2.4 GHz), semakin pendek panjang gelombang (λ), sehingga kapasitas data meningkat tetapi daya tembus tembok berkurang.',
+    },
+    intro:
+      'Jaringan nirkabel bukanlah teknologi yang muncul secara instan. Perjalanannya dimulai dari pembuktian gelombang elektromagnetik oleh Heinrich Hertz pada akhir 1800-an dan terus berevolusi hingga mencapai kecepatan puluhan Gigabit per detik hari ini.',
     content: [
       {
-        year: "1888",
-        event: "Penemuan Gelombang Radio",
-        description: "Heinrich Hertz berhasil membuktikan keberadaan gelombang elektromagnetik secara eksperimental. Penemuannya menjadi fondasi ilmiah bagi seluruh teknologi komunikasi nirkabel. Satuan frekuensi 'Hertz (Hz)' dinamai untuk menghormati kontribusinya.",
-        detail: "Hertz menggunakan peralatan sederhana — sebuah osilator dan detektor — untuk menghasilkan dan mendeteksi gelombang radio pertama di dunia. Frekuensi yang digunakan berkisar 100 MHz.",
-        image: images.historyMarconi
+        year: '1888',
+        event: 'Penemuan Gelombang Radio',
+        description:
+          'Heinrich Hertz berhasil membuktikan keberadaan gelombang elektromagnetik secara eksperimental. Penemuannya menjadi fondasi ilmiah bagi seluruh teknologi komunikasi nirkabel. Satuan frekuensi Hertz (Hz) dinamai untuk menghormati kontribusinya.',
+        detail:
+          'Hertz menggunakan peralatan sederhana berupa osilator celah percikan dan antena loop detektor untuk menghasilkan serta mendeteksi gelombang radio pertama di dunia pada kisaran frekuensi 100 MHz.',
+        image: images.historyMarconi,
       },
       {
-        year: "1895",
-        event: "Transmisi Radio Pertama oleh Marconi",
-        description: "Guglielmo Marconi berhasil mengirimkan sinyal Morse secara nirkabel sejauh 2 km di Bologna, Italia. Ia kemudian mendirikan perusahaan radio komersial pertama di dunia.",
-        detail: "Marconi mengembangkan sistem komunikasi radio yang praktis. Pada tahun 1901, ia berhasil mengirimkan sinyal melintasi Samudra Atlantik — dari Cornwall, Inggris ke Newfoundland, Kanada — sebuah pencapaian luar biasa di zamannya.",
-        image: images.historyWireless
+        year: '1895',
+        event: 'Transmisi Radio Pertama oleh Marconi',
+        description:
+          'Guglielmo Marconi berhasil mengirimkan sinyal kode Morse secara nirkabel sejauh 2 km di Bologna, Italia. Ia kemudian mendirikan perusahaan telegraf radio komersial pertama di dunia.',
+        detail:
+          'Marconi mengembangkan sistem komunikasi radio jarak jauh yang praktis. Pada tahun 1901, ia berhasil mengirimkan sinyal melintasi Samudra Atlantik dari Cornwall (Inggris) ke Newfoundland (Kanada).',
+        image: images.historyWireless,
       },
       {
-        year: "1971",
-        event: "ALOHAnet — Jaringan Komputer Nirkabel Pertama",
-        description: "Universitas Hawaii mengoperasikan ALOHAnet, jaringan komputer nirkabel pertama di dunia. Sistem ini menghubungkan komputer di empat pulau yang berbeda menggunakan UHF radio.",
-        detail: "ALOHAnet memperkenalkan protokol 'ALOHA' yang menjadi cikal bakal dari CSMA/CD yang digunakan Ethernet modern. Jaringan ini beroperasi pada kecepatan 9600 bps — sangat lambat dibanding standar saat ini.",
-        image: images.historyWireless
+        year: '1971',
+        event: 'ALOHAnet: Jaringan Komputer Nirkabel Pertama',
+        description:
+          'Universitas Hawaii mengoperasikan ALOHAnet, jaringan paket komputer nirkabel pertama di dunia. Sistem ini menghubungkan komputer di empat pulau berbeda menggunakan radio UHF.',
+        detail:
+          'ALOHAnet memperkenalkan protokol akses acak ALOHA yang menjadi cikal bakal CSMA/CD pada Ethernet dan CSMA/CA pada Wi-Fi modern. Jaringan ini beroperasi pada kecepatan 9.600 bps.',
+        image: images.historyWireless,
       },
       {
-        year: "1997",
-        event: "IEEE 802.11 — Standar Wi-Fi Pertama",
-        description: "IEEE (Institute of Electrical and Electronics Engineers) menerbitkan standar 802.11 pertama, yang memungkinkan transfer data nirkabel hingga 2 Mbps pada frekuensi 2.4 GHz atau infrared.",
-        detail: "Standar ini menggunakan teknologi DSSS (Direct Sequence Spread Spectrum) dan FHSS (Frequency Hopping Spread Spectrum). Meski lambat, ini adalah titik awal dari ekosistem Wi-Fi yang kita kenal hari ini.",
-        image: images.historyWireless
+        year: '1997',
+        event: 'IEEE 802.11: Standar Wi-Fi Pertama',
+        description:
+          'IEEE (Institute of Electrical and Electronics Engineers) menerbitkan standar 802.11 asli yang memungkinkan transfer data nirkabel hingga 2 Mbps pada pita 2.4 GHz atau media inframerah.',
+        detail:
+          'Standar awal ini menggunakan modulasi DSSS (Direct Sequence Spread Spectrum) dan FHSS (Frequency Hopping Spread Spectrum). Meskipun kecepatannya terbatas, standar ini menjadi fondasi ekosistem WLAN.',
+        image: images.historyWireless,
       },
       {
-        year: "1999",
-        event: "Wi-Fi Alliance & 802.11b (Wi-Fi 1)",
-        description: "Istilah 'Wi-Fi' resmi diperkenalkan oleh Wi-Fi Alliance. Standar 802.11b hadir dengan kecepatan 11 Mbps dan menjadi adopsi pertama yang luas secara komersial.",
-        detail: "802.11b bekerja pada pita 2.4 GHz dengan jangkauan dalam ruangan hingga ~38 meter. Karena harganya terjangkau, teknologi ini dengan cepat diadopsi di laptop, PDA, dan perangkat genggam lainnya.",
-        image: images.historyWireless
+        year: '1999',
+        event: 'Wi-Fi Alliance & 802.11b (Wi-Fi 1)',
+        description:
+          'Istilah Wi-Fi resmi diperkenalkan oleh Wi-Fi Alliance. Standar 802.11b hadir dengan kecepatan maksimal 11 Mbps dan menjadi standar pertama yang diadopsi secara luas di perangkat komersial.',
+        detail:
+          '802.11b bekerja pada pita 2.4 GHz dengan jangkauan dalam ruangan sekitar 38 meter. Karena biaya produksi chipset yang terjangkau, teknologi ini cepat terpasang pada laptop generasi awal.',
+        image: images.historyWireless,
       },
       {
-        year: "2002–2003",
-        event: "802.11a dan 802.11g (Wi-Fi 2 & 3)",
-        description: "802.11a menggunakan pita 5 GHz dengan kecepatan hingga 54 Mbps. 802.11g hadir di 2.4 GHz dengan kecepatan yang sama namun kompatibel dengan 802.11b.",
-        detail: "802.11g menjadi sangat populer karena menawarkan kecepatan tinggi dengan tetap kompatibel mundur ke 802.11b. Ini adalah era 'hot spot' Wi-Fi publik mulai bermunculan di kafe, bandara, dan hotel.",
-        image: images.historyWireless
+        year: '2002-2003',
+        event: '802.11a dan 802.11g (Wi-Fi 2 & 3)',
+        description:
+          'Standar 802.11a menggunakan pita 5 GHz dengan modulasi OFDM hingga 54 Mbps. Menyusul kemudian 802.11g di pita 2.4 GHz dengan kecepatan 54 Mbps yang tetap kompatibel mundur dengan 802.11b.',
+        detail:
+          '802.11g menjadi sangat populer karena menggabungkan kecepatan OFDM 54 Mbps dengan jangkauan luas pita 2.4 GHz. Pada masa ini hotspot Wi-Fi publik mulai menjamur di bandara, kampus, dan kafe.',
+        image: images.historyWireless,
       },
       {
-        year: "2009",
-        event: "802.11n (Wi-Fi 4) — Revolusi MIMO",
-        description: "Wi-Fi 4 memperkenalkan teknologi MIMO (Multiple Input Multiple Output), memungkinkan kecepatan teoritis hingga 600 Mbps menggunakan antena jamak. Pertama kali mendukung dual-band 2.4 & 5 GHz.",
-        detail: "MIMO menggunakan beberapa antena pemancar dan penerima sekaligus untuk meningkatkan throughput dan mengurangi error. Ini adalah lompatan besar dalam kapasitas jaringan Wi-Fi.",
-        image: images.wifi6
+        year: '2009',
+        event: '802.11n (Wi-Fi 4): Revolusi MIMO',
+        description:
+          'Wi-Fi 4 memperkenalkan teknologi MIMO (Multiple-Input Multiple-Output) yang memungkinkan kecepatan teoritis hingga 600 Mbps menggunakan hingga 4 aliran spasial antena serta dukungan dual-band (2.4 GHz dan 5 GHz).',
+        detail:
+          'MIMO memanfaatkan beberapa antena pemancar dan penerima sekaligus serta menggandakan lebar kanal dari 20 MHz menjadi 40 MHz untuk mendongkrak kapasitas jaringan.',
+        image: images.wifi6,
       },
       {
-        year: "2013–2019",
-        event: "Wi-Fi 5 & Wi-Fi 6 — Era Gigabit",
-        description: "Wi-Fi 5 (802.11ac) membawa kecepatan Gigabit pertama di 5 GHz. Wi-Fi 6 (802.11ax) menghadirkan OFDMA untuk efisiensi jaringan padat, dengan kecepatan hingga 9.6 Gbps.",
-        detail: "Wi-Fi 6 dirancang untuk lingkungan dengan sangat banyak perangkat — stadion, bandara, mal. Fitur TWT (Target Wake Time) menghemat baterai perangkat IoT secara drastis.",
-        image: images.wifi6
+        year: '2013-2019',
+        event: 'Wi-Fi 5 (802.11ac) & Wi-Fi 6 (802.11ax): Era Gigabit',
+        description:
+          'Wi-Fi 5 membawa kecepatan Gigabit pertama di pita 5 GHz. Wi-Fi 6 menghadirkan modulasi OFDMA dan 1024-QAM untuk efisiensi tinggi di area padat perangkat dengan kecepatan teoritis hingga 9.6 Gbps.',
+        detail:
+          'Wi-Fi 6 dirancang untuk skenario kepadatan tinggi seperti stadion, bandara, dan ruang kuliah. Fitur TWT (Target Wake Time) menjadwalkan waktu transmisi sehingga menghemat baterai perangkat IoT.',
+        image: images.wifi6,
       },
       {
-        year: "2024+",
-        event: "Wi-Fi 7 (802.11be) — Ultra-High Throughput",
-        description: "Wi-Fi 7 menghadirkan kecepatan teoritis hingga 46 Gbps menggunakan saluran 320 MHz dan Multi-Link Operation (MLO) — kemampuan untuk menggunakan beberapa pita frekuensi secara bersamaan.",
-        detail: "MLO memungkinkan perangkat mengirim dan menerima data di beberapa band sekaligus, mengurangi latensi drastis. Wi-Fi 7 sangat cocok untuk AR/VR, gaming cloud, dan streaming 8K.",
-        image: images.wifi6
-      }
+        year: '2024+',
+        event: 'Wi-Fi 7 (802.11be): Ultra-High Throughput',
+        description:
+          'Wi-Fi 7 menghadirkan kecepatan teoritis hingga 46 Gbps menggunakan lebar kanal 320 MHz, modulasi 4096-QAM, dan fitur Multi-Link Operation (MLO) yang menggabungkan beberapa pita frekuensi sekaligus.',
+        detail:
+          'MLO memungkinkan perangkat mengirim dan menerima paket data melalui pita 2.4 GHz, 5 GHz, dan 6 GHz secara simultan untuk menekan latensi ke tingkat ultra-rendah.',
+        image: images.wifi6,
+      },
     ],
     exercise: [
       {
         type: 'fill',
-        question: "Ilmuwan yang pertama kali membuktikan keberadaan gelombang elektromagnetik secara eksperimental pada tahun 1888 adalah _______.",
-        answer: ["Heinrich Hertz", "Hertz", "hertz", "heinrich hertz"],
-        hint: "Namanya diabadikan sebagai satuan frekuensi."
+        question:
+          'Ilmuwan yang pertama kali membuktikan keberadaan gelombang elektromagnetik secara eksperimental pada tahun 1888 adalah _______.',
+        answer: ['Heinrich Hertz', 'Hertz', 'hertz', 'heinrich hertz'],
+        hint: 'Namanya diabadikan sebagai satuan frekuensi internasional (Hz).',
       },
       {
         type: 'choice',
-        question: "Pada tahun berapa istilah 'Wi-Fi' secara resmi diperkenalkan oleh Wi-Fi Alliance?",
-        options: ["1997", "1999", "2003", "2009"],
-        answer: 1
+        question: 'Pada tahun berapa istilah Wi-Fi secara resmi diperkenalkan oleh Wi-Fi Alliance?',
+        options: ['1997', '1999', '2003', '2009'],
+        answer: 1,
       },
       {
         type: 'fill',
-        question: "Wi-Fi 6 menggunakan standar IEEE _______.",
-        answer: ["802.11ax", "802.11 ax"],
-        hint: "Format: 802.11xx"
+        question: 'Generasi Wi-Fi 6 menggunakan kode standar IEEE _______.',
+        answer: ['802.11ax', '802.11 ax'],
+        hint: 'Format penulisan: 802.11xx',
       },
       {
         type: 'choice',
-        question: "Teknologi apa yang pertama kali diperkenalkan oleh Wi-Fi 4 (802.11n) untuk meningkatkan throughput?",
-        options: ["OFDMA", "MIMO", "MU-MIMO", "Beamforming"],
-        answer: 1
-      }
-    ]
+        question: 'Teknologi antena majemuk apa yang pertama kali diperkenalkan oleh Wi-Fi 4 (802.11n) untuk meningkatkan throughput?',
+        options: ['OFDMA', 'MIMO', 'SAE', 'MLO'],
+        answer: 1,
+      },
+    ],
   },
 
-  // ─────────────────────────────────────────────────────────────
-  // CHAPTER 02 — ANTENA
-  // ─────────────────────────────────────────────────────────────
   {
-    id: "02",
-    title: "Jenis-Jenis Antena Nirkabel",
-    description: "Antena adalah 'mulut dan telinga' dari sistem nirkabel. Jenis antena yang dipilih sangat menentukan jangkauan, arah, dan kualitas sinyal. Klik setiap kartu untuk detail lengkap.",
-    type: "cards-antenna",
-    intro: "Dalam dunia nirkabel, tidak ada satu antena yang cocok untuk semua situasi. Pemilihan antena yang tepat bergantung pada kebutuhan: apakah sinyal harus disebarkan ke segala arah, atau difokuskan ke satu titik tertentu?",
+    id: '02',
+    title: 'Jenis-Jenis Antena Nirkabel',
+    description:
+      'Antena menentukan arah pancaran, penguatan (gain dBi), dan jangkauan sinyal radio. Eksplorasi visualisasi pola pancaran 3D dan pelajari spesifikasi tiap jenis antena.',
+    type: 'cards-antenna',
+    estimatedMinutes: 10,
+    objectives: [
+      'Membedakan pola pancaran Omnidirectional (360°) dan Directional (Sectoral, Panel, Yagi, Parabolic).',
+      'Memahami hubungan antara penguatan antena (Gain dalam dBi) dengan penyempitan sudut pancar (Beamwidth).',
+      'Menentukan jenis antena yang tepat untuk skenario hotspot ruangan, base station WISP, maupun backhaul antar pulau.',
+    ],
+    keyFormula: {
+      title: 'Korelasi Gain (dBi) dan Lebar Berkas (Beamwidth)',
+      code: 'Gain Tinggi (dBi ↑)  ==>  Sudut Pancar Sempit (Beamwidth ° ↓)  ==>  Jangkauan Jarak Jauh (km ↑)',
+      note: 'Antena pasif tidak menciptakan energi tambahan, melainkan memfokuskan energi RF yang tadinya menyebar ke segala arah menjadi terarah ke satu koridor sempit.',
+    },
+    intro:
+      'Dalam perancangan jaringan nirkabel, tidak ada satu jenis antena yang ideal untuk semua topologi. Pemilihan antena bergantung pada distribusi lokasi klien: apakah sinyal perlu disebarkan merata 360 derajat, atau difokuskan lurus ke satu titik sejauh puluhan kilometer.',
     content: [
       {
-        name: "Omni Directional",
+        name: 'Omni Directional',
         image: images.antennaOmni,
-        badge: "360° Coverage",
-        badgeColor: "blue",
-        description: "Antena omni memancarkan dan menerima sinyal secara merata ke segala arah horizontal (360°), seperti balon yang mengembang ke semua sisi.",
-        detail: "Antena ini ideal untuk titik akses di tengah ruangan atau menara yang perlu melayani banyak klien dari segala penjuru. Tradeoff-nya adalah gain rendah karena energi tersebar ke semua arah.",
-        characteristics: ["Gain: 2–12 dBi", "Pola pancaran: 360° Horizontal, ~7° Vertikal", "Jangkauan: Pendek–Menengah", "Keuntungan: Coverage luas tanpa perlu arah"],
-        usage: "Access Point indoor, hotspot publik, tower BTS tinggi, wireless router rumahan.",
-        radiationPattern: "360° Omnidirectional — Sinyal menyebar ke seluruh arah seperti 'donat'. Semakin tinggi gain, semakin 'tipis' donat (vertikal makin sempit, horizontal makin kuat).",
-        example: "Access Point Ubiquiti UniFi AP yang dipasang di langit-langit ruangan menggunakan antena omni agar bisa melayani seluruh area sekitarnya."
+        badge: '360° Coverage',
+        badgeColor: 'blue',
+        description:
+          'Antena omni memancarkan dan menerima sinyal secara merata ke seluruh arah horizontal (360°), menyerupai bentuk donat (toroidal) yang mengelilingi poros antena.',
+        detail:
+          'Antena ini ideal untuk titik akses di tengah ruangan atau menara pusat yang melayani klien dari segala penjuru. Konsekuensinya adalah gain relatif kecil karena daya tersebar ke seluruh arah.',
+        characteristics: [
+          'Gain: 2 sampai 12 dBi',
+          'Pola pancaran: 360° Horizontal, 7° sampai 80° Vertikal',
+          'Jangkauan: Pendek hingga Menengah',
+          'Keunggulan: Cakupan merata tanpa perlu pengarahan sudut horizontal',
+        ],
+        usage: 'Access Point indoor, hotspot taman/publik, wireless router rumahan.',
+        radiationPattern:
+          '360° Omnidirectional: Sinyal menyebar ke seluruh arah horizontal seperti donat. Semakin tinggi gain dBi pada antena omni, semakin pipih cakupan vertikalnya demi memperluas radius horizontal.',
+        example:
+          'Access Point Ubiquiti UniFi yang dipasang di plafon ruang kelas menggunakan antena omni internal agar seluruh laptop mahasiswa mendapat sinyal merata.',
       },
       {
-        name: "Antena Sectoral",
+        name: 'Antena Sectoral',
         image: images.antennaSectoral,
-        badge: "60°–120°",
-        badgeColor: "purple",
-        description: "Antena sectoral memancarkan sinyal dalam sudut tertentu — biasanya 60°, 90°, atau 120°. Mirip seperti irisan pizza, bukan keseluruhan pizza.",
-        detail: "Gain antena sectoral lebih tinggi daripada omni dalam sektor yang dipilih. Biasanya dipasang dalam kelompok 3 antena (masing-masing 120°) untuk menutupi area 360° penuh pada tower PTMP.",
-        characteristics: ["Gain: 12–18 dBi", "Pola pancaran: 60°–120° Horizontal", "Jangkauan: Menengah–Jauh", "Cocok untuk: PTMP Base Station"],
-        usage: "Base station WISP (Wireless Internet Service Provider), menara BTS, sistem PTMP komersial.",
-        radiationPattern: "Directional dengan sudut sektor. Satu tower BTS biasanya memasang 3 antena sectoral masing-masing 120° untuk menutupi 360°.",
-        example: "Tower ISP lokal yang menyediakan internet untuk pelanggan rumah menggunakan antena sectoral sebagai base station yang melayani ratusan pelanggan dalam radius tertentu."
+        badge: '60° - 120°',
+        badgeColor: 'purple',
+        description:
+          'Antena sectoral memancarkan sinyal dalam sektor sudut horizontal tertentu, umumnya 60°, 90°, atau 120°.',
+        detail:
+          'Penguatan (gain) antena sectoral jauh lebih tinggi dibanding omni pada sektor yang disorot. Pada menara BTS atau WISP, biasanya dipasang 3 unit antena sectoral 120° untuk menutup cakupan 360° penuh dengan kapasitas tinggi.',
+        characteristics: [
+          'Gain: 12 sampai 18 dBi',
+          'Pola pancaran: 60° hingga 120° Horizontal',
+          'Jangkauan: Menengah hingga Jauh (3 sampai 15 km)',
+          'Fungsi utama: Base Station Point-to-Multipoint (PTMP)',
+        ],
+        usage: 'Base station WISP (Wireless ISP), menara BTS seluler, distribusi jaringan kawasan industri.',
+        radiationPattern:
+          'Directional berbentuk kipas sektor. Tiga sektor @120° memungkinkan pemakaian ulang kanal frekuensi (frequency reuse) dengan kapasitas klien 3 kali lebih besar dibanding satu antena omni.',
+        example:
+          'Tower WISP lokal memasang tiga antena sectoral MikroTik mANT 15s (120°) untuk melayani ratusan rumah pelanggan dari satu menara pusat.',
       },
       {
-        name: "Antena Panel",
+        name: 'Antena Panel (Flat Panel)',
         image: images.antennaPanel,
-        badge: "Directional",
-        badgeColor: "emerald",
-        description: "Antena panel (flat panel) berbentuk persegi panjang datar dengan gain menengah. Memancarkan sinyal dalam pola directional yang lebih terfokus.",
-        detail: "Antena panel lebih ringkas dan estetis dibanding antena grid. Cocok untuk dipasang di dinding atau tiang pendek. Sering digunakan sebagai CPE (Client Premises Equipment) untuk penerima di sisi pelanggan.",
-        characteristics: ["Gain: 14–24 dBi", "Pola pancaran: Directional, ~30°–60°", "Jangkauan: Menengah (1–10 km)", "Cocok untuk: Client PTMP, PTP jarak dekat"],
-        usage: "CPE (perangkat penerima di rumah pelanggan WISP), PTP jarak menengah, indoor wireless backhaul.",
-        radiationPattern: "Directional dengan beamwidth sedang. Lebih mudah dikonfigurasi karena lebih ringan dan ringkas.",
-        example: "Perangkat seperti Ubiquiti LiteBeam atau TP-Link CPE510 adalah contoh antena panel yang dipasang di atap rumah pelanggan untuk menerima sinyal dari tower ISP."
+        badge: 'Directional',
+        badgeColor: 'emerald',
+        description:
+          'Antena panel berbentuk kotak pipih dengan susunan elemen patch internal yang memancarkan sinyal terarah dengan sudut menengah.',
+        detail:
+          'Antena panel lebih ringkas, tahan terpaan angin, dan rapi dibanding antena Yagi atau Grid. Sangat populer digunakan sebagai perangkat penerima di sisi pelanggan (CPE) maupun link antar gedung dekat.',
+        characteristics: [
+          'Gain: 14 sampai 24 dBi',
+          'Pola pancaran: Directional, sudut 15° hingga 60°',
+          'Jangkauan: Menengah (1 sampai 10 km)',
+          'Fungsi utama: Client PTMP (CPE) dan PTP jarak menengah',
+        ],
+        usage: 'Perangkat penerima di atap rumah pelanggan WISP (CPE), link antar gedung kampus.',
+        radiationPattern:
+          'Directional dengan lobi utama (main lobe) terfokus ke depan dan kebocoran sinyal belakang (back lobe) yang sangat kecil.',
+        example:
+          'Perangkat TP-Link CPE510 atau Ubiquiti NanoStation M5 yang dipasang di tiang atap rumah pelanggan menghadap ke tower ISP.',
       },
       {
-        name: "Antena Yagi",
+        name: 'Antena Yagi-Uda',
         image: images.antennaYagi,
-        badge: "Narrow Beam",
-        badgeColor: "orange",
-        description: "Antena Yagi-Uda terdiri dari sebuah dipole aktif, reflektor di belakang, dan beberapa director di depan. Menghasilkan berkas sinyal yang sempit dan terarah.",
-        detail: "Semakin banyak elemen director, semakin tinggi gain dan semakin sempit beamwidth. Antena Yagi sangat sensitif terhadap arah, sehingga harus diarahkan dengan presisi ke pemancar.",
-        characteristics: ["Gain: 7–20 dBi (tergantung jumlah elemen)", "Pola pancaran: Directional, berkas sempit", "Jangkauan: Menengah–Jauh", "Sensitif terhadap arah"],
-        usage: "PTP jarak menengah (3–15 km), penerima TV digital, ekstensi jangkauan Wi-Fi.",
-        radiationPattern: "Directional sangat spesifik. Berkas sempit ke depan dengan beberapa lobe sisi (side lobe) yang lebih kecil. Harus diarahkan tepat ke target.",
-        example: "Sering digunakan untuk menghubungkan dua gedung dalam kampus atau untuk memperkuat sinyal TV digital di daerah yang jauh dari pemancar."
+        badge: 'Narrow Beam',
+        badgeColor: 'orange',
+        description:
+          'Antena Yagi terdiri dari satu elemen driven (dipole aktif), satu reflektor di belakang, dan deretan elemen director di bagian depan untuk memfokuskan berkas gelombang.',
+        detail:
+          'Semakin panjang boom dan semakin banyak elemen director di depannya, semakin tinggi gain dBi yang dihasilkan dan semakin sempit sudut pancarnya.',
+        characteristics: [
+          'Gain: 7 sampai 20 dBi (bergantung jumlah elemen director)',
+          'Pola pancaran: Directional dengan berkas sempit',
+          'Jangkauan: Menengah hingga Jauh (3 sampai 15 km)',
+          'Membutuhkan pengarahan sudut (pointing) yang presisi',
+        ],
+        usage: 'Link Point-to-Point jarak menengah, telemetri SCADA, penguat sinyal terarah.',
+        radiationPattern:
+          'Directional memanjang ke depan dengan beberapa side lobe kecil. Sangat efektif menekan interferensi dari samping.',
+        example:
+          'Menghubungkan jaringan gedung laboratorium ke gedung rektorat yang terpisah jarak 2 km.',
       },
       {
-        name: "Antena Parabolic/Grid",
+        name: 'Antena Parabolic / Grid Dish',
         image: images.antennaParabolic,
-        badge: "High Gain",
-        badgeColor: "red",
-        description: "Antena parabolic menggunakan reflektor berbentuk parabola untuk memfokuskan sinyal radio ke titik tertentu (focus point). Menghasilkan gain tertinggi di antara jenis antena lainnya.",
-        detail: "Desain grid (kisi-kisi) mengurangi hambatan angin secara signifikan dibanding solid dish, menjadikannya lebih aman untuk pemasangan di tiang tinggi. Sangat efektif untuk backhaul jarak sangat jauh.",
-        characteristics: ["Gain: 24–34 dBi", "Pola pancaran: Highly Directional, berkas sangat sempit (<5°)", "Jangkauan: Sangat Jauh (10–100+ km)", "Memerlukan alignment akurat"],
-        usage: "Backhaul jarak jauh, menghubungkan dua lokasi yang terpisah gunung atau laut, koneksi antar pulau.",
-        radiationPattern: "Highly directional. Berkas sinyal sangat sempit. Bahkan beberapa derajat saja meleset akan menyebabkan penurunan sinyal drastis. Butuh level alignment (waterpass).",
-        example: "Menghubungkan tower repeater di dua puncak gunung yang berjarak 30+ km, atau koneksi backhaul antar kota untuk operator WISP skala besar."
+        badge: 'High Gain',
+        badgeColor: 'red',
+        description:
+          'Antena parabolic menggunakan reflektor cekung berbentuk parabola untuk memantulkan dan memfokuskan gelombang radio tepat ke titik fokus (feed horn).',
+        detail:
+          'Varian reflektor kisi-kisi (Grid) mengurangi beban terpaan angin di atas tower tinggi, sedangkan varian Solid Dish dengan radome memberikan isolasi interferensi samping terbaik untuk backhaul jarak jauh.',
+        characteristics: [
+          'Gain: 24 sampai 34 dBi',
+          'Pola pancaran: Highly Directional, sudut sangat sempit (< 5°)',
+          'Jangkauan: Sangat Jauh (10 hingga 80+ km)',
+          'Wajib menggunakan penyelarasan presisi (fine alignment)',
+        ],
+        usage: 'Link backhaul utama antar kota, koneksi antar pulau, sambungan gunung ke gunung.',
+        radiationPattern:
+          'Berkas pensil (pencil beam) ultra-sempit. Pergeseran posisi 2 derajat saja akibat angin kencang dapat menurunkan level sinyal secara drastis.',
+        example:
+          'Ubiquiti PowerBeam / AirFiber Dish yang menghubungkan tower utama di kota dengan tower distribusi di daerah perbukitan sejauh 35 km.',
       },
       {
-        name: "Antena Dipole",
+        name: 'Antena Dipole',
         image: images.antennaDipole,
-        badge: "Basic",
-        badgeColor: "slate",
-        description: "Antena dipole adalah antena paling fundamental — dua konduktor lurus yang saling berseberangan. Ini adalah antena yang ada di dalam router WiFi rumahan.",
-        detail: "Meski terlihat sederhana, dipole memiliki gain sekitar 2.15 dBi dan pola omnidirectional. Banyak antena modern merupakan varian atau kombinasi dari prinsip dasar antena dipole.",
-        characteristics: ["Gain: ~2.15 dBi", "Pola pancaran: Omnidirectional (donat)", "Jangkauan: Pendek", "Murah dan mudah diproduksi"],
-        usage: "Antena bawaan router WiFi rumahan, perangkat Bluetooth, transceiver 2.4 GHz sederhana.",
-        radiationPattern: "Omnidirectional dengan pola 'donat' toroidal. Sangat lemah di arah ujung antena (kutub) dan paling kuat di sisi (ekuator).",
-        example: "Antena tongkat kecil yang menyerupai batang pena pada router WiFi rumahan Anda. Biasanya 2 atau 3 antena dipasang secara miring untuk mengurangi blind spot."
-      }
+        badge: 'Fundamental',
+        badgeColor: 'slate',
+        description:
+          'Antena dipole adalah konstruksi antena paling dasar berupa dua elemen konduktor simetris dengan panjang total setengah panjang gelombang (λ/2).',
+        detail:
+          'Antena tongkat eksternal pada router Wi-Fi rumahan umumnya menggunakan desain dipole dengan penguatan standar 2.15 dBi hingga 5 dBi.',
+        characteristics: [
+          'Gain referensi standar: ~2.15 dBi hingga 5 dBi',
+          'Pola pancaran: Omnidirectional toroidal',
+          'Jangkauan: Ruangan pendek (< 50 meter)',
+          'Konstruksi sederhana dan ekonomis',
+        ],
+        usage: 'Antena bawaan Wireless Router SOHO, adapter Wi-Fi USB/PCIe, modul Bluetooth.',
+        radiationPattern:
+          'Toroidal (donat): radiasi terkuat tegak lurus terhadap batang antena, dan titik buta (null) berada tepat di ujung atas dan bawah antena.',
+        example:
+          'Dua atau empat antena eksternal pada router TP-Link Archer atau ASUS RT di rumah.',
+      },
     ],
     exercise: [
       {
         type: 'choice',
-        question: "Antena jenis apa yang memancarkan sinyal ke segala arah horizontal (360°)?",
-        options: ["Antena Yagi", "Antena Parabolic", "Antena Omni Directional", "Antena Sectoral"],
-        answer: 2
+        question: 'Antena jenis apa yang memancarkan sinyal secara merata ke segala arah horizontal (360°)?',
+        options: ['Antena Yagi', 'Antena Parabolic', 'Antena Omni Directional', 'Antena Sectoral'],
+        answer: 2,
       },
       {
         type: 'fill',
-        question: "Antena parabolic memiliki gain tertinggi, yaitu antara _______ dBi.",
-        answer: ["24-34", "24–34", "24 - 34"],
-        hint: "Tuliskan dalam format: XX-XX"
+        question: 'Antena parabolic memiliki rentang gain tertinggi di antara antena lainnya, yaitu sekitar _______ dBi.',
+        answer: ['24-34', '24 - 34'],
+        hint: 'Tuliskan rentang angka sesuai materi dalam format: XX-XX',
       },
       {
         type: 'choice',
-        question: "Antena sectoral biasanya digunakan untuk topologi jaringan apa?",
-        options: ["PTP (Point-to-Point)", "PTMP (Point-to-Multipoint)", "Mesh", "Ad-hoc"],
-        answer: 1
+        question: 'Antena sectoral (misal 120°) paling sering dipasang pada sisi Base Station untuk topologi apa?',
+        options: ['PTP (Point-to-Point)', 'PTMP (Point-to-Multipoint)', 'NFC Peer-to-Peer', 'Kabel Koaksial'],
+        answer: 1,
       },
       {
         type: 'fill',
-        question: "Antena Yagi memiliki pola pancaran yang _______ (fokus ke satu arah).",
-        answer: ["directional", "terarah"],
-        hint: "Lawan kata dari omnidirectional"
-      }
-    ]
+        question: 'Antena Yagi dan Parabolic memiliki pola pancaran yang _______ (fokus ke satu arah tertentu).',
+        answer: ['directional', 'terarah'],
+        hint: 'Lawan kata dari omnidirectional',
+      },
+    ],
   },
 
-  // ─────────────────────────────────────────────────────────────
-  // CHAPTER 03 — PTP & PTMP
-  // ─────────────────────────────────────────────────────────────
   {
-    id: "03",
-    title: "Pemancar Nirkabel: PTP & PTMP",
-    description: "Dua topologi utama jaringan nirkabel jarak jauh. Klik setiap node pada diagram untuk memahami peran masing-masing komponen.",
-    type: "diagram",
-    intro: "Saat membangun jaringan nirkabel antar gedung atau antar lokasi, dua topologi utama digunakan: Point-to-Point (PTP) untuk koneksi dua titik, dan Point-to-Multipoint (PTMP) untuk melayani banyak klien sekaligus.",
+    id: '03',
+    title: 'Topologi Pemancar: PTP & PTMP',
+    description:
+      'Dua arsitektur utama distribusi jaringan nirkabel luar ruang (outdoor). Putar simulasi 3D dan klik setiap perangkat untuk mempelajari aliran trafiknya.',
+    type: 'diagram',
+    estimatedMinutes: 9,
+    objectives: [
+      'Memahami arsitektur Point-to-Point (PTP) sebagai jembatan radio berdedikasi (dedicated bridge) antara dua titik.',
+      'Memahami arsitektur Point-to-Multipoint (PTMP) yang menghubungkan satu Base Station ke banyak CPE pelanggan.',
+      'Menghitung pembagian kapasitas bandwidth dan memilih kombinasi antena yang tepat untuk PTP maupun PTMP.',
+    ],
+    keyFormula: {
+      title: 'Perbandingan Alokasi Throughput PTP vs PTMP',
+      code: 'PTP:  Throughput Klien = 100% Kapasitas Link\nPTMP: Throughput Rata-Rata ≈ (Kapasitas Sektor AP × Efisiensi MAC) / Jumlah Klien Aktif',
+      note: 'Pada jaringan PTMP, seluruh CPE dalam satu sektor berbagi waktu transmisi (airtime fairness / TDMA).',
+    },
+    intro:
+      'Ketika membangun jaringan nirkabel jarak jauh antar gedung atau mendistribusikan akses internet ke banyak bangunan, insinyur jaringan menggunakan dua topologi dasar: Point-to-Point (PTP) untuk jalur tulang punggung (backhaul), dan Point-to-Multipoint (PTMP) untuk akses pelanggan.',
     content: {
       ptp: {
-        description: "Point-to-Point (PTP) adalah koneksi nirkabel langsung antara dua titik/lokasi. Bayangkan seperti jembatan radio pribadi antara dua gedung.",
-        detail: "Dalam PTP, dua perangkat radio dengan antena directional diarahkan satu sama lain untuk membentuk link yang dedicated. Tidak ada perangkat lain yang berbagi bandwidth link ini.",
-        advantages: ["Bandwidth dedicated — tidak dibagi dengan siapapun", "Latensi rendah, cocok untuk video call dan VoIP", "Jarak bisa sangat jauh (50+ km dengan antena grid)", "Keamanan lebih baik — koneksi point-to-point"],
-        usecases: ["Menghubungkan dua kantor (HQ ke Branch)", "Backhaul tower BTS ke NOC", "Koneksi antar gedung di kampus tanpa kabel", "Internet sharing antar desa yang berdekatan"],
-        image: images.ptp
+        description:
+          'Point-to-Point (PTP) adalah koneksi nirkabel langsung yang mendedikasikan satu jalur radio penuh hanya untuk dua titik lokasi (Site A dan Site B).',
+        detail:
+          'Kedua ujung link PTP menggunakan antena directional ber-gain tinggi (seperti Parabolic Dish atau Panel) yang diarahkan saling berhadapan secara presisi. Seluruh kapasitas bandwidth dinikmati oleh link tersebut tanpa dibagi ke titik lain.',
+        advantages: [
+          'Bandwidth dedicated penuh dan tidak dibagi dengan stasiun lain',
+          'Latensi sangat rendah dan stabil untuk trafik VoIP maupun trunk VLAN',
+          'Jangkauan dapat mencapai 50+ km dengan antena Parabolic Dish dan LoS bersih',
+          'Keamanan fisik sinyal lebih terjaga karena sudut berkas pancaran sangat sempit',
+        ],
+        usecases: [
+          'Menghubungkan kantor pusat (HQ) dengan kantor cabang',
+          'Jalur backhaul utama dari NOC ke menara distribusi (BTS/POP)',
+          'Interkoneksi antar gedung fakultas di lingkungan kampus',
+          'Jembatan jaringan melintasi sungai, lembah, atau selat antar pulau',
+        ],
+        image: images.ptp,
       },
       ptmp: {
-        description: "Point-to-Multipoint (PTMP) menghubungkan satu base station (Access Point/AP) ke banyak client station (CPE) sekaligus. Seperti satu menara pemancar TV yang melayani ribuan rumah.",
-        detail: "Base station biasanya menggunakan antena sectoral (120°) dan dipasang di ketinggian. Setiap client menggunakan antena directional yang diarahkan ke base station. Bandwidth dibagi bersama semua klien.",
-        advantages: ["Efisien untuk melayani banyak pelanggan dari satu tower", "Biaya infrastruktur lebih rendah per klien", "Mudah ditambah klien baru tanpa mengubah infrastruktur", "Model bisnis WISP (Wireless ISP)"],
-        usecases: ["Layanan internet perdesaan oleh WISP lokal", "Jaringan RT/RW-Net", "Distribusi koneksi internet di kawasan industri", "Sistem CCTV area luas yang terpusat"],
-        image: images.ptmp
-      }
+        description:
+          'Point-to-Multipoint (PTMP) menghubungkan satu titik pusat (Base Station Access Point) ke banyak perangkat penerima pelanggan (Client Station / CPE) sekaligus.',
+        detail:
+          'Base Station biasanya menggunakan antena Sectoral (60° hingga 120°) atau Omni di atas tower tinggi, sementara setiap rumah pelanggan menggunakan antena CPE directional (Panel/Dish kecil) yang diarahkan ke tower Base Station.',
+        advantages: [
+          'Sangat efisien untuk melayani puluhan klien dari satu menara pemancar',
+          'Biaya investasi infrastruktur di sisi pusat jauh lebih hemat per pelanggan',
+          'Penambahan pelanggan baru cukup memasang CPE di lokasi klien tanpa mengubah tower pusat',
+          'Fondasi utama arsitektur layanan WISP (Wireless ISP) dan RT/RW-Net',
+        ],
+        usecases: [
+          'Distribusi akses internet WISP ke perumahan atau desa',
+          'Konektivitas kamera pengawas (IP CCTV) di seluruh area pelabuhan atau tambang',
+          'Jaringan komunikasi sensor telemetri kawasan industri',
+          'Akses jaringan nirkabel terpusat di kompleks resor atau perkebunan',
+        ],
+        image: images.ptmp,
+      },
     },
     exercise: [
       {
         type: 'fill',
-        question: "Koneksi nirkabel langsung antara dua titik disebut Point-to-_______.",
-        answer: ["Point", "point"],
-        hint: "Singkatannya adalah PTP"
+        question: 'Koneksi nirkabel langsung berdedikasi antara dua titik lokasi disebut Point-to-_______.',
+        answer: ['Point', 'point'],
+        hint: 'Singkatannya adalah PTP',
       },
       {
         type: 'choice',
-        question: "Dalam topologi PTMP, antena jenis apa yang biasanya digunakan di sisi base station?",
-        options: ["Antena Parabolic", "Antena Dipole", "Antena Sectoral", "Antena Omni kecil"],
-        answer: 2
+        question: 'Dalam topologi PTMP, antena jenis apa yang paling ideal dipasang di sisi Base Station untuk melayani area 120 derajat?',
+        options: ['Antena Parabolic Sempit (<3°)', 'Antena Dipole Kecil', 'Antena Sectoral', 'Tag NFC'],
+        answer: 2,
       },
       {
         type: 'choice',
-        question: "Apa keunggulan utama dari topologi PTP dibanding PTMP?",
-        options: ["Bisa melayani banyak klien sekaligus", "Bandwidth dedicated, tidak dibagi", "Biaya lebih murah per klien", "Lebih mudah diperluas"],
-        answer: 1
-      }
-    ]
+        question: 'Apa keunggulan utama dari topologi PTP dibandingkan PTMP?',
+        options: [
+          'Bisa melayani ratusan rumah dari satu radio',
+          'Bandwidth bersifat dedicated (tidak dibagi dengan klien lain) dan latensi rendah',
+          'Tidak membutuhkan Line of Sight sama sekali',
+          'Menggunakan daya baterai koin',
+        ],
+        answer: 1,
+      },
+    ],
   },
 
-  // ─────────────────────────────────────────────────────────────
-  // CHAPTER 04 — FAKTOR KEBERHASILAN
-  // ─────────────────────────────────────────────────────────────
   {
-    id: "04",
-    title: "Faktor Keberhasilan Jaringan Nirkabel",
-    description: "Sebelum memasang jaringan nirkabel, ada banyak faktor teknis yang harus dipahami. Coba simulasi link wireless di bawah ini!",
-    type: "factors",
-    intro: "Membangun jaringan nirkabel yang handal bukan sekadar memasang alat dan mengarahkan antena. Ada banyak variabel yang menentukan apakah sebuah link akan berhasil atau gagal.",
+    id: '04',
+    title: 'Faktor Keberhasilan Jaringan Nirkabel',
+    description:
+      'Keandalan link radio ditentukan oleh fisika propagasi: Line of Sight, Fresnel Zone, pemilihan frekuensi, EIRP, serta lebar kanal. Uji langsung lewat simulator 3D dan kalkulator di bawah.',
+    type: 'factors',
+    estimatedMinutes: 12,
+    objectives: [
+      'Menghitung radius Fresnel Zone pertama (F1) dan memahami syarat klirens minimal 60% bebas halangan.',
+      'Menghitung daya pancar efektif EIRP (Tx Power + Gain Antena - Loss Kabel) sesuai batas regulasi.',
+      'Menganalisis pengaruh frekuensi (2.4 GHz vs 5 GHz), lebar kanal (20/40/80 MHz), dan interferensi terhadap kualitas sinyal.',
+    ],
+    keyFormula: {
+      title: 'Rumus Fresnel Zone (F1) & Perhitungan EIRP',
+      code: 'F1 (meter) = 17.32 × √( d_km / (4 × f_GHz) )\nEIRP (dBm) = Tx Power (dBm) + Gain Antena (dBi) - Loss Kabel & Konektor (dB)',
+      note: 'Batas maksimum regulasi EIRP outdoor di Indonesia umumnya 36 dBm (4 Watt) untuk pita 2.4 GHz dan 5.8 GHz.',
+    },
+    intro:
+      'Membangun link nirkabel yang stabil bukan sekadar membeli radio mahal dan memasangnya di atap. Seorang teknisi harus memperhitungkan jalur pandang optik, ruang elips gelombang radio (Fresnel Zone), tingkat derau (noise floor), hingga redaman cuaca.',
     content: [
       {
-        name: "Line of Sight (LoS)",
-        icon: "Eye",
-        color: "blue",
-        summary: "Jalur pandang bebas hambatan antara dua antena.",
-        description: "Line of Sight (LoS) berarti ada jalur visual lurus yang tidak terhalang antara antena pemancar dan penerima. Ini adalah syarat UTAMA untuk link nirkabel jarak jauh yang baik.",
-        detail: "Meski dua antena bisa 'saling melihat' secara visual, gelombang radio membutuhkan area yang lebih lebar yang disebut Fresnel Zone untuk tidak terganggu. Pohon, gedung, atau bahkan tanah yang melengkung bisa jadi penghalang.",
-        tips: "Gunakan Google Earth atau alat seperti RadioMobile untuk merencanakan LoS sebelum instalasi. Pertimbangkan pertumbuhan pohon di masa depan!"
+        name: 'Line of Sight (LoS)',
+        icon: 'Eye',
+        color: 'blue',
+        summary: 'Jalur pandang lurus bebas hambatan fisik antara antena pemancar dan penerima.',
+        description:
+          'Line of Sight (LoS) berarti terdapat garis pandang lurus tanpa halangan gedung, bukit, atau pepohonan rapat di antara dua antena yang berkomunikasi.',
+        detail:
+          'Pada frekuensi gelombang mikro (2.4 GHz, 5 GHz, 6 GHz), hambatan fisik di tengah jalur akan menyerap dan memantulkan energi sinyal sehingga level sinyal terima (RSSI) anjlok.',
+        tips: 'Gunakan peta kontur elevasi (seperti ISPDesign, RadioMobile, atau Google Earth Elevation Profile) sebelum mendirikan tower.',
       },
       {
-        name: "Fresnel Zone",
-        icon: "Circle",
-        color: "purple",
-        summary: "Area elips di sekitar LoS yang harus bebas dari halangan.",
-        description: "Fresnel Zone adalah area berbentuk elips di sekitar garis LoS. Sinyal radio tidak hanya merambat dalam garis lurus, tetapi tersebar sedikit. Jika area Fresnel terhambat, sinyal bisa melemah meski ada LoS visual.",
-        detail: "Aturan umumnya: minimal 60% dari radius Fresnel Zone pertama (F1) harus bebas dari hambatan. Semakin besar radius F1, semakin tinggi antena yang dibutuhkan. Rumus radius F1 (meter): r = 17.32 × √(d/(4f)), dimana d = jarak (km) dan f = frekuensi (GHz).",
-        tips: "Pada frekuensi 5.8 GHz dengan jarak 10 km, radius F1 di titik tengah sekitar 11 meter. Artinya, tidak boleh ada pohon setinggi lebih dari 11 meter di tengah jalur (setelah dikurangi ketinggian antena)."
+        name: 'Fresnel Zone',
+        icon: 'Circle',
+        color: 'purple',
+        summary: 'Ruang tiga dimensi berbentuk elips memanjang di sekitar garis LoS.',
+        description:
+          'Gelombang radio tidak merambat seukuran sinar laser tipis, melainkan mengembang membentuk zona elips yang disebut Fresnel Zone di sepanjang lintasan antara pengirim dan penerima.',
+        detail:
+          'Aturan emas rekayasa RF mengharuskan minimal 60% dari radius Fresnel Zone pertama (F1) bebas dari halangan apa pun. Jika pucuk pohon atau atap gedung masuk ke dalam 60% zona F1, fase gelombang yang terpantul akan saling melemahkan sinyal utama (multipath cancellation).',
+        tips: 'Pada link jarak 10 km di frekuensi 5.8 GHz, radius F1 di titik tengah mencapai ~11.4 meter. Tambahkan tinggi tower agar zona elips ini terangkat di atas pepohonan.',
       },
       {
-        name: "Frekuensi (2.4 vs 5 GHz)",
-        icon: "Radio",
-        color: "emerald",
-        summary: "Pilihan frekuensi menentukan penetrasi dan jangkauan.",
-        description: "Dua pita frekuensi utama untuk Wi-Fi adalah 2.4 GHz dan 5 GHz. Keduanya punya kelebihan dan kekurangan yang perlu disesuaikan dengan kebutuhan.",
-        detail: "2.4 GHz: Panjang gelombang lebih besar → lebih baik menembus penghalang (tembok, pohon) → jangkauan lebih jauh → TAPI lebih padat karena banyak perangkat dan hanya ada 3 saluran non-overlapping (1, 6, 11). | 5 GHz: Panjang gelombang lebih kecil → lebih cepat terserap penghalang → jangkauan lebih pendek → TAPI lebih bersih (23 saluran non-overlapping), lebih cepat, lebih sedikit interferensi.",
-        tips: "Untuk jaringan outdoor jarak jauh: gunakan 5.8 GHz (lebih sedikit interferensi). Untuk indoor dengan banyak penghalang: 2.4 GHz lebih penetratif. 5 GHz bagus untuk throughput tinggi dalam jarak pendek."
+        name: 'Frekuensi (2.4 GHz vs 5 GHz)',
+        icon: 'Radio',
+        color: 'emerald',
+        summary: 'Pemilihan pita frekuensi menentukan daya tembus penghalang dan tingkat kepadatan spektrum.',
+        description:
+          'Pita 2.4 GHz dan 5 GHz memiliki sifat fisika propagasi yang saling melengkapi dalam jaringan WLAN.',
+        detail:
+          'Pita 2.4 GHz memiliki panjang gelombang sekitar 12.5 cm sehingga lebih mampu menembus tembok dan menjangkau lebih jauh, tetapi hanya menyediakan 3 kanal non-overlapping (kanal 1, 6, dan 11) sehingga sangat rawan interferensi. Pita 5 GHz memiliki panjang gelombang ~5-6 cm yang lebih cepat teredam tembok, namun menyediakan lebih dari 20 kanal bersih non-overlapping dengan kapasitas data jauh lebih besar.',
+        tips: 'Gunakan pita 5 GHz untuk link outdoor PTP/PTMP dan perangkat berkecepatan tinggi di dalam ruangan; gunakan 2.4 GHz untuk perangkat IoT atau jangkauan tembus antar ruang.',
       },
       {
-        name: "Interferensi",
-        icon: "Zap",
-        color: "orange",
-        summary: "Gangguan dari sinyal lain di frekuensi yang sama atau berdekatan.",
-        description: "Interferensi terjadi ketika dua atau lebih pemancar radio menggunakan frekuensi yang tumpang tindih di area yang sama. Akibatnya, paket data sering error, kecepatan turun drastis, dan koneksi menjadi tidak stabil.",
-        detail: "Jenis interferensi: (1) Co-channel interference — dua AP menggunakan channel yang sama. (2) Adjacent-channel interference — dua AP menggunakan channel yang berdekatan (misal channel 1 dan channel 2 overlap). (3) Non-WiFi interference — microwave oven, baby monitor, Bluetooth, radar, yang beroperasi di 2.4 GHz.",
-        tips: "Gunakan aplikasi WiFi analyzer (misal: NetSpot, WiFi Analyzer) untuk memetakan interferensi di lokasi. Pilih channel yang paling sepi. Di 2.4 GHz, hanya gunakan channel 1, 6, atau 11 (non-overlapping)."
+        name: 'Interferensi Spektrum',
+        icon: 'Zap',
+        color: 'orange',
+        summary: 'Gangguan sinyal dari pemancar radio lain pada kanal frekuensi yang sama atau bersebelahan.',
+        description:
+          'Interferensi menurunkan rasio Signal-to-Noise (SNR), memicu pengiriman ulang paket (retransmission), dan meningkatkan latensi.',
+        detail:
+          'Terdapat tiga kategori utama: (1) Co-Channel Interference (CCI) akibat beberapa AP memakai kanal frekuensi yang sama; (2) Adjacent-Channel Interference (ACI) akibat tumpang tindih kanal yang berdekatan (misal kanal 1 dan kanal 3 di 2.4 GHz); serta (3) Non-Wi-Fi Interference dari oven microwave, Bluetooth, atau radar cuaca.',
+        tips: 'Lakukan pemindaian spektrum (spectrum scan / site survey) terlebih dahulu dan di pita 2.4 GHz gunakan hanya skema kanal 1, 6, atau 11.',
       },
       {
-        name: "Ketinggian Antena",
-        icon: "TrendingUp",
-        color: "cyan",
-        summary: "Antena lebih tinggi = jangkauan lebih jauh dan LoS lebih mudah.",
-        description: "Semakin tinggi antena dipasang, semakin kecil kemungkinan terhalang oleh pohon, gedung, atau topografi bumi. Ini juga membantu mengatasi lengkung bumi pada jarak yang jauh.",
-        detail: "Untuk link 10 km pada frekuensi 5.8 GHz, jika tidak ada penghalang sama sekali, ketinggian antena minimal yang diperlukan bisa dihitung dengan mempertimbangkan kelengkungan bumi (~8m/10km²) ditambah klirens Fresnel Zone. Umumnya antena perlu setinggi 15–30 meter atau lebih untuk link ini.",
-        tips: "Gunakan software Radio Mobile atau Path Loss untuk menghitung ketinggian antena optimal berdasarkan topografi nyata lokasi Anda."
+        name: 'Ketinggian Antena & Kelengkungan Bumi',
+        icon: 'TrendingUp',
+        color: 'cyan',
+        summary: 'Menentukan elevasi tower untuk melewati rintangan dan tonjolan kelengkungan bumi.',
+        description:
+          'Untuk link jarak jauh di atas 5 km, permukaan bumi yang melengkung mulai menjadi penghalang fisik di tengah lintasan.',
+        detail:
+          'Tinggi efektif antena harus mencakup tiga komponen sekaligus: tinggi halangan tertinggi di lintasan (gedung/pohon) + tinggi tonjolan kelengkungan bumi (earth bulge) + 60% radius Fresnel Zone pertama.',
+        tips: 'Pastikan struktur tower dilengkapi kabel penahan angin (guy wire) dan penangkal petir beserta grounding.',
       },
       {
-        name: "Gain & EIRP",
-        icon: "Signal",
-        color: "pink",
-        summary: "Kekuatan sinyal efektif yang dipancarkan sistem nirkabel.",
-        description: "Gain antena menentukan seberapa fokus dan kuat sinyal yang dipancarkan/diterima. EIRP (Effective Isotropic Radiated Power) adalah power total efektif yang dipancarkan: EIRP (dBm) = Tx Power (dBm) + Antena Gain (dBi) - Kabel Loss (dB).",
-        detail: "Contoh: Radio dengan daya kirim 20 dBm (100mW) + Antena 24 dBi - Kabel loss 2 dB = EIRP 42 dBm. Di Indonesia, EIRP maksimum untuk 2.4 GHz adalah 36 dBm sesuai regulasi Kominfo. Melampaui batas ini ilegal!",
-        tips: "Selalu patuhi regulasi EIRP yang berlaku. Jangan sembarangan meningkatkan power transmit karena selain ilegal, juga bisa mengganggu jaringan tetangga dan memperpendek umur radio."
+        name: 'Gain Antena & EIRP',
+        icon: 'Signal',
+        color: 'pink',
+        summary: 'Total daya pancar efektif yang keluar dari antena pemancar.',
+        description:
+          'EIRP (Effective Isotropic Radiated Power) merupakan ukuran kekuatan pancaran sinyal total ke arah penguatan maksimum antena.',
+        detail:
+          'Rumus perhitungan: EIRP (dBm) = Daya Pancar Radio / Tx Power (dBm) + Gain Antena (dBi) - Redaman Kabel & Konektor (dB). Sebagai contoh, radio 20 dBm + antena 23 dBi - kabel loss 1 dB menghasilkan EIRP 42 dBm. Di Indonesia, regulasi membatasi EIRP pada pita ISM umumnya maksimal 36 dBm.',
+        tips: 'Jika memakai antena ber-gain tinggi (misal 27 dBi), turunkan Tx Power pada konfigurasi radio (misal ke 9 dBm) agar total EIRP tetap patuh pada batas 36 dBm dan tidak menyebabkan distorsi amplifier.',
       },
       {
-        name: "Channel & Bandwidth",
-        icon: "Layers",
-        color: "indigo",
-        summary: "Lebar channel menentukan kapasitas bandwidth jaringan.",
-        description: "Channel adalah 'jalur' di dalam spektrum frekuensi. Lebar channel (20, 40, 80, atau 160 MHz) menentukan seberapa banyak data yang bisa ditransmisikan sekaligus — seperti lebar jalan.",
-        detail: "Channel 20 MHz: Aman, banyak channel tersedia, cocok untuk lingkungan padat. | Channel 40 MHz: Throughput 2x lipat, tapi membutuhkan 2 channel → lebih mudah interferensi. | Channel 80 MHz (Wi-Fi 5): Throughput sangat tinggi, digunakan untuk backhaul. | Channel 160 MHz (Wi-Fi 6): Tertinggi, hanya ada sedikit di 5 GHz.",
-        tips: "Untuk lingkungan urban padat gunakan channel 20 MHz. Untuk link PTP backhaul dengan sedikit interferensi, gunakan channel 40 atau 80 MHz untuk throughput maksimal."
+        name: 'Lebar Kanal (Channel Width)',
+        icon: 'Layers',
+        color: 'indigo',
+        summary: 'Lebar pita spektrum (20, 40, 80, atau 160 MHz) yang menentukan kapasitas dan ketahanan noise.',
+        description:
+          'Lebar kanal dapat dianalogikan seperti jumlah lajur pada jalan tol tempat paket data melintas.',
+        detail:
+          'Menggandakan lebar kanal dari 20 MHz ke 40 MHz atau 80 MHz akan melipatgandakan throughput maksimal, namun juga menaikkan noise floor sebesar +3 dB setiap kali lebar kanal digandakan serta memperbesar risiko tabrakan frekuensi dengan jaringan tetangga.',
+        tips: 'Gunakan kanal 20 MHz pada lingkungan padat AP untuk menjaga stabilitas SNR, dan gunakan 40 MHz atau 80 MHz hanya pada link PTP di area berspektrum bersih.',
       },
       {
-        name: "Kondisi Cuaca & Lingkungan",
-        icon: "Cloud",
-        color: "slate",
-        summary: "Hujan, embun, dan angin mempengaruhi kualitas sinyal nirkabel.",
-        description: "Frekuensi tinggi (terutama di atas 10 GHz) sangat rentan terhadap rain fade (pelemahan sinyal akibat hujan). Pohon basah juga bisa menyerap sinyal lebih banyak dibanding ketika kering.",
-        detail: "Pada frekuensi 2.4 GHz dan 5 GHz, efek hujan relatif kecil, namun angin kencang bisa menggeser posisi antena (antenna misalignment) terutama pada antena high-gain seperti grid parabola. Embun/frost pada reflektor juga bisa menyebabkan atenuasi.",
-        tips: "Gunakan klem antena berkualitas tinggi (mis: stainless steel). Pertimbangkan fade margin (cadangan sinyal extra) minimal 15-20 dB dalam desain link untuk mengkompensasi kondisi cuaca buruk."
-      }
+        name: 'Kondisi Cuaca & Fade Margin',
+        icon: 'Cloud',
+        color: 'slate',
+        summary: 'Pengaruh curah hujan (rain fade), angin, dan cadangan daya sinyal (fade margin).',
+        description:
+          'Hujan lebat, dedaunan basah, dan hembusan angin kencang memengaruhi stabilitas link nirkabel luar ruang.',
+        detail:
+          'Air menyerap energi gelombang mikro (terutama pada frekuensi tinggi di atas 10 GHz). Selain itu, angin kencang dapat menggeser sudut arah (alignment) antena parabola yang memiliki sudut pancar sempit.',
+        tips: 'Rancang link dengan Fade Margin minimal 15 dB hingga 20 dB di atas batas sensitivitas terima minimum radio agar link tidak terputus saat hujan deras.',
+      },
     ],
     exercise: [
       {
         type: 'fill',
-        question: "Jalur pandang bebas hambatan antara dua antena disebut _______ (singkatan 3 huruf).",
-        answer: ["LoS", "los", "LOS", "Line of Sight", "line of sight"],
-        hint: "Line of ___"
+        question: 'Jalur pandang lurus bebas hambatan fisik antara dua antena disebut _______ (singkatan 3 huruf).',
+        answer: ['LoS', 'los', 'LOS', 'Line of Sight', 'line of sight'],
+        hint: 'Singkatan dari Line of Sight',
       },
       {
         type: 'choice',
-        question: "Frekuensi mana yang lebih baik untuk menembus penghalang seperti tembok dan pohon?",
-        options: ["5 GHz", "6 GHz", "2.4 GHz", "5.8 GHz"],
-        answer: 2
+        question: 'Frekuensi manakah yang memiliki panjang gelombang lebih besar sehingga lebih baik dalam menembus penghalang tembok?',
+        options: ['5 GHz', '6 GHz', '2.4 GHz', '60 GHz'],
+        answer: 2,
       },
       {
         type: 'fill',
-        question: "Rumus EIRP adalah: Tx Power + Antena Gain - _______ Loss.",
-        answer: ["Kabel", "kabel", "Cable", "cable"],
-        hint: "Kerugian pada media transmisi dari radio ke antena"
+        question: 'Rumus perhitungan EIRP adalah: Tx Power (dBm) + Antena Gain (dBi) - _______ Loss (dB).',
+        answer: ['Kabel', 'kabel', 'Cable', 'cable'],
+        hint: 'Rugi-rugi pada media penghantar antara radio dan antena',
       },
       {
         type: 'choice',
-        question: "Minimal berapa persen dari Fresnel Zone pertama yang harus bebas dari halangan?",
-        options: ["40%", "50%", "60%", "80%"],
-        answer: 2
-      }
-    ]
+        question: 'Minimal berapa persen dari radius Fresnel Zone pertama (F1) yang harus bebas dari halangan agar sinyal tidak terdegradasi?',
+        options: ['20%', '40%', '60%', '95%'],
+        answer: 2,
+      },
+    ],
   },
 
-  // ─────────────────────────────────────────────────────────────
-  // CHAPTER 05 — PERANGKAT
-  // ─────────────────────────────────────────────────────────────
   {
-    id: "05",
-    title: "Perangkat Wireless",
-    description: "Kenali berbagai perangkat keras yang membangun ekosistem jaringan nirkabel — dari router rumahan hingga perangkat enterprise kelas atas.",
-    type: "equipment",
-    intro: "Dalam membangun jaringan nirkabel, diperlukan berbagai jenis perangkat yang bekerja bersama-sama. Mulai dari perangkat yang menerima sinyal internet (router/modem), menyebarkannya (access point), hingga menghubungkan lokasi yang jauh (PTP radio).",
+    id: '05',
+    title: 'Perangkat Keras Jaringan Nirkabel',
+    description:
+      'Kenali peran dan spesifikasi teknis perangkat keras ekosistem wireless: Access Point, Wireless Router, CPE, sistem PoE, hingga radio PTP.',
+    type: 'equipment',
+    estimatedMinutes: 9,
+    objectives: [
+      'Membedakan fungsi Layer 2 Access Point dengan Layer 3 Wireless Router (NAT, DHCP, Firewall).',
+      'Memahami peran CPE (Customer Premises Equipment) dan Wireless Bridge pada jaringan WISP.',
+      'Menghitung kebutuhan daya Power over Ethernet (PoE 802.3af/at/bt) pada instalasi kabel UTP.',
+    ],
+    keyFormula: {
+      title: 'Standar Daya Power over Ethernet (IEEE 802.3)',
+      code: '802.3af (PoE) : Maks 15.4W di port switch (~12.95W di perangkat PD)\n802.3at (PoE+): Maks 30.0W di port switch (~25.50W di perangkat PD)\n802.3bt (PoE++): Maks 60W (Type 3) hingga 90W (Type 4)',
+      note: 'Panjang maksimum kabel Ethernet UTP (Cat5e/Cat6) untuk PoE dan data tanpa penguat adalah 100 meter.',
+    },
+    intro:
+      'Infrastruktur jaringan nirkabel dibangun dari rangkaian perangkat keras yang memiliki tugas spesifik. Memahami perbedaan antara Access Point murni, Wireless Router SOHO, CPE outdoor, dan injektor PoE sangat penting agar arsitektur jaringan tidak mengalami bottleneck.',
     content: [
       {
-        name: "Access Point (AP)",
+        name: 'Access Point (AP)',
         image: images.accessPoint,
-        category: "Indoor / Outdoor",
-        badge: "Paling Umum",
-        description: "Perangkat yang memancarkan sinyal Wi-Fi untuk perangkat end-user seperti laptop, smartphone, dan tablet. AP menerima koneksi dari switch/router melalui kabel, lalu menyebarkannya secara nirkabel.",
-        detail: "Access Point berbeda dari router — AP tidak memiliki fungsi routing (NAT, DHCP). AP hanya berfungsi sebagai jembatan antara jaringan kabel dan nirkabel. Dalam instalasi enterprise, puluhan AP dikelola oleh satu kontroler terpusat.",
-        usage: "Hotel, kantor, sekolah, mall, atau rumah yang membutuhkan coverage Wi-Fi yang merata.",
-        features: ["Dual-band 2.4 & 5 GHz", "Mendukung ratusan klien", "Manajemen terpusat via kontroler", "PoE (Power over Ethernet) — daya dari kabel LAN"],
-        examples: ["Ubiquiti UniFi AP", "Cisco Aironet", "Ruckus R550", "TP-Link EAP Series"]
+        category: 'Indoor / Outdoor',
+        badge: 'Layer 2 Bridge',
+        description:
+          'Perangkat yang menjembatani jaringan kabel (Ethernet LAN) dengan perangkat klien nirkabel seperti laptop dan smartphone.',
+        detail:
+          'Access Point murni berbeda dari router: AP bekerja pada Layer 2 (Data Link) dan tidak menjalankan NAT atau DHCP server sendiri. Pada lingkungan kampus atau kantor, puluhan AP dikelola secara terpusat menggunakan Wireless LAN Controller (WLC) untuk mengatur roaming dan pembagian kanal otomatis.',
+        usage: 'Gedung perkantoran, kampus, rumah sakit, hotel, dan ruang publik berkapasitas padat.',
+        features: [
+          'Operasi Dual-Band atau Tri-Band (2.4 / 5 / 6 GHz)',
+          'Mendukung Multiple SSID dengan pemisahan VLAN (802.1Q)',
+          'Manajemen terpusat via Controller atau Cloud',
+          'Suplai daya praktis melalui satu kabel LAN (PoE)',
+        ],
+        examples: ['Ubiquiti UniFi U6 Pro', 'Cisco Catalyst 9100 AP', 'Ruckus R650', 'TP-Link Omada EAP660 HD'],
       },
       {
-        name: "Wireless Router",
+        name: 'Wireless Router (SOHO)',
         image: images.router,
-        category: "SOHO",
-        badge: "Rumahan",
-        description: "Perangkat all-in-one yang menggabungkan fungsi router (NAT, DHCP, firewall), switch 4-port, dan access point Wi-Fi. Ideal untuk rumah dan usaha kecil.",
-        detail: "Router rumahan biasanya mendapat koneksi internet dari modem ISP (melalui port WAN), kemudian membagikannya ke perangkat yang terhubung via Wi-Fi maupun kabel LAN. Fitur modern termasuk QoS, parental control, VPN, dan MU-MIMO.",
-        usage: "Rumah, warnet, kantor kecil, kafe — situasi yang membutuhkan satu perangkat serbaguna.",
-        features: ["Router + Switch + AP dalam satu unit", "NAT & DHCP bawaan", "Mudah dikonfigurasi", "Harga terjangkau"],
-        examples: ["TP-Link Archer AX55", "ASUS RT-AX88U", "Xiaomi AX3600", "MikroTik hAP"]
+        category: 'SOHO',
+        badge: 'All-in-One',
+        description:
+          'Perangkat gabungan yang menyatukan fungsi Router (NAT, Firewall, DHCP), Switch Ethernet 4-port, dan Access Point Wi-Fi dalam satu unit.',
+        detail:
+          'Wireless Router rumahan menghubungkan jaringan lokal (LAN/WLAN) ke jaringan internet milik ISP melalui port WAN. Perangkat ini dirancang agar mudah dipasang untuk kebutuhan rumah tangga atau kantor kecil (Small Office/Home Office).',
+        usage: 'Rumah tinggal, kafe kecil, ruang kerja tim kecil.',
+        features: [
+          'Fungsi Router + Switch + Access Point terintegrasi',
+          'Layanan NAT, Firewall, dan DHCP Server bawaan',
+          'Pengaturan QoS (Quality of Service) dan Parental Control',
+          'Konfigurasi cepat melalui antarmuka web atau aplikasi',
+        ],
+        examples: ['TP-Link Archer AX55', 'ASUS RT-AX86U', 'MikroTik hAP ax2', 'Xiaomi Router AX3000T'],
       },
       {
-        name: "CPE (Customer Premises Equipment)",
+        name: 'CPE (Customer Premises Equipment)',
         image: images.cpe,
-        category: "Outdoor",
-        badge: "WISP/ISP",
-        description: "Perangkat penerima yang dipasang di lokasi pelanggan (biasanya di atap atau tembok menghadap tower ISP). Menangkap sinyal dari base station WISP dan membagikannya ke dalam rumah.",
-        detail: "CPE memiliki antena terintegrasi (biasanya panel atau yagi) dan radio dalam satu unit kompak. Perangkat ini dikonfigurasi dalam mode 'station' atau 'client' untuk berasosiasi dengan AP tower. Daya listrik diberikan melalui PoE injector.",
-        usage: "Pelanggan layanan internet WISP perdesaan, penerima sinyal hotspot komunitas.",
-        features: ["Antena terintegrasi (panel/yagi)", "Tahan cuaca outdoor (IP65+)", "Daya melalui PoE", "Mode Station/Client"],
-        examples: ["Ubiquiti LiteBeam M5", "TP-Link CPE510", "MikroTik SXT", "Mimosa C5x"]
+        category: 'Outdoor Client',
+        badge: 'WISP Client',
+        description:
+          'Perangkat radio terintegrasi antena directional yang dipasang di atap atau dinding pelanggan untuk menangkap sinyal dari tower Base Station WISP.',
+        detail:
+          'Unit CPE menyatukan modul radio, papan router/bridge, dan antena panel atau dish dalam satu casing tahan cuaca (weatherproof IP65). Daya listrik dan data disalurkan dari dalam rumah ke atap melalui satu kabel LAN menggunakan PoE Injector.',
+        usage: 'Penerima internet pelanggan WISP perdesaan, penghubung gedung cabang ke tower pusat.',
+        features: [
+          'Antena directional (Panel/Dish) dan radio menyatu tanpa kabel koaksial luar',
+          'Casing tahan hujan dan panas matahari (outdoor weatherproof)',
+          'Mendukung mode Station Bridge maupun WISP Client Router',
+          'Dilengkapi indikator LED kekuatan sinyal (RSSI) untuk memudahkan pointing',
+        ],
+        examples: ['Ubiquiti LiteBeam 5AC Gen2', 'TP-Link CPE610', 'MikroTik SXTsq 5 ac', 'Mimosa C5x'],
       },
       {
-        name: "Ubiquiti UniFi",
+        name: 'Ekosistem Enterprise WLAN (UniFi / Omada)',
         image: images.ubiquiti,
-        category: "Enterprise",
-        badge: "Pilihan Pro",
-        description: "Ekosistem jaringan enterprise dari Ubiquiti yang mencakup access point, switch, router, dan kamera — semua dikelola dari satu platform software UniFi Controller.",
-        detail: "UniFi dikenal dengan rasio performa-harga yang sangat baik untuk pasar enterprise. Controller berbasis web memungkinkan admin mengelola puluhan atau ratusan AP, memantau klien secara real-time, dan membuat segmentasi VLAN dengan mudah.",
-        usage: "Hotel, apartemen, kampus, gedung perkantoran, venue event besar.",
-        features: ["Manajemen terpusat via UniFi Controller", "Cloud-managed option", "Zero-Handoff roaming untuk mobilitas mulus", "Beragam model AP: outdoor, indoor, high-density"],
-        examples: ["UniFi U6 Pro", "UniFi U6 Long Range", "UniFi U6 Mesh", "UniFi AP-AC-M"]
+        category: 'Enterprise SDN',
+        badge: 'Centralized',
+        description:
+          'Sistem jaringan berbasis Software-Defined Networking (SDN) yang memadukan AP, switch PoE, dan gateway dalam satu dasbor pengontrol terpusat.',
+        detail:
+          'Melalui satu panel kontroler, administrator dapat memetakan denah gedung (heatmap), mengatur daya pancar tiap AP secara otomatis, memisahkan trafik tamu dengan karyawan via VLAN, serta menerapkan seamless roaming (802.11k/v/r).',
+        usage: 'Kampus universitas, hotel bertingkat, pusat perbelanjaan, gedung pemerintahan.',
+        features: [
+          'Pemantauan spektrum dan klien secara real-time di satu dasbor',
+          'Fast Roaming (802.11r) agar panggilan video tidak terputus saat berpindah lantai',
+          'Captive Portal untuk autentikasi voucher atau login tamu',
+          'Pembaruan firmware dan konfigurasi massal (zero-touch provisioning)',
+        ],
+        examples: ['Ubiquiti UniFi Network', 'TP-Link Omada SDN', 'Aruba Instant On', 'Cisco Meraki'],
       },
       {
-        name: "MikroTik RouterOS",
+        name: 'MikroTik RouterOS & Wireless',
         image: images.mikrotik,
-        category: "Networking",
-        badge: "Fleksibel",
-        description: "MikroTik memproduksi perangkat jaringan serbaguna dengan RouterOS yang sangat powerful. Populer di kalangan network engineer karena kemampuan konfigurasi yang sangat mendalam.",
-        detail: "RouterOS mendukung hampir semua fitur jaringan enterprise: BGP, OSPF, MPLS, VPN, firewall berfitur penuh, traffic shaping, QoS, hotspot management, dan masih banyak lagi — dengan harga yang sangat kompetitif.",
-        usage: "ISP lokal, kantor dengan kebutuhan routing kompleks, jaringan RT/RW-Net, lab jaringan.",
-        features: ["RouterOS yang sangat feature-rich", "CCR (Cloud Core Router) untuk ISP besar", "hAP, RB series untuk SOHO", "Winbox/WebFig GUI yang intuitif"],
-        examples: ["MikroTik hAP ac²", "MikroTik RB951G", "MikroTik CCR2116", "MikroTik CRS series"]
+        category: 'Core Routing & WISP',
+        badge: 'Advanced OS',
+        description:
+          'Perangkat keras RouterBOARD dan sistem operasi RouterOS yang menjadi tulang punggung manajemen bandwidth, firewall, dan routing di banyak ISP lokal.',
+        detail:
+          'RouterOS menyediakan kendali penuh atas tabel routing (OSPF, BGP, MPLS), manajemen antrean trafik (Simple Queue / Queue Tree), server Hotspot, PPPoE Server, serta protokol nirkabel khusus NV2 (berbasis TDMA) untuk link luar ruang.',
+        usage: 'Gateway utama WISP, manajemen jaringan kampus/sekolah, laboratorium praktik teknik jaringan.',
+        features: [
+          'Protokol nirkabel TDMA (NV2 / Nstreme) untuk menekan masalah hidden node',
+          'Manajemen bandwidth presisi dan autentikasi Hotspot / RADIUS',
+          'Konfigurasi fleksibel melalui aplikasi WinBox, WebFig, maupun CLI',
+          'Dukungan penuh protokol routing dinamis dan VPN (WireGuard, IPsec, L2TP)',
+        ],
+        examples: ['MikroTik RB5009UG+S+IN', 'MikroTik hAP ax3', 'MikroTikCCR2004', 'MikroTik NetMetal ac2'],
       },
       {
-        name: "TP-Link Pharos (Outdoor)",
+        name: 'Outdoor CPE Seri Pharos',
         image: images.tplink,
-        category: "Outdoor WISP",
-        badge: "Entry Level",
-        description: "Lini produk outdoor TP-Link Pharos dirancang untuk link nirkabel jarak jauh dengan antena terintegrasi. Menawarkan performa yang cukup baik dengan harga terjangkau.",
-        detail: "Pharos CPE menggunakan antena panel terintegrasi dengan gain 13–23 dBi. Mendukung mode AP, Station, WDS Bridge, dan Repeater. Dilengkapi dengan fitur Pharos Control untuk manajemen multi-AP.",
-        usage: "WISP skala kecil-menengah, jaringan RT/RW-Net, koneksi antar gedung.",
-        features: ["Gain antena 13–23 dBi", "Outdoor waterproof (IP65)", "Dual polarization (CPE710)", "Harga sangat terjangkau"],
-        examples: ["TP-Link CPE510 (5 GHz, 13 dBi)", "TP-Link CPE610 (5 GHz, 23 dBi)", "TP-Link CPE710 (5 GHz, 23 dBi dual-pol)"]
+        category: 'Outdoor WISP',
+        badge: 'Cost-Effective',
+        description:
+          'Perangkat radio outdoor dengan antena panel terintegrasi berpolarisasi ganda (2x2 MIMO) untuk distribusi jaringan jarak menengah.',
+        detail:
+          'Dilengkapi teknologi TDMA (Pharos MAXtream) yang membagi slot waktu komunikasi antara Base Station dan klien sehingga throughput tidak anjlok saat jumlah klien bertambah.',
+        usage: 'Jaringan komunitas, koneksi CCTV nirkabel antar pos, link gedung jarak 1 sampai 10 km.',
+        features: [
+          'Gain antena terintegrasi 13 dBi hingga 23 dBi',
+          'Mendukung mode AP, Client, Repeater, dan AP Client Router',
+          'Perangkat lunak Pharos Control untuk pemantauan terpusat',
+          'Proteksi petir dan ESD terintegrasi pada port Ethernet',
+        ],
+        examples: ['TP-Link CPE510 (5 GHz 13 dBi)', 'TP-Link CPE610 (5 GHz 23 dBi)', 'TP-Link CPE710 (5 GHz 867 Mbps)'],
       },
       {
-        name: "PoE Injector & Switch PoE",
+        name: 'PoE Injector & PoE Switch',
         image: images.poe,
-        category: "Power",
-        badge: "Infrastruktur",
-        description: "Power over Ethernet (PoE) memungkinkan pengiriman listrik melalui kabel LAN bersamaan dengan data. Sangat penting untuk AP dan CPE yang dipasang di lokasi tanpa stopkontak.",
-        detail: "Standar PoE: 802.3af (15.4W), 802.3at/PoE+ (30W), 802.3bt/PoE++ (60W/90W). AP indoor modern biasanya cukup 802.3af. AP outdoor high-performance atau perangkat heating mungkin membutuhkan 802.3at/bt. Passive PoE (24V) digunakan oleh beberapa perangkat Ubiquiti dan MikroTik.",
-        usage: "Memberi daya ke AP, IP Camera, VoIP phone, CPE yang jauh dari sumber listrik.",
-        features: ["Eliminasi kebutuhan kabel listrik terpisah", "Jarak maksimum 100 meter (per segmen)", "Standar 802.3af/at/bt untuk kompatibilitas lintas merek", "Passive PoE 24V/48V untuk perangkat tertentu"],
-        examples: ["TP-Link TL-PoE150S (PoE+ Injector)", "Ubiquiti POE-24 (Passive 24V)", "NETGEAR GS308P (Switch 8-port PoE)"]
+        category: 'Power Infrastructure',
+        badge: 'IEEE 802.3af/at',
+        description:
+          'Perangkat penyuplai arus listrik searah (DC) melalui pasangan kawat kabel UTP/STP Ethernet sehingga AP dan CPE di tempat tinggi tidak membutuhkan stopkontak listrik terpisah.',
+        detail:
+          'Terdapat dua jenis utama: Active PoE standar IEEE (802.3af 48V 15.4W, 802.3at PoE+ 30W, 802.3bt PoE++ 60-90W) yang melakukan negosiasi tegangan terlebih dahulu sehingga aman bagi perangkat non-PoE, serta Passive PoE (umumnya 24V DC) yang selalu mengalirkan tegangan secara langsung.',
+        usage: 'Menyuplai daya ke Access Point plafon, radio CPE di atas tower, dan kamera IP CCTV.',
+        features: [
+          'Menggabungkan jalur data Gigabit dan daya listrik dalam satu tarikan kabel LAN',
+          'Jarak transmisi standar hingga 100 meter tanpa penurunan performa berarti',
+          'Switch PoE memungkinkan reboot perangkat AP dari jarak jauh dengan memutus daya port',
+          'Wajib mencocokkan tegangan (24V Passive vs 48V 802.3af/at) agar radio tidak rusak',
+        ],
+        examples: ['Switch Ubiquiti UniFi PoE 16', 'TP-Link TL-SG1008MP', 'MikroTik CRS328-24P-4S+RM'],
       },
       {
-        name: "Wireless Bridge (PTP Radio)",
+        name: 'Dedicated Wireless Bridge (PTP Backhaul Radio)',
         image: images.ptpRadio,
-        category: "Backhaul",
-        badge: "Jarak Jauh",
-        description: "Perangkat khusus yang dirancang untuk membentuk link wireless point-to-point jarak jauh. Biasanya sudah termasuk antena terintegrasi atau port untuk antena eksternal.",
-        detail: "PTP radio beroperasi dalam mode bridge — semua traffic dari satu sisi diteruskan ke sisi lain seolah terhubung kabel. Beberapa mendukung IEEE 802.1Q VLAN tagging untuk membawa multiple VLAN melewati satu link.",
-        usage: "Menghubungkan dua kantor yang berbeda gedung/kota, backhaul untuk repeater atau BTS.",
-        features: ["Throughput hingga 1+ Gbps (tergantung model)", "Link jarak 1–100+ km", "Fitur AES encryption untuk keamanan link", "Adaptive coding & modulation"],
-        examples: ["Ubiquiti PowerBeam M5", "Cambium PTP 450", "MikroTik NetMetal 5", "Mimosa B5c"]
-      }
+        category: 'Backhaul Carrier',
+        badge: 'High Capacity',
+        description:
+          'Radio gelombang mikro kelas operator yang dirancang khusus untuk jembatan Point-to-Point berkapasitas Gigabit dan latensi sub-milidetik.',
+        detail:
+          'Beroperasi sebagai transparent Layer 2 bridge yang meneruskan seluruh frame Ethernet beserta tag VLAN 802.1Q. Banyak seri kelas atas menyertakan sinkronisasi GPS agar beberapa radio di satu tower dapat memakai ulang frekuensi tanpa saling mengganggu.',
+        usage: 'Jalur tulang punggung (backbone) antar menara BTS, koneksi cadangan serat optik.',
+        features: [
+          'Throughput riil 500 Mbps hingga multi-Gigabit (Full-Duplex / TDD)',
+          'Sinkronisasi waktu GPS untuk efisiensi kolokasi menara',
+          'Enkripsi perangkat keras AES-128 / AES-256 pada layer udara',
+          'Penganalisis spektrum (real-time spectral analyzer) terpisah di dalam chip',
+        ],
+        examples: ['Ubiquiti airFiber 5XHD', 'Mimosa B5c', 'Cambium ePMP Force 400C', 'MikroTik Wireless Wire Dish'],
+      },
     ],
     exercise: [
       {
         type: 'choice',
-        question: "Singkatan AP dalam konteks jaringan nirkabel adalah...",
-        options: ["Application Protocol", "Access Point", "Antenna Port", "Automatic Power"],
-        answer: 1
+        question: 'Apa kepanjangan dari istilah AP dalam infrastruktur jaringan nirkabel?',
+        options: ['Application Protocol', 'Access Point', 'Antenna Polarity', 'Active Packet'],
+        answer: 1,
       },
       {
         type: 'fill',
-        question: "Perangkat yang dipasang di atap rumah pelanggan untuk menerima sinyal dari tower ISP disebut _______.",
-        answer: ["CPE", "cpe", "Customer Premises Equipment"],
-        hint: "Singkatan 3 huruf: C-P-E"
+        question: 'Perangkat penerima yang dipasang di atap rumah pelanggan untuk menangkap sinyal dari tower WISP disebut _______.',
+        answer: ['CPE', 'cpe', 'Customer Premises Equipment'],
+        hint: 'Singkatan 3 huruf: C-P-E',
       },
       {
         type: 'choice',
-        question: "Teknologi apa yang memungkinkan AP diberi daya listrik melalui kabel LAN?",
-        options: ["VPN", "VLAN", "PoE", "DHCP"],
-        answer: 2
+        question: 'Teknologi apa yang memungkinkan Access Point memperoleh suplai daya listrik melalui kabel jaringan LAN (UTP)?',
+        options: ['VPN', 'VLAN', 'PoE', 'NAT'],
+        answer: 2,
       },
       {
         type: 'fill',
-        question: "Router yang menggabungkan fungsi routing, switch, dan access point dalam satu unit cocok untuk kategori _______.",
-        answer: ["SOHO", "soho", "rumahan", "home"],
-        hint: "Small Office/Home Office"
-      }
-    ]
+        question: 'Wireless router yang menyatukan fungsi router, switch, dan AP dalam satu unit dirancang untuk segmen rumah dan kantor kecil yang disingkat _______.',
+        answer: ['SOHO', 'soho', 'rumahan', 'home'],
+        hint: 'Small Office / Home Office (4 huruf)',
+      },
+    ],
   },
 
-  // ─────────────────────────────────────────────────────────────
-  // CHAPTER 06 — KEAMANAN
-  // ─────────────────────────────────────────────────────────────
   {
-    id: "06",
-    title: "Keamanan & Kerentanan Jaringan Nirkabel",
-    description: "Jaringan nirkabel pada dasarnya bersifat terbuka — sinyal radio merambat ke mana-mana. Pahami ancaman yang ada dan cara melindungi diri.",
-    type: "security",
-    intro: "Berbeda dengan kabel yang membutuhkan akses fisik untuk disadap, siapa pun yang berada dalam jangkauan sinyal berpotensi mendengarkan komunikasi nirkabel. Karena itu, keamanan adalah aspek yang tidak bisa diabaikan.",
+    id: '06',
+    title: 'Keamanan & Kerentanan Jaringan Nirkabel',
+    description:
+      'Gelombang radio merambat menembus dinding ruang, sehingga siapa pun dalam radius cakupan dapat menyadap paket di udara jika tidak dienkripsi dengan benar.',
+    type: 'security',
+    estimatedMinutes: 11,
+    objectives: [
+      'Membandingkan kekuatan enkripsi protokol WEP (RC4), WPA (TKIP), WPA2 (AES-CCMP), dan WPA3 (SAE).',
+      'Mengidentifikasi mekanisme serangan nirkabel: Evil Twin / Rogue AP, Deauthentication, Packet Sniffing, dan WPS PIN Attack.',
+      'Merancang langkah mitigasi keamanan menggunakan WPA3, 802.11w (Protected Management Frames), dan autentikasi 802.1X RADIUS.',
+    ],
+    keyFormula: {
+      title: 'Perbandingan Arsitektur Autentikasi & Enkripsi',
+      code: 'WEP  (1999): RC4 + IV 24-bit        --> RENTAN (Dapat ditembus dalam hitungan menit)\nWPA2 (2004): AES-CCMP + 4-Way PSK   --> AMAN (Rentan kamus offline jika sandi pendek)\nWPA3 (2018): AES-GCMP + SAE (Dragonfly) --> SANGAT AMAN (Forward Secrecy & tahan offline crack)',
+      note: 'Selalu aktifkan IEEE 802.11w (Protected Management Frames / PMF) untuk mencegah pemutusan paksa via Deauthentication Attack.',
+    },
+    intro:
+      'Berbeda dengan jaringan kabel yang mengharuskan penyerang mencolokkan kabel secara fisik ke switch, jaringan nirkabel memancarkan frame data ke ruang terbuka. Oleh karena itu, protokol enkripsi layer udara dan autentikasi identitas AP merupakan pertahanan utama.',
     protocols: [
-      { name: "WEP (1999)", status: "broken", level: 1, description: "Wired Equivalent Privacy — algoritma enkripsi pertama untuk Wi-Fi. Menggunakan RC4 dengan kunci 40 atau 104 bit. SUDAH TIDAK AMAN — dapat dibobol dalam hitungan menit menggunakan tools gratis." },
-      { name: "WPA (2003)", status: "weak", level: 2, description: "Wi-Fi Protected Access — perbaikan dari WEP menggunakan TKIP (Temporal Key Integrity Protocol). Lebih baik dari WEP tetapi masih memiliki kelemahan pada TKIP." },
-      { name: "WPA2 (2004)", status: "good", level: 3, description: "Menggunakan AES-CCMP — enkripsi yang jauh lebih kuat. WPA2-Personal (PSK) cocok untuk rumah. WPA2-Enterprise menggunakan server RADIUS untuk autentikasi per-pengguna. Masih cukup aman jika menggunakan password kuat." },
-      { name: "WPA3 (2018)", status: "best", level: 4, description: "Standar keamanan terbaru. Menggunakan SAE (Simultaneous Authentication of Equals) yang menggantikan PSK — lebih tahan terhadap serangan dictionary/brute force. WPA3-Enterprise menggunakan enkripsi 192-bit." }
+      {
+        name: 'WEP (1999)',
+        status: 'broken',
+        level: 1,
+        description:
+          'Wired Equivalent Privacy menggunakan cipher aliran RC4 dengan Initialization Vector (IV) 24-bit yang terlalu pendek. Karena IV berulang setelah beberapa ribu paket, kunci rahasia dapat dipulihkan dalam hitungan menit. Jangan pernah digunakan.',
+      },
+      {
+        name: 'WPA (2003)',
+        status: 'weak',
+        level: 2,
+        description:
+          'Wi-Fi Protected Access generasi pertama menggunakan TKIP (Temporal Key Integrity Protocol) sebagai solusi transisi pada perangkat keras lama. Saat ini sudah usang dan telah resmi dideprekasi oleh Wi-Fi Alliance.',
+      },
+      {
+        name: 'WPA2 (2004)',
+        status: 'good',
+        level: 3,
+        description:
+          'Menggunakan standar enkripsi blok AES-CCMP yang kuat. Tersedia dalam mode WPA2-Personal (Pre-Shared Key) untuk rumah dan WPA2-Enterprise (IEEE 802.1X dengan server RADIUS) untuk institusi. Tetap aman asalkan menggunakan frase sandi minimal 12 karakter acak.',
+      },
+      {
+        name: 'WPA3 (2018)',
+        status: 'best',
+        level: 4,
+        description:
+          'Standar keamanan modern yang menggantikan pertukaran kunci PSK dengan SAE (Simultaneous Authentication of Equals). Tahan terhadap serangan tebak sandi offline (offline dictionary attack), menyediakan Forward Secrecy, dan mewajibkan 802.11w (PMF).',
+      },
     ],
     threats: [
       {
-        name: "Evil Twin / Rogue AP",
-        severity: "high",
-        description: "Penyerang membuat Access Point palsu dengan nama (SSID) yang identik atau mirip dengan AP asli. Korban tanpa sadar terhubung ke AP palsu.",
-        howItWorks: "Penyerang menempatkan AP palsu dengan sinyal lebih kuat dari AP asli. Perangkat korban otomatis berpindah ke AP palsu. Semua traffic korban dapat dipantau (Man-in-the-Middle).",
-        prevention: "Selalu gunakan HTTPS, VPN, dan hindari melakukan aktivitas sensitif di Wi-Fi publik. Gunakan sistem WIDS/WIPS untuk mendeteksi rogue AP."
+        name: 'Evil Twin / Rogue AP',
+        severity: 'high',
+        description:
+          'Penyerang menyalakan Access Point palsu menggunakan nama jaringan (SSID) yang sama persis dengan Wi-Fi resmi agar perangkat pengguna terhubung secara otomatis.',
+        howItWorks:
+          'Penyerang memancarkan sinyal lebih kuat di dekat korban atau memutus koneksi korban dari AP asli. Saat perangkat korban berpindah ke AP palsu, seluruh lalu lintas data melewati perangkat penyerang (Man-in-the-Middle) dan pengguna dapat disuguhi halaman login palsu (captive portal phishing).',
+        prevention:
+          'Gunakan WPA2/WPA3-Enterprise (802.1X) dengan validasi sertifikat server, aktifkan fitur WIDS/WIPS pada kontroler untuk mendeteksi BSSID asing, dan gunakan koneksi terenkripsi (HTTPS/VPN).',
       },
       {
-        name: "Brute Force Password",
-        severity: "high",
-        description: "Penyerang mencoba ribuan atau jutaan kemungkinan password untuk mendapatkan akses ke jaringan.",
-        howItWorks: "Penyerang menangkap 'handshake' WPA2 saat perangkat terhubung, lalu mencoba memecahkannya secara offline menggunakan dictionary attack atau brute force.",
-        prevention: "Gunakan password minimal 12 karakter, gabungan huruf besar-kecil, angka, dan simbol. Gunakan WPA3 yang tahan terhadap serangan offline."
+        name: 'Offline Brute Force / Dictionary Attack',
+        severity: 'high',
+        description:
+          'Penyerang menangkap paket 4-Way Handshake WPA2-PSK dari udara, lalu menebak kombinasi kata sandi secara offline menggunakan kartu grafis (GPU).',
+        howItWorks:
+          'Saat klien terhubung ke AP WPA2-PSK, terjadi pertukaran 4 paket jabat tangan (handshake). Penyerang cukup merekam paket ini tanpa perlu terus berada di lokasi, lalu menguji jutaan kata sandi per detik di komputernya.',
+        prevention:
+          'Beralih ke protokol WPA3-SAE yang kebal terhadap pencocokan handshake offline, atau gunakan kata sandi WPA2 minimal 14 karakter yang mengombinasikan huruf, angka, dan simbol.',
       },
       {
-        name: "Packet Sniffing",
-        severity: "medium",
-        description: "Penyadapan paket data yang dikirimkan melalui jaringan nirkabel, terutama pada jaringan yang tidak terenkripsi atau menggunakan enkripsi lemah.",
-        howItWorks: "Dengan mode 'monitor' pada adapter Wi-Fi, penyerang dapat menangkap semua paket yang melintas di udara. Pada jaringan tanpa enkripsi, isi data dapat langsung dibaca.",
-        prevention: "Selalu gunakan HTTPS untuk browsing. Gunakan VPN untuk mengenkripsi seluruh traffic. Aktifkan WPA2/WPA3 dengan password kuat."
+        name: 'Packet Sniffing (Penyadapan Udara)',
+        severity: 'medium',
+        description:
+          'Perekaman seluruh frame 802.11 yang melintas di udara menggunakan kartu jaringan nirkabel dalam mode monitor (promiscuous/monitor mode).',
+        howItWorks:
+          'Pada jaringan Wi-Fi terbuka (Open Network) tanpa enkripsi, seluruh payload yang tidak terenkripsi di layer aplikasi dapat langsung dibaca menggunakan perangkat lunak penganalisis paket seperti Wireshark.',
+        prevention:
+          'Hindari menyediakan Wi-Fi terbuka tanpa enkripsi; gunakan minimal fitur OWE (Opportunistic Wireless Encryption) pada Wi-Fi tamu serta wajibkan protokol TLS/HTTPS.',
       },
       {
-        name: "Deauthentication Attack",
-        severity: "medium",
-        description: "Penyerang mengirimkan paket 'deauthentication' palsu yang memaksa perangkat memutuskan koneksi dari AP. Biasanya digunakan untuk memaksa reconnect guna menangkap handshake WPA.",
-        howItWorks: "Protokol Wi-Fi awal tidak mengautentikasi frame manajemen. Penyerang dapat memalsukan paket deauthentication yang terlihat berasal dari AP sah, memutuskan koneksi klien.",
-        prevention: "WPA3 dan fitur Management Frame Protection (802.11w) melindungi dari serangan ini. Pastikan AP mendukung dan mengaktifkan fitur ini."
+        name: 'Deauthentication Attack',
+        severity: 'medium',
+        description:
+          'Pengiriman frame manajemen deauthentication palsu yang memaksa perangkat klien terputus dari Access Point.',
+        howItWorks:
+          'Pada standar 802.11 lama, frame manajemen seperti Deauth dan Disassociate tidak dienkripsi. Penyerang memalsukan alamat MAC sumber milik AP dan mengirim frame pemutusan terus-menerus sehingga klien mengalami Denial of Service atau dipaksa melakukan reconnect.',
+        prevention:
+          'Aktifkan fitur IEEE 802.11w (Protected Management Frames / PMF) pada pengaturan Access Point, atau gunakan WPA3 yang mewajibkan PMF secara bawaan.',
       },
       {
-        name: "WPS PIN Attack",
-        severity: "medium",
-        description: "Wi-Fi Protected Setup (WPS) memiliki kelemahan desain pada metode PIN 8 digit — PIN diverifikasi dalam dua bagian terpisah, sehingga hanya perlu 11.000 percobaan (bukan 100 juta).",
-        howItWorks: "Penyerang menggunakan tools seperti Reaver untuk bruteforce PIN WPS. Proses ini bisa berlangsung beberapa jam hingga hari.",
-        prevention: "Nonaktifkan WPS pada router Anda! Terutama metode PIN WPS. Gunakan metode koneksi biasa (password WPA2/3)."
-      }
+        name: 'WPS PIN Vulnerability',
+        severity: 'medium',
+        description:
+          'Eksploitasi celah desain pada fitur Wi-Fi Protected Setup (WPS) berbasis kode PIN 8 digit.',
+        howItWorks:
+          'Protokol WPS memvalidasi 4 digit pertama dan 3 digit kedua secara terpisah, sedangkan digit ke-8 adalah checksum. Akibatnya, kombinasi yang harus ditebak turun drastis dari 100.000.000 menjadi hanya 11.000 kemungkinan.',
+        prevention:
+          'Matikan (Disable) fitur WPS pada halaman administrasi router secara permanen.',
+      },
     ],
     scenario: {
-      title: "Skenario Keamanan Interaktif",
-      question: "Anda adalah admin jaringan di sebuah kafe. Beberapa pelanggan mengeluh koneksi lambat dan mencurigai ada AP palsu di sekitar. Apa yang Anda lakukan?",
+      title: 'Studi Kasus Insiden Keamanan',
+      question:
+        'Anda bertugas sebagai administrator jaringan kampus. Sistem pemantau melaporkan banyak mahasiswa tiba-tiba terputus dari SSID kampus lalu mendapati halaman pop-up yang meminta mereka memasukkan password email universitas. Langkah investigasi dan mitigasi apa yang paling tepat?',
       options: [
-        { text: "Mengabaikan laporan pelanggan karena koneksi masih berjalan", correct: false, feedback: "Salah! Mengabaikan laporan bisa berbahaya. AP palsu (Evil Twin) dapat mencuri data sensitif pelanggan yang tidak curiga." },
-        { text: "Scan jaringan dengan WIDS/WiFi analyzer untuk mencari AP dengan SSID mirip", correct: true, feedback: "Benar! Gunakan tools seperti WiFi Analyzer atau sistem WIDS (Wireless Intrusion Detection) untuk mengidentifikasi AP mencurigakan. Bandingkan BSSID (MAC address) AP yang terdeteksi." },
-        { text: "Meningkatkan power transmit AP agar lebih kuat dari AP palsu", correct: false, feedback: "Salah! Ini melanggar regulasi EIRP dan tidak menyelesaikan masalah. AP palsu bisa terus ikut meningkatkan powernya juga." },
-        { text: "Memberitahu seluruh pelanggan SSID dan password baru melalui media sosial", correct: false, feedback: "Salah! Ini malah menyebarkan password ke publik dan tidak menyelesaikan masalah AP palsu." }
-      ]
+        {
+          text: 'Mengabaikan laporan karena sinyal Wi-Fi kampus masih terlihat penuh di indikator laptop',
+          correct: false,
+          feedback:
+            'Kurang tepat. Gejala terputus mendadak diikuti halaman login tidak resmi adalah indikasi kuat serangan Deauthentication yang dikombinasikan dengan Evil Twin Captive Portal.',
+        },
+        {
+          text: 'Memindai BSSID asing dengan WIDS/Wi-Fi Analyzer untuk melacak posisi Rogue AP serta mengaktifkan 802.11w (PMF)',
+          correct: true,
+          feedback:
+            'Tepat! Memeriksa daftar BSSID (alamat MAC radio) yang memancarkan SSID kampus akan mengungkap keberadaan Rogue AP, sedangkan mengaktifkan 802.11w (PMF) menghentikan serangan Deauthentication.',
+        },
+        {
+          text: 'Menaikkan daya pancar (Tx Power) semua AP kampus hingga melewati batas regulasi EIRP',
+          correct: false,
+          feedback:
+            'Kurang tepat. Menaikkan daya pancar tidak menghentikan frame Deauthentication palsu dan justru merusak keseimbangan roaming antar sel AP.',
+        },
+        {
+          text: 'Mengganti enkripsi jaringan kampus menjadi WEP agar lebih kompatibel dengan perangkat lama',
+          correct: false,
+          feedback:
+            'Sangat berbahaya. WEP sudah tidak aman dan dapat dibobol dalam hitungan menit.',
+        },
+      ],
     },
     exercise: [
       {
         type: 'fill',
-        question: "Protokol keamanan Wi-Fi yang menggunakan enkripsi RC4 dan sudah dianggap TIDAK AMAN adalah _______.",
-        answer: ["WEP", "wep"],
-        hint: "Wired Equivalent Privacy — 3 huruf"
+        question: 'Protokol keamanan Wi-Fi generasi awal tahun 1999 yang menggunakan algoritma RC4 dan sudah tidak aman adalah _______.',
+        answer: ['WEP', 'wep'],
+        hint: 'Singkatan dari Wired Equivalent Privacy (3 huruf)',
       },
       {
         type: 'choice',
-        question: "Serangan apa yang membuat perangkat klien memutuskan koneksi dari AP asli dengan memalsukan paket manajemen?",
-        options: ["Packet Sniffing", "Brute Force Password", "Deauthentication Attack", "Evil Twin"],
-        answer: 2
+        question: 'Serangan yang memaksa klien terputus dari AP asli dengan mengirimkan frame manajemen palsu disebut?',
+        options: ['SQL Injection', 'Deauthentication Attack', 'DNS Poisoning', 'Port Scanning'],
+        answer: 1,
       },
       {
         type: 'choice',
-        question: "Protokol keamanan Wi-Fi terbaru yang menggunakan SAE (Simultaneous Authentication of Equals) adalah?",
-        options: ["WEP", "WPA", "WPA2", "WPA3"],
-        answer: 3
+        question: 'Protokol keamanan Wi-Fi terbaru yang menggunakan mekanisme SAE (Simultaneous Authentication of Equals) adalah?',
+        options: ['WEP', 'WPA-TKIP', 'WPA2-PSK', 'WPA3'],
+        answer: 3,
       },
       {
         type: 'fill',
-        question: "Penyerang yang membuat Access Point palsu dengan SSID yang sama disebut serangan _______.",
-        answer: ["Evil Twin", "evil twin", "Rogue AP", "rogue ap"],
-        hint: "'Kembaran jahat' dalam bahasa Inggris"
-      }
-    ]
+        question: 'Serangan di mana penyerang mendirikan Access Point palsu dengan nama SSID yang identik dengan jaringan resmi disebut _______.',
+        answer: ['Evil Twin', 'evil twin', 'Rogue AP', 'rogue ap'],
+        hint: 'Istilah bahasa Inggris yang berarti kembaran jahat',
+      },
+    ],
   },
 
-  // ─────────────────────────────────────────────────────────────
-  // CHAPTER 07 — TEKNOLOGI WIRELESS
-  // ─────────────────────────────────────────────────────────────
   {
-    id: "07",
-    title: "Jenis Teknologi Wireless",
-    description: "Wi-Fi bukan satu-satunya teknologi nirkabel. Ada berbagai teknologi dengan jangkauan, kecepatan, dan kegunaan yang berbeda-beda.",
-    type: "tech-comparison",
-    intro: "Ekosistem teknologi nirkabel sangat luas. Selain Wi-Fi yang kita gunakan sehari-hari, ada Bluetooth untuk jarak dekat, Zigbee untuk IoT hemat daya, LoRa untuk jangkauan sangat jauh, dan masih banyak lagi.",
+    id: '07',
+    title: 'Perbandingan Teknologi Nirkabel',
+    description:
+      'Ekosistem komunikasi nirkabel mencakup lebih dari sekadar Wi-Fi: mulai dari NFC jarak sentuh, Bluetooth & Zigbee untuk perangkat pintar, hingga LoRaWAN berjangkauan puluhan kilometer.',
+    type: 'tech-comparison',
+    estimatedMinutes: 10,
+    objectives: [
+      'Membandingkan evolusi kapasitas Wi-Fi 4, Wi-Fi 5, Wi-Fi 6, Wi-Fi 6E, dan Wi-Fi 7.',
+      'Menganalisis kompromi (trade-off) antara Kecepatan Data, Jangkauan Jarak, dan Konsumsi Daya pada berbagai protokol nirkabel.',
+      'Memilih protokol yang tepat untuk kasus penggunaan spesifik: Smart Home (Zigbee/BLE), Smart Agriculture (LoRaWAN), dan pembayaran nirsentuh (NFC).',
+    ],
+    keyFormula: {
+      title: 'Segitiga Kompromi Desain Protokol Nirkabel',
+      code: 'Kecepatan Tinggi (Gbps)  <--->  Jangkauan Jauh (km)  <--->  Konsumsi Daya Ultra-Rendah (mW)\n(Sebuah protokol nirkabel hanya dapat mengoptimalkan maksimal 2 dari 3 aspek di atas secara bersamaan)',
+      note: 'Contoh: Wi-Fi 7 mengoptimalkan kecepatan tinggi, sedangkan LoRaWAN mengorbankan kecepatan (hanya puluhan Kbps) demi jangkauan belasan kilometer dan baterai tahan bertahun-tahun.',
+    },
+    intro:
+      'Setiap protokol komunikasi nirkabel dirancang untuk menyelesaikan permasalahan rekayasa yang berbeda. Sensor kelembaban tanah di perkebunan membutuhkan baterai yang tahan 5 tahun dengan jangkauan 10 km (LoRaWAN), sementara headset VR membutuhkan aliran data multi-Gigabit berlatensi rendah (Wi-Fi 6E/7).',
     content: [
       {
-        name: "Wi-Fi 4 (802.11n)",
-        year: "2009",
-        freq: "2.4 & 5 GHz",
-        speed: "600 Mbps",
-        range: "~70 m (indoor)",
-        power: "Medium",
-        usecase: "Laptop, smartphone generasi sebelumnya",
-        features: "MIMO (Multiple-Input Multiple-Output) pertama kali diperkenalkan. Dual-band pertama. Backward compatible ke 802.11a/b/g.",
-        pros: "Dual-band, MIMO, jangkauan lebih baik dari generasi sebelumnya.",
-        cons: "Sudah mulai usang. Tidak mendukung MU-MIMO.",
-        color: "slate",
-        category: "WiFi"
+        name: 'Wi-Fi 4 (802.11n)',
+        year: '2009',
+        freq: '2.4 & 5 GHz',
+        speed: '600 Mbps',
+        range: '~70 m (indoor)',
+        power: 'Medium',
+        usecase: 'Perangkat legacy, jaringan dasar rumah & IoT 2.4 GHz',
+        features: 'Memperkenalkan MIMO hingga 4x4 dan lebar kanal 40 MHz pada dua pita frekuensi (2.4 GHz dan 5 GHz).',
+        pros: 'Kompatibilitas perangkat sangat luas dan jangkauan 2.4 GHz cukup jauh.',
+        cons: 'Kapasitas tidak memadai untuk kepadatan pengguna tinggi dan belum mendukung MU-MIMO.',
+        color: 'slate',
+        category: 'WiFi',
       },
       {
-        name: "Wi-Fi 5 (802.11ac)",
-        year: "2014",
-        freq: "5 GHz",
-        speed: "3.5 Gbps",
-        range: "~35 m (indoor)",
-        power: "Medium-High",
-        usecase: "4K streaming, gaming, laptop modern",
-        features: "MU-MIMO (multi-user), saluran hingga 160 MHz, Beamforming, Wave 2 menghadirkan 4x4 MIMO.",
-        pros: "Kecepatan Gigabit pertama, MU-MIMO, efisien untuk multi-device.",
-        cons: "5 GHz tidak penetratif seperti 2.4 GHz. Tidak efisien di lingkungan sangat padat.",
-        color: "blue",
-        category: "WiFi"
+        name: 'Wi-Fi 5 (802.11ac)',
+        year: '2014',
+        freq: '5 GHz',
+        speed: '3.5 Gbps',
+        range: '~35 m (indoor)',
+        power: 'Medium-High',
+        usecase: 'Streaming video 4K, perkantoran, link CPE 5AC',
+        features: 'Mendukung Downlink MU-MIMO, kanal hingga 160 MHz, modulasi 256-QAM, dan eksplisit Beamforming.',
+        pros: 'Menghadirkan era Gigabit Wi-Fi pada pita 5 GHz yang lebih bebas interferensi.',
+        cons: 'Hanya beroperasi di pita 5 GHz dan efisiensi menurun saat ratusan klien aktif bersamaan.',
+        color: 'blue',
+        category: 'WiFi',
       },
       {
-        name: "Wi-Fi 6 (802.11ax)",
-        year: "2019",
-        freq: "2.4 & 5 GHz",
-        speed: "9.6 Gbps",
-        range: "~35 m (indoor)",
-        power: "Optimized",
-        usecase: "Stadion, mal, lingkungan padat perangkat, IoT",
-        features: "OFDMA (bisa melayani banyak klien bersamaan efisien), TWT untuk hemat baterai IoT, 8x8 MU-MIMO, BSS Coloring (kurangi interferensi).",
-        pros: "Efisiensi spektrum jauh lebih baik, hemat baterai IoT (TWT), performa konsisten di lingkungan padat.",
-        cons: "Membutuhkan perangkat klien yang juga mendukung Wi-Fi 6 untuk manfaat penuh.",
-        color: "primary",
-        category: "WiFi"
+        name: 'Wi-Fi 6 (802.11ax)',
+        year: '2019',
+        freq: '2.4 & 5 GHz',
+        speed: '9.6 Gbps',
+        range: '~35 m (indoor)',
+        power: 'Optimized (TWT)',
+        usecase: 'Kampus, stadion, auditorium padat, perkantoran modern',
+        features: 'OFDMA (pembagian sub-kanal ke banyak pengguna sekaligus), Uplink/Downlink 8x8 MU-MIMO, 1024-QAM, BSS Coloring, dan Target Wake Time (TWT).',
+        pros: 'Latensi tetap rendah dan stabil meskipun puluhan perangkat mengirim data secara bersamaan.',
+        cons: 'Memerlukan perangkat klien yang mendukung 802.11ax untuk merasakan manfaat OFDMA.',
+        color: 'primary',
+        category: 'WiFi',
       },
       {
-        name: "Wi-Fi 6E",
-        year: "2021",
-        freq: "6 GHz",
-        speed: "9.6 Gbps",
-        range: "~30 m (indoor)",
-        power: "Optimized",
-        usecase: "AR/VR, ultra-HD video, link backhaul indoor",
-        features: "Semua fitur Wi-Fi 6 ditambah akses ke pita 6 GHz yang BERSIH (minim interferensi, karena perangkat lama tidak bisa mengaksesnya).",
-        pros: "Spektrum 6 GHz sangat bersih dari interferensi. 14 channel 80 MHz atau 7 channel 160 MHz tersedia.",
-        cons: "Jangkauan lebih pendek dari 5 GHz. Regulasi 6 GHz bervariasi antar negara.",
-        color: "emerald",
-        category: "WiFi"
+        name: 'Wi-Fi 6E',
+        year: '2021',
+        freq: '6 GHz (serta 2.4 & 5 GHz)',
+        speed: '9.6 Gbps',
+        range: '~30 m (indoor)',
+        power: 'Optimized',
+        usecase: 'Perangkat AR/VR, workstation medis/desain, lingkungan apartemen padat',
+        features: 'Membuka spektrum baru di pita 6 GHz dengan tambahan hingga 7 kanal super-lebar 160 MHz tanpa gangguan dari perangkat Wi-Fi generasi lama.',
+        pros: 'Jalur spektrum 6 GHz sangat bersih dan bebas antrean perangkat legacy.',
+        cons: 'Redaman sinyal 6 GHz terhadap dinding lebih besar sehingga jangkauan terbatas pada satu ruangan.',
+        color: 'emerald',
+        category: 'WiFi',
       },
       {
-        name: "Wi-Fi 7 (802.11be)",
-        year: "2024+",
-        freq: "2.4, 5, 6 GHz",
-        speed: "46 Gbps",
-        range: "~35 m (indoor)",
-        power: "Optimized",
-        usecase: "8K streaming, cloud gaming, XR (Extended Reality), industri 4.0",
-        features: "Multi-Link Operation (MLO) — gunakan beberapa band sekaligus. Channel hingga 320 MHz. 16x16 MU-MIMO. 4096-QAM (modulasi lebih efisien).",
-        pros: "Latensi ultra-rendah berkat MLO, throughput masif, sangat futuristik.",
-        cons: "Perangkat masih sangat baru dan mahal. Ekosistem masih berkembang.",
-        color: "purple",
-        category: "WiFi"
+        name: 'Wi-Fi 7 (802.11be)',
+        year: '2024+',
+        freq: '2.4, 5 & 6 GHz',
+        speed: '46 Gbps',
+        range: '~35 m (indoor)',
+        power: 'Optimized',
+        usecase: 'Streaming 8K, XR (Extended Reality), otomasi industri real-time',
+        features: 'Multi-Link Operation (MLO) untuk agregasi beberapa band sekaligus, lebar kanal 320 MHz, 16x16 MU-MIMO, dan modulasi 4096-QAM.',
+        pros: 'Kecepatan setara jaringan kabel multi-Gigabit dengan keandalan dan latensi ultra-rendah.',
+        cons: 'Membutuhkan infrastruktur switch multi-Gigabit (2.5G/10G PoE++) agar tidak bottleneck di sisi kabel.',
+        color: 'purple',
+        category: 'WiFi',
       },
       {
-        name: "Bluetooth",
-        year: "1999",
-        freq: "2.4 GHz",
-        speed: "3 Mbps (Classic) / 50 Mbps (BT 5.x LE)",
-        range: "10–100 m",
-        power: "Very Low (BLE)",
-        usecase: "Audio nirkabel, wearable, keyboard, mouse, sensor IoT",
-        features: "Bluetooth Classic untuk audio/data. Bluetooth Low Energy (BLE) untuk IoT hemat daya. BT 5.0+ menghadirkan Broadcast Audio (Auracast).",
-        pros: "Sangat hemat daya (BLE), ubiquitous (ada di semua smartphone), banyak profil standar (A2DP, HFP, GATT).",
-        cons: "Kecepatan rendah dibanding Wi-Fi, jangkauan terbatas.",
-        color: "blue",
-        category: "Short Range"
+        name: 'Bluetooth / BLE',
+        year: '1999 / 2010 (BLE)',
+        freq: '2.4 GHz (FHSS)',
+        speed: '2 Mbps (BLE) - 3 Mbps (Classic)',
+        range: '10 - 100 m',
+        power: 'Very Low (BLE)',
+        usecase: 'Audio nirkabel, smartwatch, beacon lokasi indoor, periferal komputer',
+        features: 'Menggunakan Frequency Hopping Spread Spectrum (FHSS) yang berpindah kanal 1.600 kali per detik untuk menghindari interferensi di pita 2.4 GHz.',
+        pros: 'Konsumsi daya sangat hemat (terutama varian BLE) dan tersedia di hampir semua ponsel.',
+        cons: 'Bukan dirancang untuk transfer file berukuran besar atau akses internet langsung.',
+        color: 'blue',
+        category: 'Short Range',
       },
       {
-        name: "Zigbee",
-        year: "2004",
-        freq: "2.4 GHz",
-        speed: "250 Kbps",
-        range: "10–100 m",
-        power: "Ultra Low",
-        usecase: "Smart home (lampu, sensor suhu, smart lock), industri",
-        features: "Topologi mesh — perangkat Zigbee dapat melewatkan sinyal satu sama lain (relay). Daya sangat rendah — baterai AA bisa bertahan bertahun-tahun.",
-        pros: "Mesh networking, ultra-low power, standar terbuka, cocok untuk jaringan sensor besar.",
-        cons: "Kecepatan sangat rendah, tidak cocok untuk transfer data besar.",
-        color: "orange",
-        category: "IoT"
+        name: 'Zigbee (IEEE 802.15.4)',
+        year: '2004',
+        freq: '2.4 GHz / Sub-GHz',
+        speed: '250 Kbps',
+        range: '10 - 100 m (per hop mesh)',
+        power: 'Ultra Low',
+        usecase: 'Otomasi rumah pintar (lampu, sakelar, sensor suhu), jaringan sensor pabrik',
+        features: 'Mendukung topologi Mesh mandiri (self-healing mesh) di mana perangkat yang terhubung listrik bertindak sebagai repeater bagi sensor sekitarnya.',
+        pros: 'Sangat hemat energi dan jangkauan dapat meluas otomatis lewat rantai node mesh.',
+        cons: 'Laju data sangat kecil (250 Kbps), hanya untuk pesan kontrol dan telemetri sensor.',
+        color: 'orange',
+        category: 'IoT',
       },
       {
-        name: "LoRa / LoRaWAN",
-        year: "2013",
-        freq: "433/868/915 MHz (sub-GHz)",
-        speed: "0.3–50 Kbps",
-        range: "2–15 km (urban), 40+ km (rural/LoS)",
-        power: "Ultra Low",
-        usecase: "Smart city, pertanian pintar, pelacak GPS, monitoring lingkungan",
-        features: "Jangkauan sangat jauh dengan daya sangat rendah (LPWAN). LoRaWAN adalah protokol jaringan di atas LoRa yang mendukung keamanan end-to-end AES-128.",
-        pros: "Jangkauan luar biasa jauh (km), hemat daya ekstrem, penetrasi gedung sangat baik (sub-GHz).",
-        cons: "Bandwidth sangat rendah — hanya cocok untuk paket data kecil.",
-        color: "green",
-        category: "LPWAN"
+        name: 'LoRa / LoRaWAN',
+        year: '2013',
+        freq: '915 / 923 MHz (Sub-GHz ISM)',
+        speed: '0.3 - 50 Kbps',
+        range: '2 - 15 km (perkotaan), 30+ km (terbuka)',
+        power: 'Ultra Low',
+        usecase: 'Pertanian cerdas, pemantauan ketinggian air sungai, smart metering kota',
+        features: 'Menggunakan modulasi Chirp Spread Spectrum (CSS) pada pita frekuensi Sub-GHz yang tahan terhadap derau dan sangat kuat menembus rintangan.',
+        pros: 'Jangkauan luar biasa jauh hingga belasan kilometer dengan daya baterai bertahan bertahun-tahun.',
+        cons: 'Kapasitas payload sangat kecil (hanya beberapa puluh byte per pengiriman), tidak bisa untuk suara/video.',
+        color: 'green',
+        category: 'LPWAN',
       },
       {
-        name: "NFC (Near Field Communication)",
-        year: "2004",
-        freq: "13.56 MHz",
-        speed: "424 Kbps",
-        range: "~4 cm",
-        power: "Passive (no battery needed for tag)",
-        usecase: "Pembayaran nirsentuh (e-money, kartu kredit), akses kartu, pairing Bluetooth",
-        features: "Tag NFC bisa pasif (tidak butuh baterai) — perangkat pembaca menginduksi arus listrik ke tag. Tiga mode: read/write, peer-to-peer, card emulation.",
-        pros: "Sangat aman karena jarak sangat pendek (hampir mustahil disadap dari jauh), tidak butuh pairing, instan.",
-        cons: "Jangkauan sangat pendek (<4 cm), kecepatan sangat rendah.",
-        color: "slate",
-        category: "Short Range"
-      }
+        name: 'NFC (Near Field Communication)',
+        year: '2004',
+        freq: '13.56 MHz (HF RFID)',
+        speed: '424 Kbps',
+        range: '< 4 cm',
+        power: 'Pasif (Induksi Elektromagnetik)',
+        usecase: 'Kartu uang elektronik (e-money), akses pintu gedung, pembayaran nirsentuh',
+        features: 'Bekerja melalui induksi medan magnet jarak sangat dekat sehingga kartu/tag pasif dapat menyala tanpa baterai internal.',
+        pros: 'Proses transaksi instan dalam hitungan milidetik dan aman dari penyadapan jarak jauh.',
+        cons: 'Wajib ditempelkan sangat dekat (< 4 cm) dengan perangkat pembaca (reader).',
+        color: 'slate',
+        category: 'Short Range',
+      },
     ],
     exercise: [
       {
         type: 'fill',
-        question: "Teknologi Wi-Fi yang menggunakan pita 6 GHz disebut Wi-Fi _______.",
-        answer: ["6E", "6e"],
-        hint: "Wi-Fi 6 + huruf ekstra"
+        question: 'Ekstensi standar Wi-Fi 6 yang mulai membuka akses ke spektrum frekuensi 6 GHz disebut Wi-Fi _______.',
+        answer: ['6E', '6e'],
+        hint: 'Wi-Fi 6 diikuti satu huruf tambahan',
       },
       {
         type: 'choice',
-        question: "Teknologi wireless apa yang memiliki jangkauan paling jauh (hingga 40+ km) dengan konsumsi daya sangat rendah?",
-        options: ["Bluetooth", "Zigbee", "LoRa / LoRaWAN", "NFC"],
-        answer: 2
+        question: 'Teknologi nirkabel manakah yang paling tepat untuk mengirim data sensor cuaca dari tengah lahan pertanian sejauh 10 km dengan daya baterai AA?',
+        options: ['NFC', 'Wi-Fi 6E', 'LoRa / LoRaWAN', 'Bluetooth Classic'],
+        answer: 2,
       },
       {
         type: 'choice',
-        question: "Fitur OFDMA pada Wi-Fi 6 berfungsi untuk...",
-        options: ["Meningkatkan jangkauan sinyal", "Melayani banyak klien secara bersamaan dengan efisien", "Mengenkripsi data transmisi", "Mengurangi ukuran antena"],
-        answer: 1
+        question: 'Fitur OFDMA pada Wi-Fi 6 (802.11ax) bertujuan utama untuk...',
+        options: [
+          'Mengganti kabel serat optik antar benua',
+          'Membagi kanal frekuensi menjadi sub-kanal (Resource Unit) agar banyak klien terlayani serentak dengan efisien',
+          'Menghilangkan kebutuhan autentikasi WPA2/WPA3',
+          'Membatasi jarak pancaran menjadi 4 cm',
+        ],
+        answer: 1,
       },
       {
         type: 'fill',
-        question: "Wi-Fi 7 memiliki kecepatan teoritis hingga _______ Gbps.",
-        answer: ["46"],
-        hint: "Angka dua digit"
-      }
-    ]
+        question: 'Standar Wi-Fi 7 (802.11be) mendukung kecepatan data teoritis hingga _______ Gbps.',
+        answer: ['46'],
+        hint: 'Angka dua digit (40-an Gbps)',
+      },
+    ],
   },
 
-  // ─────────────────────────────────────────────────────────────
-  // CHAPTER 08 — KELEBIHAN & KEKURANGAN
-  // ─────────────────────────────────────────────────────────────
   {
-    id: "08",
-    title: "Kelebihan, Kekurangan & Tantangan",
-    description: "Tidak ada teknologi yang sempurna. Memahami pro dan kontra jaringan nirkabel membantu dalam membuat keputusan desain yang tepat.",
-    type: "pros-cons-extended",
-    intro: "Jaringan nirkabel menawarkan fleksibilitas yang luar biasa, namun juga datang dengan keterbatasan dan tantangan tersendiri. Klik setiap kartu untuk melihat penjelasan lebih lengkap.",
+    id: '08',
+    title: 'Kelebihan, Kekurangan & Tantangan Desain',
+    description:
+      'Evaluasi objektif kelebihan, keterbatasan fisik medium udara, serta strategi rekayasa untuk mengatasi multipath dan kepadatan pengguna tinggi (High-Density WLAN).',
+    type: 'pros-cons-extended',
+    estimatedMinutes: 9,
+    objectives: [
+      'Mengidentifikasi keuntungan ekonomis dan operasional jaringan nirkabel dibanding instalasi kabel penuh.',
+      'Menganalisis keterbatasan sifat half-duplex dan medium bersama (shared medium) pada komunikasi radio.',
+      'Merumuskan solusi arsitektur untuk masalah Multipath Fading, regulasi spektrum, dan High-Density WLAN.',
+    ],
+    keyFormula: {
+      title: 'Prinsip Desain High-Density WLAN (Stadion & Auditorium)',
+      code: 'Kapasitas Sel = Jumlah AP × Kapasitas Kanal Bersih\nStrategi: Banyak AP Berdaya Rendah (Micro-Cell 5/6 GHz) > Satu AP Berdaya Tinggi',
+      note: 'Menaikkan daya pancar satu AP di ruangan padat justru memperluas area tabrakan paket (collision domain). Solusinya adalah memperkecil ukuran sel dan memperbanyak AP pada kanal berbeda.',
+    },
+    intro:
+      'Seorang perancang jaringan yang andal tidak hanya mengetahui cara menyalakan Wi-Fi, tetapi juga memahami kapan jaringan nirkabel menjadi solusi terbaik dan bagaimana mengantisipasi kelemahan alaminya melalui desain sel yang terukur.',
     content: {
       pros: [
-        { title: "Mobilitas Penuh", description: "Pengguna dapat bergerak bebas sambil tetap terhubung ke jaringan tanpa perlu mencabut dan menancapkan kabel. Ini memungkinkan pola kerja modern yang fleksibel.", detail: "Dengan teknologi seperti seamless roaming (802.11r) dan Zero-Handoff pada sistem enterprise, pengguna bahkan bisa berpindah antar AP tanpa terputus — koneksi VoIP pun tetap berjalan lancar." },
-        { title: "Instalasi Fleksibel & Cepat", description: "Tidak perlu menarik kabel melalui dinding, langit-langit, atau lantai. Jaringan Wi-Fi dapat dipasang dalam hitungan jam.", detail: "Sangat menguntungkan untuk gedung bersejarah yang tidak boleh dilubangi, atau instalasi sementara seperti acara atau pameran yang membutuhkan jaringan dalam waktu singkat." },
-        { title: "Pengurangan Kabel", description: "Mengurangi biaya dan kerumitan manajemen kabel fisik, terutama di area yang luas atau sulit dijangkau kabel.", detail: "Di gedung bertingkat tinggi, biaya penarikan kabel bisa mencapai jutaan rupiah. Wi-Fi mengeliminasi sebagian besar biaya tersebut, meskipun tetap dibutuhkan kabel untuk backbone dan power AP." },
-        { title: "Mudah Diperluas (Scalable)", description: "Menambah coverage area hanya membutuhkan penambahan AP baru, tanpa infrastruktur kabel yang rumit.", detail: "Sistem mesh Wi-Fi modern bahkan memungkinkan penambahan node tanpa konfigurasi manual — sistem otomatis menyesuaikan routing dan channel untuk optimasi." },
-        { title: "Konektivitas di Area Sulit", description: "Menjangkau area yang tidak mungkin atau sangat mahal dijangkau kabel: lahan pertanian, kawasan hutan, daerah pegunungan, dan pulau-pulau terpencil.", detail: "WISP (Wireless Internet Service Provider) memanfaatkan ini untuk memberikan internet ke desa-desa terpencil menggunakan link PTP/PTMP dengan antena directional." }
+        {
+          title: 'Mobilitas Pengguna Tanpa Batas',
+          description:
+            'Pengguna dapat berpindah ruang rapat, lantai, atau area kerja sambil tetap terhubung ke jaringan tanpa harus mencabut-pasang kabel konektor.',
+          detail:
+            'Dengan protokol roaming cepat seperti IEEE 802.11r/k/v pada sistem AP terpusat, perpindahan asosiasi klien dari satu AP ke AP lain berlangsung di bawah 50 milidetik sehingga panggilan VoIP tidak terputus.',
+        },
+        {
+          title: 'Kecepatan & Fleksibilitas Instalasi',
+          description:
+            'Mengurangi waktu pengerjaan sipil karena tidak perlu membobok dinding atau menarik ratusan jalur kabel UTP ke setiap meja pengguna.',
+          detail:
+            'Sangat krusial untuk bangunan cagar budaya yang tidak boleh dilubangi, ruang pameran sementara, atau pemulihan komunikasi darurat saat bencana.',
+        },
+        {
+          title: 'Efisiensi Biaya Ekspansi (Scalability)',
+          description:
+            'Menambah jumlah perangkat yang terhubung dari 20 menjadi 100 unit tidak menuntut penambahan port switch fisik untuk setiap perangkat klien.',
+          detail:
+            'Selama kapasitas airtime AP masih mencukupi, perangkat baru seperti tablet, laptop, dan sensor IoT dapat langsung bergabung ke SSID yang sesuai.',
+        },
+        {
+          title: 'Menembus Medan Geografis Sulit',
+          description:
+            'Menghubungkan lokasi yang terpisah sungai, lembah, jalan raya, atau perbukitan di mana penarikan kabel serat optik membutuhkan izin dan biaya sangat besar.',
+          detail:
+            'Link radio PTP dapat dibangun dalam waktu satu hari kerja di kedua titik menara, memberikan alternatif jalur utama maupun jalur cadangan (failover link).',
+        },
       ],
       cons: [
-        { title: "Rentan Interferensi", description: "Spektrum frekuensi adalah sumber daya terbatas yang digunakan bersama. Terlalu banyak AP di area yang sama menyebabkan interferensi dan penurunan performa.", detail: "Di apartemen padat, setiap unit mungkin punya router sendiri. Jika semua menggunakan channel yang sama, throughput efektif tiap router bisa turun hingga 50-80% dari kapasitas nominalnya." },
-        { title: "Keamanan Lebih Kompleks", description: "Sinyal nirkabel merambat melewati dinding dan bisa diterima oleh siapa saja dalam jangkauan. Ini menciptakan permukaan serangan yang jauh lebih luas dibanding kabel.", detail: "Dengan kabel, penyerang harus mendapatkan akses fisik ke jaringan. Dengan Wi-Fi, cukup berada dalam radius sinyal. Enkripsi yang lemah (WEP, WPA-TKIP) atau password yang mudah ditebak bisa membahayakan seluruh jaringan." },
-        { title: "Jangkauan & Penetrasi Terbatas", description: "Sinyal Wi-Fi semakin melemah dengan jarak dan penghalang. Dinding beton, logam, dan interferensi dapat sangat mengurangi jangkauan.", detail: "Dinding beton 15 cm bisa mengurangi sinyal 2.4 GHz sekitar 10-15 dB. Lemari logam bisa memantulkan dan menyerap sinyal. Lantai beton bertulang sangat sulit ditembus bahkan oleh 2.4 GHz." },
-        { title: "Bandwidth Dibagi (Shared Medium)", description: "Dalam Wi-Fi, semua perangkat di area yang sama berbagi medium yang sama. Semakin banyak perangkat aktif, semakin sedikit bandwidth yang tersedia untuk masing-masing.", detail: "Ini adalah sifat inheren wireless (half-duplex pada protokol legacy). Wi-Fi 6 dengan OFDMA mulai mengatasi masalah ini dengan melayani banyak klien secara bersamaan dalam satu transmisi, tapi masih ada overhead manajemen." },
-        { title: "Dipengaruhi Kondisi Fisik", description: "Perubahan lingkungan fisik — pohon bertumbuh, gedung baru dibangun, cuaca buruk, atau bahkan manusia yang bergerak — dapat mempengaruhi kualitas link nirkabel.", detail: "Khususnya untuk link outdoor jarak jauh (PTP/PTMP), rain fade, angin kencang yang menggeser antena, dan vegetasi yang tumbuh bisa mengubah link yang semula baik menjadi tidak stabil." }
+        {
+          title: 'Rentan Terhadap Interferensi Spektrum',
+          description:
+            'Frekuensi tidak berlisensi (ISM 2.4 GHz dan 5 GHz) digunakan bersama oleh publik, sehingga kepadatan AP tetangga dapat menurunkan kualitas sinyal.',
+          detail:
+            'Di kawasan perkantoran padat atau apartemen, puluhan SSID yang bertumpuk pada kanal yang sama menyebabkan peningkatan waktu tunggu (channel contention) dan penurunan throughput.',
+        },
+        {
+          title: 'Permukaan Serangan Keamanan Lebih Luas',
+          description:
+            'Sinyal radio merambat menembus kaca dan tembok gedung hingga ke area parkir atau jalan umum, membuka peluang penyadapan maupun serangan dari luar gedung.',
+          detail:
+            'Berbeda dengan port LAN yang terlindung di dalam ruang server terkunci, jaringan nirkabel wajib menerapkan enkripsi kuat (WPA3/WPA2-Enterprise) dan pemisahan VLAN.',
+        },
+        {
+          title: 'Redaman Penghalang Fisik (Attenuation)',
+          description:
+            'Dinding beton bertulang, kaca berlapis film logam (Low-E glass), dan partisi besi menyerap energi gelombang radio secara signifikan.',
+          detail:
+            'Satu dinding beton tebal dapat meredam sinyal sebesar 12 dB hingga 18 dB (mengurangi daya sinyal hingga lebih dari 90%), sehingga membutuhkan penempatan AP di tiap zona ruang.',
+        },
+        {
+          title: 'Kapasitas Dibagi Bersama (Shared Half-Duplex Medium)',
+          description:
+            'Pada satu kanal radio, perangkat bergantian menggunakan medium udara (CSMA/CA), sehingga kecepatan bersih per klien menurun seiring bertambahnya perangkat aktif.',
+          detail:
+            'Untuk beban kerja server basis data, editing video mentah melalui jaringan (NAS), atau backbone utama dalam gedung, kabel serat optik dan Ethernet tetap menjadi pilihan utama.',
+        },
+        {
+          title: 'Sensitif Terhadap Perubahan Lingkungan Luar Ruang',
+          description:
+            'Link outdoor jarak jauh dipengaruhi oleh pertumbuhan pepohonan baru, pembangunan gedung tinggi di lintasan, hujan lebat, dan korosi perangkat.',
+          detail:
+            'Link PTP yang awalnya memiliki LoS bersih dapat mengalami penurunan sinyal beberapa tahun kemudian ketika pohon di tengah jalur tumbuh memasuki zona Fresnel.',
+        },
       ],
       challenges: [
-        { title: "Obstacle & Multipath", description: "Sinyal radio yang memantul dari berbagai permukaan menciptakan banyak salinan sinyal yang tiba di penerima pada waktu berbeda (multipath). Ini menyebabkan interferensi terhadap diri sendiri (Inter-Symbol Interference/ISI).", solution: "Teknologi OFDM (Orthogonal Frequency Division Multiplexing) dan MIMO (Multiple-Input Multiple-Output) dirancang khusus untuk memanfaatkan efek multipath daripada melawannya." },
-        { title: "Manajemen Spektrum", description: "Spektrum frekuensi adalah sumber daya alam yang terbatas dan diatur secara ketat oleh pemerintah. Penggunaan frekuensi yang tidak tepat bisa melanggar hukum dan mengakibatkan interferensi masif.", solution: "Di Indonesia, penggunaan frekuensi diatur oleh Kementerian Komunikasi dan Informatika (Kominfo). Pita 2.4 GHz dan 5.8 GHz unlicensed, namun tetap ada batasan power (EIRP). Operator seluler membeli lisensi frekuensi dari pemerintah." },
-        { title: "Skalabilitas di Lingkungan Sangat Padat", description: "Merancang jaringan Wi-Fi untuk ribuan perangkat di area terbatas (stadion, konser, pameran) adalah tantangan engineering yang sangat kompleks.", solution: "Pendekatan: High Density WLAN design menggunakan AP dengan daya rendah yang banyak (bukan sedikit AP dengan daya tinggi). Setiap AP hanya melayani puluhan klien. Teknologi seperti Band Steering, OFDMA (Wi-Fi 6), dan agresifnya penggunaan 5/6 GHz." }
-      ]
+        {
+          title: 'Pantulan Jamak (Multipath Propagation)',
+          description:
+            'Gelombang radio yang memantul pada dinding, lantai, dan perabot logam tiba di antena penerima melalui banyak jalur dengan selisih waktu berbeda.',
+          solution:
+            'Teknologi modern mengubah pantulan ini menjadi keuntungan menggunakan modulasi OFDM (Orthogonal Frequency Division Multiplexing) dan MIMO (Multiple-Input Multiple-Output) yang menggabungkan beberapa aliran spasial sinyal.',
+        },
+        {
+          title: 'Kepatuhan Regulasi Spektrum & EIRP',
+          description:
+            'Penggunaan frekuensi radio diatur oleh negara agar tidak mengganggu radar penerbangan, cuaca, maupun telekomunikasi vital.',
+          solution:
+            'Pastikan perangkat memiliki sertifikasi resmi (Postel/Komdigi di Indonesia), aktifkan kode negara (Country Code: Indonesia) pada konfigurasi radio, aktifkan fitur DFS (Dynamic Frequency Selection) di pita 5 GHz, dan patuhi batas EIRP maksimal 36 dBm.',
+        },
+        {
+          title: 'Arsitektur Lingkungan Sangat Padat (High-Density WLAN)',
+          description:
+            'Menyediakan koneksi stabil bagi ratusan hingga ribuan pengguna serentak di aula wisuda, ruang konferensi, atau stadion.',
+          solution:
+            'Terapkan desain Micro-Cell: pasang lebih banyak Access Point Wi-Fi 6/6E dengan daya pancar rendah-menengah (agar sel tidak saling tumpang tindih), gunakan antena directional di langit-langit, matikan data-rate warisan yang lambat (1-6 Mbps), dan arahkan klien ke pita 5 GHz & 6 GHz (Band Steering).',
+        },
+      ],
     },
     exercise: [
       {
         type: 'choice',
-        question: "Apa kelebihan utama jaringan nirkabel dibanding jaringan kabel dalam hal instalasi?",
-        options: ["Kecepatan lebih tinggi", "Tidak perlu menarik kabel, instalasi lebih cepat dan fleksibel", "Lebih aman dari serangan", "Tidak terpengaruh interferensi"],
-        answer: 1
+        question: 'Apa keunggulan utama jaringan nirkabel dibandingkan jaringan kabel pada tahap implementasi fisik?',
+        options: [
+          'Bebas dari segala bentuk interferensi frekuensi',
+          'Instalasi jauh lebih cepat dan fleksibel tanpa perlu menarik kabel ke setiap perangkat pengguna',
+          'Sinyal tidak mungkin keluar dari dinding ruangan',
+          'Memiliki kapasitas full-duplex tak terbatas di satu kanal',
+        ],
+        answer: 1,
       },
       {
         type: 'fill',
-        question: "Sinyal Wi-Fi yang memantul dari berbagai permukaan dan tiba di penerima pada waktu berbeda disebut efek _______.",
-        answer: ["multipath", "Multipath"],
-        hint: "Kata bahasa Inggris: 'banyak jalur'"
+        question: 'Fenomena ketika sinyal radio memantul pada berbagai permukaan dan tiba di penerima melalui banyak jalur disebut efek _______.',
+        answer: ['multipath', 'Multipath'],
+        hint: 'Istilah bahasa Inggris yang berarti banyak jalur',
       },
       {
         type: 'choice',
-        question: "Mengapa jaringan nirkabel memiliki keamanan yang lebih kompleks dibanding kabel?",
-        options: ["Karena sinyalnya lebih cepat", "Karena sinyal menyebar di udara dan bisa diterima siapa saja dalam jangkauan", "Karena menggunakan enkripsi yang lemah", "Karena tidak mendukung firewall"],
-        answer: 1
-      }
-    ]
-  }
+        question: 'Bagaimana strategi rekayasa yang benar saat merancang Wi-Fi untuk aula berkapasitas 1.000 orang (High-Density)?',
+        options: [
+          'Memasang satu router di pojok ruangan dengan daya pancar dimaksimalkan',
+          'Memasang banyak Access Point Wi-Fi 6 berdaya pancar terukur pada kanal 5/6 GHz yang berbeda (Micro-Cell)',
+          'Hanya menggunakan frekuensi 2.4 GHz dengan lebar kanal 40 MHz',
+          'Menonaktifkan enkripsi WPA2/WPA3',
+        ],
+        answer: 1,
+      },
+    ],
+  },
 ];

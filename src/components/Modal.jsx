@@ -1,53 +1,48 @@
+import { useEffect, useRef } from 'react';
 import { X } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { useEffect } from 'react';
 
 export default function Modal({ isOpen, onClose, title, children }) {
+  const dialogRef = useRef(null);
+
   useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = 'unset';
+    const dialog = dialogRef.current;
+    if (!dialog) return;
+
+    if (isOpen && !dialog.open) {
+      dialog.showModal();
+    } else if (!isOpen && dialog.open) {
+      dialog.close();
     }
-    return () => {
-      document.body.style.overflow = 'unset';
-    };
   }, [isOpen]);
 
   return (
-    <AnimatePresence>
+    <dialog
+      ref={dialogRef}
+      onClose={onClose}
+      onClick={(e) => {
+        if (e.target === dialogRef.current) onClose();
+      }}
+      {...{ closedby: 'any' }}
+      className="backdrop:bg-slate-950/60 backdrop:backdrop-blur-xs bg-transparent p-4 m-auto w-full max-w-xl open:flex items-center justify-center focus:outline-none"
+    >
       {isOpen && (
-        <>
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            onClick={onClose}
-            className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-50"
-          />
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95, y: 20 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.95, y: 20 }}
-            className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-lg z-50 p-4"
-          >
-            <div className="bg-white rounded-xl shadow-xl overflow-hidden max-h-[90vh] flex flex-col">
-              <div className="flex justify-between items-center p-4 border-b border-slate-100">
-                <h3 className="font-semibold text-lg text-slate-900">{title}</h3>
-                <button
-                  onClick={onClose}
-                  className="p-2 text-slate-400 hover:text-slate-600 hover:bg-slate-100 rounded-full transition-colors"
-                >
-                  <X size={20} />
-                </button>
-              </div>
-              <div className="p-6 overflow-y-auto">
-                {children}
-              </div>
-            </div>
-          </motion.div>
-        </>
+        <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl shadow-2xl overflow-hidden max-h-[88dvh] w-full flex flex-col text-slate-900 dark:text-slate-100">
+          <div className="flex justify-between items-center px-5 py-4 border-b border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/60">
+            <h2 className="font-bold text-base text-slate-900 dark:text-white">{title}</h2>
+            <form method="dialog">
+              <button
+                type="submit"
+                onClick={onClose}
+                aria-label="Tutup dialog detail"
+                className="min-h-[40px] min-w-[40px] inline-flex items-center justify-center text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-200/70 dark:hover:bg-slate-700 rounded-lg transition-colors"
+              >
+                <X size={18} aria-hidden="true" />
+              </button>
+            </form>
+          </div>
+          <div className="p-5 sm:p-6 overflow-y-auto">{children}</div>
+        </div>
       )}
-    </AnimatePresence>
+    </dialog>
   );
 }

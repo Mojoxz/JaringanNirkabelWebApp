@@ -7,69 +7,83 @@ export default function Timeline({ data, intro }) {
   const [activeIndex, setActiveIndex] = useState(0);
 
   return (
-    <div className="space-y-8 mt-6">
+    <div className="space-y-6 mt-6">
       {intro && (
-        <div className="bg-primary-50 border border-primary-100 rounded-xl p-5">
+        <div className="bg-primary-50/80 dark:bg-slate-900 border border-primary-200 dark:border-slate-800 rounded-xl p-5">
           <div className="flex items-start gap-3">
-            <Info size={20} className="text-primary-600 shrink-0 mt-0.5" />
-            <p className="text-primary-900 leading-relaxed">{intro}</p>
+            <Info size={18} className="text-primary-700 dark:text-primary-400 shrink-0 mt-0.5" aria-hidden="true" />
+            <p className="text-slate-800 dark:text-slate-200 text-sm leading-relaxed">{intro}</p>
           </div>
         </div>
       )}
 
-      <div className="flex flex-col md:flex-row gap-8 w-full">
-        {/* Timeline Navigation */}
-        <div className="md:w-1/3 flex md:flex-col overflow-x-auto md:overflow-visible pb-4 md:pb-0 gap-2 border-b md:border-b-0 md:border-l-2 border-slate-200 shrink-0">
-          {data.map((item, index) => (
-            <button
-              key={index}
-              onClick={() => setActiveIndex(index)}
-              className={clsx(
-                "flex flex-col text-left px-4 py-3 min-w-[130px] md:min-w-0 md:border-l-2 md:-ml-[2px] transition-all relative rounded-r-xl",
-                activeIndex === index
-                  ? "border-primary-600 text-primary-700 bg-primary-50"
-                  : "border-transparent text-slate-500 hover:text-slate-800 hover:bg-slate-50"
-              )}
-            >
-              {activeIndex === index && (
-                <motion.div
-                  layoutId="timeline-indicator"
-                  className="hidden md:block absolute -left-[7px] top-1/2 -translate-y-1/2 w-3 h-3 rounded-full bg-primary-600 border-2 border-white shadow-md shadow-primary-300"
-                />
-              )}
-              <span className="font-black text-base tracking-tight">{item.year}</span>
-              <span className="text-xs font-medium mt-0.5 leading-snug">{item.event}</span>
-            </button>
-          ))}
+      <div className="flex flex-col md:flex-row gap-6 w-full">
+        <div
+          role="tablist"
+          aria-label="Garis waktu sejarah jaringan nirkabel"
+          className="md:w-1/3 flex md:flex-col overflow-x-auto md:overflow-visible pb-3 md:pb-0 gap-1.5 border-b md:border-b-0 md:border-l-2 border-slate-300 dark:border-slate-700 shrink-0"
+        >
+          {data.map((item, index) => {
+            const active = activeIndex === index;
+            return (
+              <button
+                key={item.year}
+                type="button"
+                role="tab"
+                aria-selected={active}
+                onClick={() => setActiveIndex(index)}
+                className={clsx(
+                  'flex flex-col text-left px-4 py-3 min-w-[145px] md:min-w-0 md:border-l-2 md:-ml-[2px] transition-colors relative rounded-r-lg min-h-[48px]',
+                  active
+                    ? 'border-primary-700 dark:border-primary-400 text-primary-900 dark:text-primary-200 bg-primary-50 dark:bg-primary-950/80 font-bold'
+                    : 'border-transparent text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800/60'
+                )}
+              >
+                <span className="font-mono font-extrabold text-sm tracking-tight">{item.year}</span>
+                <span className="text-xs font-medium mt-0.5 leading-snug">{item.event}</span>
+              </button>
+            );
+          })}
         </div>
 
-        {/* Timeline Content Panel */}
-        <div className="md:w-2/3 min-h-[350px]">
+        <div className="md:w-2/3">
           <AnimatePresence mode="wait">
             <motion.div
               key={activeIndex}
-              initial={{ opacity: 0, x: 20 }}
+              initial={{ opacity: 0, x: 14 }}
               animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -20 }}
-              transition={{ duration: 0.35 }}
-              className="bg-white rounded-xl border border-slate-200 overflow-hidden"
+              exit={{ opacity: 0, x: -14 }}
+              transition={{ duration: 0.25 }}
+              className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 overflow-hidden shadow-xs"
             >
               {data[activeIndex].image && (
                 <img
                   src={data[activeIndex].image}
                   alt={data[activeIndex].event}
-                  className="w-full h-52 object-cover"
+                  width="800"
+                  height="240"
+                  loading="lazy"
+                  className="w-full h-52 object-cover bg-slate-100 dark:bg-slate-800"
                 />
               )}
               <div className="p-6 space-y-4">
                 <div>
-                  <span className="text-primary-600 font-black text-3xl tracking-tight">{data[activeIndex].year}</span>
-                  <h3 className="text-xl font-bold text-slate-900 mt-1">{data[activeIndex].event}</h3>
+                  <span className="font-mono text-primary-700 dark:text-primary-400 font-extrabold text-2xl tracking-tight">
+                    {data[activeIndex].year}
+                  </span>
+                  <h3 className="text-xl font-bold text-slate-900 dark:text-white mt-1">{data[activeIndex].event}</h3>
                 </div>
-                <p className="text-slate-700 leading-relaxed">{data[activeIndex].description}</p>
+                <p className="text-slate-700 dark:text-slate-300 text-sm sm:text-base leading-relaxed">
+                  {data[activeIndex].description}
+                </p>
                 {data[activeIndex].detail && (
-                  <div className="bg-slate-50 rounded-xl p-4 border border-slate-100">
-                    <p className="text-slate-600 text-sm leading-relaxed">{data[activeIndex].detail}</p>
+                  <div className="bg-slate-50 dark:bg-slate-800/80 rounded-lg p-4 border border-slate-200 dark:border-slate-700">
+                    <p className="font-mono text-xs font-bold text-slate-700 dark:text-slate-300 uppercase mb-1">
+                      Detail Teknis:
+                    </p>
+                    <p className="text-slate-700 dark:text-slate-300 text-sm leading-relaxed">
+                      {data[activeIndex].detail}
+                    </p>
                   </div>
                 )}
               </div>
