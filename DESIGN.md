@@ -30,12 +30,14 @@ Tidak menggunakan gradien biru-ungu atau neon tanpa tujuan. Seluruh pasangan tek
 - **Huruf Teknis (Monospace)**: `JetBrains Mono` / `Fira Code` digunakan **hanya** untuk data teknis nyata: nomor standar IEEE (`802.11be`), frekuensi (`5.8 GHz`), satuan daya (`36 dBm`, `24 dBi`), rumus *Link Budget*, BSSID/MAC address, dan blok kode/konfigurasi di kotak "Coba Sendiri".
 
 ## 5. Motif Identitas (Identity Motif)
-- **Label Indeks Telemetri**: Setiap modul dan simulasi memiliki header berformat indeks teknis seperti `[BAB 02 // ANTENA & POLA RADIASI]` atau `[LAB-RF // FRESNEL & EIRP]` dengan font monospace berukuran kecil dan kontras tinggi.
+- **Emblem Vektor Zona Fresnel (`BrandLogo`)**: Menggantikan ikon stok dengan diagram SVG kustom *First Fresnel Zone* ($F_1$), batas *clearance* 60% putus-putus, gelombang pembawa termodulasi, dan sepasang antena dipol TX/RX berdampingan dengan wordmark `NetLab RF`.
+- **Label Indeks Telemetri**: Setiap modul dan simulasi memiliki header berformat indeks teknis seperti `[BAB 02 // 10 MNT]` atau `[LAB-RF // FRESNEL & EIRP]` dengan font monospace berukuran kecil dan kontras tinggi.
 - **Kotak "Coba Sendiri" (W3Schools Lab Box)**: Setiap bab memiliki komponen interaktif berbingkai hijau zamrud (`emerald`) di sisi atas dengan tombol eksperimen langsung agar pengguna dapat mengubah variabel teknis dan melihat hasilnya seketika tanpa meninggalkan halaman materi.
 
 ## 6. Alasan Keputusan Visual (R-31 One-Line Reasons)
+- **Mengapa menggunakan emblem SVG kustom Zona Fresnel dan navigasi teks tanpa ikon?** Menghindari kesan template AI-slop dari ikon stok di dalam kotak warna sekaligus langsung merepresentasikan konsep inti propagasi nirkabel (elips Fresnel & gelombang pembawa) pada identitas merek.
 - **Mengapa palet Sky-Cyan, Emerald, dan Slate?** Mencerminkan layar instrumen penganalisis spektrum RF (Cyan/Slate) sekaligus mempertahankan kejelasan visual ala W3Schools (Emerald untuk laboratorium praktik) dengan kontras WCAG AA penuh.
-- **Mengapa tata letak Beranda asimetris dengan 3D interaktif?** Agar pengunjung langsung merasakan pengalaman laboratorium nirkabel melalui manipulasi 3D *real-time* di layar pertama tanpa harus menggulir melewati kartu template generik.
+- **Mengapa tata letak Beranda menggunakan kanvas 3D *full-viewport* yang dikendalikan guliran (*scroll-driven*)?** Agar pengunjung langsung menjelajahi cakupan 8 stasiun bab di sekitar *Access Point* secara spasial tanpa terhalang kotak pembungkus atau kartu statistik dekoratif.
 - **Mengapa tata letak Materi 3-kolom bergaya W3Schools?** Memudahkan mahasiswa berpindah antar bab (sidebar kiri), membaca teori & mencoba simulasi langsung di tempat (kolom tengah), serta melompat ke sub-topik spesifik (daftar isi kanan).
 - **Mengapa sistem radius bertingkat (`rounded-lg` untuk tombol/input, `rounded-xl` untuk kartu materi, `rounded-2xl` untuk kanvas 3D)?** Membedakan fungsi elemen secara visual: kontrol input tampak presisi, sementara kanvas simulasi 3D terbingkai jelas sebagai jendela instrumen.
 - **Mengapa menyediakan Mode Terang dan Gelap?** Mahasiswa sering membaca materi panjang di ruang terang (nyaman dengan Light Mode) namun juga melakukan simulasi visualisasi 3D di malam hari (nyaman dengan Dark Mode).

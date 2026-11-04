@@ -1,10 +1,12 @@
 import { useEffect, useRef } from 'react';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useLocation } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 
 export default function MainLayout() {
   const progressRef = useRef(null);
+  // The home page renders a full-bleed 3D scene, so it skips the content container.
+  const isHome = useLocation().pathname === '/';
 
   useEffect(() => {
     // Fallback for browsers that do not support CSS scroll-driven animation timelines.
@@ -36,7 +38,10 @@ export default function MainLayout() {
         className="scroll-progress-bar fixed top-0 left-0 right-0 h-0.5 bg-primary-600 dark:bg-primary-400 z-[60] pointer-events-none"
       />
       <Navbar />
-      <main id="main-content" className="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-8">
+      <main
+        id="main-content"
+        className={isHome ? 'flex-1 w-full' : 'flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-8'}
+      >
         <Outlet />
       </main>
       <Footer />
